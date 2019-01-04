@@ -1,6 +1,6 @@
 <?php
 
-	$conn=mysqli_connect('206.81.104.1','evix','***REMOVED***','evix');
+	$conn=mysqli_connect('72.52.82.6','evix','***REMOVED***','evix');
 
 	if(!$conn)
 		die("Failed to connect to database". mysqli_error());
@@ -61,7 +61,7 @@
 		}
 
 	}
-	$source=file_get_contents("/evix/IX-website/templates/page/ix_peers.html");
+	$source=file_get_contents("/evix/IX-Website/templates/page/ix_peers.html");
 	$start="<!--auto generated peers-->";
 	$end="<!--end auto generated peers-->";
 
