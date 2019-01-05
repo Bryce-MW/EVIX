@@ -17,7 +17,7 @@ else
   /evix/arouteserver/scripts/arouteserver bird --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6.conf
 
   new=($(md5sum /tmp/bird.conf))
-  old=($(md5sum /etc/bird/bird.conf))
+  old=($(md5sum /evix/configs/bird.conf))
 
   #if file is new
   if [ "$new" != "$old" ];then
@@ -28,8 +28,8 @@ else
     #if config is valid, reload bird
     if [ $? -eq 0 ];then
       echo bird configuration is valid
-      mv /tmp/bird.conf /etc/bird/bird.conf
-     /usr/sbin/birdc configure
+      mv /tmp/bird.conf /evix/configs/
+      sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/configs/bird.conf
       SUCCESS=1
     else
       echo Bird configuration is invalid
@@ -38,7 +38,7 @@ else
   fi
 
   new=($(md5sum /tmp/bird6.conf))
-  old=($(md5sum /etc/bird/bird6.conf))
+  old=($(md5sum /evix/configs/bird6.conf))
 
   #if file is new
   if [ "$new" != "$old" ];then
@@ -49,9 +49,9 @@ else
     #if config is valid, reload bird
     if [ $? -eq 0 ];then
       echo bird 6 configuration is valid
-      mv /tmp/bird6.conf /etc/bird/bird6.conf
+      mv /tmp/bird6.conf /evix/configs/
+      sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/configs/bird6.conf
       SUCCESS=1
-     /usr/sbin/birdc6 configure
     else
       echo Bird 6 configuration is invalid
       SUCCESS=0
@@ -62,5 +62,6 @@ else
     echo 1 > /evix/scripts/status_failure
   else
     echo 0 > /evix/scripts/status_failure
+    /usr/bin/ansible-playbook /evix/playbooks/push_bird.yml
   fi
 fi
