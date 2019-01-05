@@ -1,7 +1,7 @@
 <?php
 	$ip6_prefix='2602:fed2:fff:ffff::';
 	$asn=$argv[1];
-	$conn=mysqli_connect('206.81.104.1','evix','***REMOVED***','evix');
+	$conn=mysqli_connect('127.0.0.1','evix','***REMOVED***','evix');
 
         if(!$conn)
                 die("Failed to connect to database". mysqli_error());
@@ -50,7 +50,7 @@
 	{
 		$query="SELECT * FROM peers WHERE address=". $i;
 		$rows=mysqli_num_rows(mysqli_query($conn,$query));
-		echo $rows;
+//		echo $rows;
 		if($rows==0)
 		{
 			$ip=long2ip($i);
@@ -75,6 +75,17 @@
 				else
 				{
 					echo "Database updated sucessfully!\n";
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL,"http://netbox.as60927.net/api/ipam/ip-addresses/");
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+					curl_setopt($ch, CURLOPT_POSTFIELDS, '{"address": "'. $ip. '/24","description":"AS'. $asn. '"}');
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'Content-Type: application/json','Authorization: Token 4395619eed6fe9f1092cecd57e52f754bba916f3'
+					));
+					$result = curl_exec($ch);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, '{"address": "'. $ip6. '/64","description":"AS'. $asn. '"}');
+					$result = curl_exec($ch);
 					exit(0);
 				}
 			}

@@ -1,6 +1,6 @@
 <?php
 
-	$conn=mysqli_connect('72.52.82.6','evix','***REMOVED***','evix');
+	$conn=mysqli_connect('127.0.0.1','evix','***REMOVED***','evix');
 
 	if(!$conn)
 		die("Failed to connect to database". mysqli_error());
