@@ -30,6 +30,7 @@ else
       echo bird configuration is valid
       mv /tmp/bird.conf /evix/configs/
       sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/configs/bird.conf
+      sed -i -e 's/local as 137933/local as {{ rs_asn }}/g' /evix/configs/bird.conf
       SUCCESS=1
     else
       echo Bird configuration is invalid
@@ -51,6 +52,7 @@ else
       echo bird 6 configuration is valid
       mv /tmp/bird6.conf /evix/configs/
       sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/configs/bird6.conf
+      sed -i -e 's/local as 137933/local as {{ rs_asn }}/g' /evix/configs/bird6.conf
       SUCCESS=1
     else
       echo Bird 6 configuration is invalid

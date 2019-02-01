@@ -54,7 +54,7 @@
 	"member_list"=> array (),
 	);
 
-	$conn=mysqli_connect('72.52.82.6','evix','***REMOVED***','evix');
+	$conn=mysqli_connect('127.0.0.1','evix','***REMOVED***','evix');
 	$query="SELECT * FROM peers WHERE status in (1,2,3)";
 	$res=mysqli_query($conn,$query);
 	if($res)

@@ -9,7 +9,7 @@ echo $new
 echo $old
 #if file is new
 if [ "$new" != "$old" ];then
-  mv /tmp/ix_peers.html /evix/IX-Website/templates/page/ix_peers.html
+  cp /tmp/ix_peers.html /evix/IX-Website/templates/page/ix_peers.html
   cd /evix/IX-Website/
   /usr/local/bin/staticjinja build --srcpath=templates --static=static --outpath=/var/www/evix/ --globals=globals.yaml
 fi

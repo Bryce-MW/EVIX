@@ -16,6 +16,13 @@ res=$?
 if [ $res -eq 0 ];then
   echo
   echo database updated successfully, generating BIRD configs...
+  echo Send email to user reminding them of the route servers:
+  echo "   206.81.104.1"
+  echo "   2602:fed2:fff:ffff::1"
+  echo "   ASN: 137933"
+  echo "   206.81.104.253"
+  echo "   2602:fed2:fff:ffff::253"
+  echo "   ASN: 209762"
   /evix/scripts/pull_peers.sh
 elif [ $res -eq 2 ];then
   echo
