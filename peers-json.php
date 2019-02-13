@@ -30,7 +30,7 @@
                                 	2 => array (
 	                                "id" => 2,
         	                        "name" => "NZ POP",
-                	                "city" => "Wellington",
+                	                "city" => "Auckland",
                         	        "country" => "NZ"
                                 	)
 				),
@@ -95,6 +95,37 @@
 			);
 			$i++;
 		}
+		//backup Route Server
+		$peers["member_list"][$i]["asnum"]=209762;
+                        $peers["member_list"][$i]["member_type"]="peering";
+                        $peers["member_list"][$i]["name"]="Backup Route Server";
+                        $peers["member_list"][$i]["url"]="https://evix.org";
+                        $peers["member_list"][$i]["connection_list"]=array (
+                                0=> array (
+                                "ixp_id" => 756,
+                                "state" => "active",
+                                "if_list" => array (
+                                        0=>array (
+                                        "switch_id" => 0,
+                                        "if_speed" => 1000
+                                        )
+                                ),
+                                "vlan_list" => array (
+                                        0=>array (
+                                        "vlan_id" => 0,
+                                        "ipv4" => array (
+                                                "address" => "206.81.104.253",
+                                                "routeserver" => true,
+                                                "as_macro" => "AS209762"
+                                        ),
+                                        "ipv6" => array (
+                                                "address" => "2602:fed2:fff:ffff::253",
+                                                "routeserver" => true,
+                                                "as_macro" => "AS209762"
+                                        )
+                                )
+                        )
+                )
 		$peers["member_list"][$i]["asnum"]=137933;
                         $peers["member_list"][$i]["member_type"]="peering";
                         $peers["member_list"][$i]["name"]="Route Server";
@@ -106,7 +137,7 @@
                                 "if_list" => array (
                                         0=>array (
                                         "switch_id" => 0,
-                                        "if_speed" => 100
+                                        "if_speed" => 1000
                                         )
                                 ),
                                 "vlan_list" => array (

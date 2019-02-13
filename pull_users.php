@@ -33,6 +33,18 @@
 			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['limit_ipv4']=100;
 			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['limit_ipv6']=100;
 			$peers['clients'][$i]['description']=$peer['description'];
+			if(strstr($peer['location'],"FMT"))
+			{
+				$peers['clients'][$i]['cfg']['attach_custom_communities'][0]="source_fremont";
+			}
+			else if(strstr($peer['location'],"NL"))
+			{
+				$peers['clients'][$i]['cfg']['attach_custom_communities'][0]="source_amsterdam";
+			}
+			else if(strstr($peer['location'],"NZ"))
+			{
+				$peers['clients'][$i]['cfg']['attach_custom_communities'][0]='source_auckland';
+			}
 			$j=0;
 			if($peer['address']!='')
 			{
