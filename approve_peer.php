@@ -54,7 +54,6 @@
 		if($rows==0)
 		{
 			$ip=long2ip($i);
-			echo "new user IP is ". $ip. "\n";
 			$octets=explode('.',$ip);
 
 			//ensure the corresponding ipv6 address is not taken
@@ -63,33 +62,45 @@
 			$rows=mysqli_num_rows(mysqli_query($conn,$query));
 			if($rows== 0)
 	                {
-				echo "new user IPv6 is ". $ip6. "\n";
+				//ensure the address is not in the additionalips table
+				$query="SELECT * FROM additionalips WHERE address=". $i;
+				$rows=mysqli_num_rows(mysqli_query($conn,$query));
+				if($rows==0)
+				{
+					$query="SELECT * FROM additionalips WHERE address6=". $ip6;
+	                                $rows=mysqli_num_rows(mysqli_query($conn,$query));
+					if($rows==0)
+                                	{
+						echo "new user IPv6 is ". $ip6. "\n";
+		                                echo "new user IP is ". $ip. "\n";
 
-				$query="UPDATE peers SET address=". $i. ",address6='". $ip6. "',status=2 WHERE asn=". $asn;
-				$res=mysqli_query($conn,$query);
-				if(!$res)
-				{
-					echo "An error occured updating peer's status in the database... please correct.  User will NOT be added to bird. ". mysqli_error($conn);
-					exit(1);
-				}
-				else
-				{
-					echo "Database updated sucessfully!\n";
-					$ch = curl_init();
-					curl_setopt($ch, CURLOPT_URL,"http://netbox.as60927.net/api/ipam/ip-addresses/");
-					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-					curl_setopt($ch, CURLOPT_POSTFIELDS, '{"address": "'. $ip. '/24","description":"AS'. $asn. '"}');
-					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-					curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'Content-Type: application/json','Authorization: Token 4395619eed6fe9f1092cecd57e52f754bba916f3'
-					));
-					$result = curl_exec($ch);
-					curl_setopt($ch, CURLOPT_POSTFIELDS, '{"address": "'. $ip6. '/64","description":"AS'. $asn. '"}');
-					$result = curl_exec($ch);
-					exit(0);
+						$query="UPDATE peers SET address=". $i. ",address6='". $ip6. "',status=2 WHERE asn=". $asn;
+						$res=mysqli_query($conn,$query);
+						if(!$res)
+						{
+							echo "An error occured updating peer's status in the database... please correct.  User will NOT be added to bird. ". mysqli_error($conn);
+							exit(1);
+						}
+						else
+						{
+							echo "Database updated sucessfully!\n";
+							$ch = curl_init();
+							curl_setopt($ch, CURLOPT_URL,"http://netbox.as60927.net/api/ipam/ip-addresses/");
+							curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+							curl_setopt($ch, CURLOPT_POSTFIELDS, '{"address": "'. $ip. '/24","description":"AS'. $asn. '"}');
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+							'Content-Type: application/json','Authorization: Token 4395619eed6fe9f1092cecd57e52f754bba916f3'
+							));
+							$result = curl_exec($ch);
+							curl_setopt($ch, CURLOPT_POSTFIELDS, '{"address": "'. $ip6. '/64","description":"AS'. $asn. '"}');
+							$result = curl_exec($ch);
+							exit(0);
+						}
+					}
+					//exit(1);
 				}
 			}
-			//exit(1);
 		}
 	}
 	exit(2);

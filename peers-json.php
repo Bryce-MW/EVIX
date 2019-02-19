@@ -66,6 +66,29 @@
 			$peers["member_list"][$i]["member_type"]="peering";
 			$peers["member_list"][$i]["name"]=$row['description'];
 			$peers["member_list"][$i]["url"]=$row['website'];
+
+			//get additional IPs (if any)
+                        $additionalquery="SELECT * FROM additionalips WHERE asn=". $row['asn'];
+                        $additionalres=mysqli_query($conn,$additionalquery);
+			$additionalrows=mysqli_num_rows($additionalres);
+			$additionalips=array();
+			$additionalips4=array();
+			while($additional=mysqli_fetch_array($additionalres))
+                        {
+	                        //$peers['clients'][$i]['ip'][$j]=long2ip($additional['address']);
+				$additionalips[]=array (
+						"vlan_id" => 0,
+						"ipv4" => array (
+                                                "address" => long2ip($additional['address']),
+                                                "routeserver" => true,
+                                                "as_macro" => $row['asset'] ),
+						"ipv6" => array (
+                                                "address" => $additional['address6'],
+                                                "routeserver" => true,
+                                                "as_macro" => $row['asset'] )
+					);
+                        }
+
 			$peers["member_list"][$i]["connection_list"]=array (
 				0=> array (
 				"ixp_id" => 756,
@@ -77,7 +100,7 @@
 					)
 				),
 				"vlan_list" => array (
-					0=>array (
+					array (
 					"vlan_id" => 0,
 					"ipv4" => array (
 						"address" => long2ip($row['address']),
@@ -88,9 +111,8 @@
 						"address" => $row['address6'],
 						"routeserver" => true,
                                                 "as_macro" => $row['asset']
-					)
-					)
-				)
+					) 					)
+				),$additionalips
 				)
 			);
 			$i++;
@@ -125,7 +147,7 @@
                                         )
                                 )
                         )
-                )
+                ));
 		$peers["member_list"][$i]["asnum"]=137933;
                         $peers["member_list"][$i]["member_type"]="peering";
                         $peers["member_list"][$i]["name"]="Route Server";

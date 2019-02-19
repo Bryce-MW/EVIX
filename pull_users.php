@@ -45,16 +45,40 @@
 			{
 				$peers['clients'][$i]['cfg']['attach_custom_communities'][0]='source_auckland';
 			}
+			else if(strstr($peer['location'],"VAN"))
+                        {
+                                $peers['clients'][$i]['cfg']['attach_custom_communities'][0]='source_vancouver';
+                        }
+
 			$j=0;
 			if($peer['address']!='')
 			{
 				$ip=long2ip($peer['address']);
 				$peers['clients'][$i]['ip'][$j]=$ip;
 				$j++;
+
+				//get additional IPs (if any)
+				$query="SELECT * FROM additionalips WHERE asn=". $peer['asn'];
+				$res=mysqli_query($conn,$query);
+				while($additional=mysqli_fetch_array($res))
+				{
+					$peers['clients'][$i]['ip'][$j]=long2ip($additional['address']);
+					$j++;
+				}
 			}
 			if($peer['address6']!='')
 			{
                                 $peers['clients'][$i]['ip'][$j]=$peer['address6'];
+				$j++;
+
+				//get additional IPs (if any)
+                                $query="SELECT * FROM additionalips WHERE asn=". $peer['asn'];
+                                $res=mysqli_query($conn,$query);
+                                while($additional=mysqli_fetch_array($res))
+                                {
+                                        $peers['clients'][$i]['ip'][$j]=$additional['address6'];
+                                        $j++;
+                                }
 			}
 			$i++;
 		}
