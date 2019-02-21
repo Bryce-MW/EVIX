@@ -20,6 +20,7 @@
 				echo "Description: ". $row['description']. "\n";
 				echo "AS-SET: ". $row['asset']. "\n";
 				echo "Contact Email: ". $row['contact']. "\n";
+				echo "Tunnel Location: ". $row['location']. "\n";
 				echo "-----------------\n";
 			}
 		}
