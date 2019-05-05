@@ -30,7 +30,7 @@
 			$peers['clients'][$i]['cfg']['filtering']['irrdb']['as_sets'][0]=$peer['asset'];
 			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['action']="shutdown";
 			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['peering_db']['enabled']=false;
-			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['limit_ipv4']=100;
+			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['limit_ipv4']=200;
 			$peers['clients'][$i]['cfg']['filtering']['max_prefix']['limit_ipv6']=100;
 			$peers['clients'][$i]['description']=$peer['description'];
 			if(strstr($peer['location'],"FMT"))
