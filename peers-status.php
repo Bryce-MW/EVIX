@@ -1,4 +1,6 @@
 <?php
+	//peers who have been exempted from peering with the route servers
+	$exceptions=array(209833,58057,204438);
  //dependancies
         use PHPMailer\PHPMailer\PHPMailer;
         use PHPMailer\PHPMailer\Exception;
@@ -46,8 +48,13 @@
 				//if peer is currently down
 	                        if(strstr($output,"start"))
         	                {
+					if(in_array($row['asn'],$exceptions))
+					{
+						 mysqli_query($conn,"UPDATE notificationsv". $ipver. " SET status=0 WHERE asn=". $row['asn']);
+					}
+
                 	                echo "ASN ". $row['asn']. " has a DOWN session\n";
-                        	        //see if they have already been logged
+	                       	        //see if they have already been logged
                                 	$res=mysqli_query($conn,"SELECT * FROM notificationsv". $ipver. " WHERE asn=". $row['asn']. " AND status=1 ORDER BY date DESC");
 	                                if(mysqli_num_rows($res)>0)
         	                        {
@@ -68,7 +75,10 @@
 
 		Generally, we require members to maintain a session with our primary route server, members with don sessions for more then 14 days will be de-provisioned.  If you require assistance, or specifically do not wish to peer with the route server, please reach out to us at: peering@evix.org';
 							$to=$row['contact'];
-							sendEmail($to,$subject,$message,$messageHtml);
+							if(!in_array($row['asn'],$exceptions))
+                                        		{
+								sendEmail($to,$subject,$message,$messageHtml);
+							}
                                         	}
 	                                }
 					else

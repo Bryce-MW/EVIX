@@ -1,6 +1,7 @@
 #!/bin/bash
 
 peers=`/usr/bin/php /evix/scripts/update_peers_website.php`
+rm /tmp/ix_peers.html
 echo "$peers" > /tmp/ix_peers.html
 
 if grep -Fxq "Failed to connect to database" "/tmp/ix_peers.html"
