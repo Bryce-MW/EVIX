@@ -47,7 +47,7 @@
 	}
 
 	//find next available IP address
-	for($i=3461441638; $i< 3461441776; $i++)
+	for($i=3461441656; $i< 3461441776; $i++)
 	{
 		$query="SELECT * FROM peers WHERE address=". $i;
 		$rows=mysqli_num_rows(mysqli_query($conn,$query));
