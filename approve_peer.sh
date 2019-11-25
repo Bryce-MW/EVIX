@@ -23,6 +23,7 @@ if [ $res -eq 0 ];then
   echo "   206.81.104.253"
   echo "   2602:fed2:fff:ffff::253"
   echo "   ASN: 209762"
+  read -p "Press a key to push changes..."
   /evix/scripts/pull_peers.sh
 elif [ $res -eq 2 ];then
   echo
