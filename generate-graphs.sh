@@ -2,7 +2,7 @@
 
 /usr/bin/php /evix/scripts/graph.php 11 fremont
 sleep 2
-/usr/bin/php /evix/scripts/graph.php 20 amsterdam
+/usr/bin/php /evix/scripts/graph.php 21 amsterdam
 sleep 2
 /usr/bin/php /evix/scripts/graph.php 35 auckland
 cd /evix/IX-Website/

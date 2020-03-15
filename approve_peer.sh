@@ -13,6 +13,7 @@ fi
 
 /usr/bin/php /evix/scripts/approve_peer.php $1
 res=$?
+echo res
 if [ $res -eq 0 ];then
   echo
   echo database updated successfully, generating BIRD configs...

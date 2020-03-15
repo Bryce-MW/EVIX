@@ -1,6 +1,6 @@
 <?php
 	//peers who have been exempted from peering with the route servers
-	$exceptions=array(209833,58057,204438,47422,209209,34927,131657,202313);
+	$exceptions=array(209833,58057,204438,47422,209209,34927,131657,202313,7489,6233);
  //dependancies
         use PHPMailer\PHPMailer\PHPMailer;
         use PHPMailer\PHPMailer\Exception;
@@ -132,7 +132,7 @@ If you have any questions, please reach out to us at: peering@evix.org';
 			die("SSH Authentication failed");
         }
 
-
+//sendEmail('christheradioguy@gmail.com','test message from EVIX','This is a test message','This is a test message<br/>');
 
 function sendEmail($to,$subject,$message,$messageHtml)
 {
@@ -142,12 +142,12 @@ function sendEmail($to,$subject,$message,$messageHtml)
 		//Server settings
 		//$mail->SMTPDebug = 2;
 		$mail->isSMTP();
-		$mail->Host = 'mx02.ipaddr.is';
+		$mail->Host = '***REMOVED***';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'support@evix.org';
-		$mail->Password = 'yhsYVM_igFWg7';
-		//$mail->SMTPSecure = 'tls';
-		$mail->Port = 25;
+		$mail->Username = 'scripts';
+		$mail->Password = '***REMOVED***';
+		$mail->SMTPSecure = 'tls';
+		$mail->Port = 587;
 
 		$mail->SMTPOptions = array(
    			'ssl' => array(

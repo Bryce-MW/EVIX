@@ -25,7 +25,7 @@
               <th align=left class="wide">IPv4 /24</th>
               <th align=left class="wide">IPv6 /64</th>
               <th align=left>Location</th>
-              <th align=left>Status</th>
+              <th align=left>Tunnel Type</th>
           </tr></thead>
           <tbody><tr>
           </tr>';
@@ -34,7 +34,8 @@
 	{
 		if($peer['asn']!='' AND $peer['description']!='' AND $peer['asset']!='')
 		{
-
+			$tunnel=mysqli_query($conn,"SELECT * FROM tunnels WHERE asn=". $peer['asn']);
+			$tunnel=mysqli_fetch_array($tunnel);
 			$table .='<tr>
                   <td class="peer-table-company"><a href="'.  $peer['website']. '">'. $peer['description']. '</a></td>
                   <td class="peer-table-as">'. $peer['asn']. '</td>';
@@ -56,7 +57,7 @@
 		if($peer['status']==1)
                   $table .='<td class="peer-table-policy"><font color="grey">Installing...</font></td>';
 		else
-		  $table .='<td class="peer-table-policy"><font color="#00aa00">Connected</font></td>';
+		  $table .='<td class="peer-table-policy"><font color="grey">'. $tunnel['type']. '</font></td>';
         $table .='</tr>';
 		}
 
