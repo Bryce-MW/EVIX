@@ -24,7 +24,7 @@
 	$deprovisionedres=mysqli_query($conn,"SELECT * FROM notificationsv". $ipver. " WHERE status=3");
 	while($deprovision=mysqli_fetch_array($deprovisionedres))
 	{
-		$query="UPDATE peers SET status=5,address". $ipver. "=NULL WHERE asn=". $deprovision['asn'];
+		$query="UPDATE peers SET status=5 WHERE asn=". $deprovision['asn'];
 		mysqli_query($conn,$query);
 		$query="DELETE FROM notificationsv". $ipver. " WHERE ID=". $deprovision['ID'];
 		mysqli_query($conn,$query);
