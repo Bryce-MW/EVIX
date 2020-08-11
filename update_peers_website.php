@@ -12,7 +12,7 @@
 	//3 = added, connected
 	//4 = added, not connected
 	//5 = deleted
-	$query="SELECT * FROM peers WHERE status in (2,3,4)";
+	$query="SELECT * FROM peers WHERE status in (2,3,4) ORDER BY address IS NULL, address, address6 is NULL, address6, asn";
 	$row=mysqli_query($conn,$query);
 
 	if(!$row)

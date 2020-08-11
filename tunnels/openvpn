@@ -1,0 +1,4 @@
+#! /bin/zsh
+
+cd /evix/scripts
+./generateOpenVPN.sh $@

@@ -9,7 +9,7 @@ then
   echo "ERROR in connecting to database"
 else
   new=($(md5sum /tmp/ix_peers.html))
-  old=($(md5sum /evix/IX-Website/templates/page/ix_peers.html))
+#  old=($(md5sum /evix/IX-Website/templates/page/ix_peers.html))
   echo $new
   echo $old
   #if file is new

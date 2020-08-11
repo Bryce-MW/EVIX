@@ -55,7 +55,7 @@
 	);
 
 	$conn=mysqli_connect('127.0.0.1','evix','***REMOVED***','evix');
-	$query="SELECT * FROM peers WHERE status in (1,2,3)";
+	$query="SELECT * FROM peers WHERE status in (1,2,3) ORDER BY address, address6, asn";
 	$res=mysqli_query($conn,$query);
 	if($res)
 	{

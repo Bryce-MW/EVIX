@@ -1,6 +1,6 @@
 <?php
 	//peers who have been exempted from peering with the route servers
-	$exceptions=array(209833,58057,204438,47422,209209,34927,131657,202313,7489,6233);
+	$exceptions=array(209833,58057,204438,47422,209209,34927,131657,202313,7489,6233,202479,209533,64073);
  //dependancies
         use PHPMailer\PHPMailer\PHPMailer;
         use PHPMailer\PHPMailer\Exception;

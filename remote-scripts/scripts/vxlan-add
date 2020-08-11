@@ -1,0 +1,22 @@
+#! /bin/zsh
+cd /evix/vxlan
+echo
+echo "New tunnel:"
+cut -d \" \" -f 1 < peers.vxlan | #reads from the peers file and gets all the IDs
+sort -n | #sorts the IDs in case they aree not already
+awk '{ do{ for(s=e="'$1'"; (r=getline)>0 && "'$1'"<=e+1; e="'$1'"); print s==e ? s : s\",\"e }while(r>0) }' | #this makes no sense to me, see https://unix.stackexchange.com/questions/470073/how-to-collapse-consecutive-numbers-into-ranges
+head -n 1 | #get just the first range
+cut -d \",\" -f 2 | #find the end of the range
+xargs -I id expr id + 1 | #add one to get the next avalible ID
+xargs -I id echo id $1 $2 | #format the new IP
+tee -a peers.vxlan #add it to the file
+sort -n peers.vxlan -o peers.vxlan #make sure the file is sorted
+echo
+echo "New tunnel listing:"
+cat peers.vxlan
+echo
+echo "'"Your new tunnel ID is $(grep '"$1"' /evix/vxlan/peers.vxlan | cut -d '"' '"' -f 1)"'"
+echo "'"Our endpoint is: $(head -n 3 single.sh | tail -n 1 | cut -d '"' '"' -f10)"'"
+echo "On our side, this looks like:"
+echo 'ip link add vtep[ID] type vxlan id [ID] local [Our Side] remote [IP] dstport [4789 or 500 for ams,zur]'
+/evix/vxlan/vxlan.sh 2&>/dev/null

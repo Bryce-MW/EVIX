@@ -11,8 +11,12 @@ if [ -z "$1" ];then
   exit
 fi
 
-/usr/bin/php /evix/scripts/approve_peer.php $1 $2
-res=$?
+if [ "$1" == "pending" ];then
+  /usr/bin/php /evix/scripts/remote-scripts/scripts/all-peers.php $1 $2
+  res=$?
+  exit
+fi
+exit
 
 if [ $res -eq 0 ];then
   echo

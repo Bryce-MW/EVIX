@@ -1,0 +1,36 @@
+#! /bin/zsh
+
+alt_id="~/.ssh/id_rsa"
+
+if (( EUID != 0 )); then
+  if [ ! -f ~/.ssh/alt/id_rsa ]; then
+    echo "It appears you may not have access to the tunnel servers?"
+    exit -1
+  fi
+  alt_id="~/.ssh/alt/id_rsa"
+fi
+
+script=$1
+
+shift
+
+hosts=${1:=all}
+
+shift
+
+if [ "$hosts" = "all" ]; then
+hosts=("/evix/scripts/remote-scripts/hosts"/*)
+else
+hosts=("/evix/scripts/remote-scripts/hosts"/$hosts)
+fi
+
+for host in $hosts; do
+exec 6< "$host"
+read -r name <&6
+read -r hostname <&6
+read -r port <&6
+echo "$name"
+eval "echo \"$(cat $script)\"" | ssh -p $port -i $alt_id root@$hostname bash
+echo
+exec 6<&-
+done

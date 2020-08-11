@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$EUID" -eq 0 ]
+  then echo "ERROR.  You are root.  Please run as the EVIX user"
+  exit
+fi
+
 LASTRUN=`cat /evix/scripts/status_failure`
 SUCCESS=1
 if [ $LASTRUN -eq 1 ]; then

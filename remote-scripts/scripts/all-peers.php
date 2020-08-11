@@ -9,7 +9,7 @@
 
 	if($asn=='pending')
 	{
-		$query="SELECT * FROM peers WHERE status=0";
+		$query="SELECT * FROM peers";
 		$res=mysqli_query($conn,$query);
 		if(mysqli_num_rows($res) > 0)
 		{
@@ -28,6 +28,7 @@
 					echo "Tunnel Type: ". $tunnrow['type'], "\n";
 				}
 				echo "Tunnel Location: ". $row['location']. "\n";
+				echo "Status: ". $row['status']. "\n";
 				echo "-----------------\n";
 			}
 		}
@@ -53,7 +54,7 @@
 		exit(1);
 	}
 
-	if(array_key_exists(2, $argv))
+	if($argv[2])
 	{
 		if($argv[2]=="ipv6only")
 		{
@@ -102,7 +103,7 @@
 	else
 	{
 	//find next available IP address
-	for($i=3461441552; $i< 3461441766; $i++)
+	for($i=3461441706; $i< 3461441766; $i++)
 	{
 		$query="SELECT * FROM peers WHERE address=". $i;
 		$rows=mysqli_num_rows(mysqli_query($conn,$query));
@@ -154,20 +155,8 @@
 							exit(0);
 						}
 					}
-					else
-					{
-						echo "Corresponding IPv6 to ". $octets. " is in the additionalips table.";
-					}
 					//exit(1);
 				}
-				else
-				{
-					echo $octets. " is in the additionalips table.";
-				}
-			}
-			else
-			{
-				echo "Corresponding IPv6 to ". $octets. " has been taken.";
 			}
 		}
 	}

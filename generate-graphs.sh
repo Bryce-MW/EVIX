@@ -1,9 +1,9 @@
 #!/bin/bash
 
-/usr/bin/php /evix/scripts/graph.php 11 fremont
+/evix/scripts/generate-graphs-test.sh 1 fremont
+/evix/scripts/generate-graphs-test.sh 9 amsterdam
+/evix/scripts/generate-graphs-test.sh 3 auckland
+/evix/scripts/generate-graphs-test.sh 8 zurich
 sleep 2
-/usr/bin/php /evix/scripts/graph.php 21 amsterdam
-sleep 2
-/usr/bin/php /evix/scripts/graph.php 35 auckland
 cd /evix/IX-Website/
 /usr/local/bin/staticjinja build --srcpath=templates --static=static --outpath=/var/www/evix/ --globals=globals.yaml

@@ -1,0 +1,5 @@
+#! /bin/zsh
+
+killall zerotier-one
+sleep 2
+zerotier-cli listmoons

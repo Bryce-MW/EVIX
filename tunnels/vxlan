@@ -1,0 +1,15 @@
+#! /bin/zsh
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ];then
+  echo "To use this script run $0 <server name> <IP to add> <ASN> <port | optional>"
+  echo "Where <server name> is the name of a file in /evix/scripts/remote-scripts/hosts"
+  echo "and <ASN> is the ASN of the user (for updating the tunnels table in the database)"
+  echo "If a custom port is needed, that can be added"
+  echo
+  echo "On a sucessful run, the tunnel ID will be returned"
+  exit
+fi
+
+cd /evix/scripts/remote-scripts
+./runRemoteScript scripts/vxlan-add $1 $2 $4
+
+/usr/bin/php /evix/scripts/add-remote-ip.php $3 $2 "vxlan"
