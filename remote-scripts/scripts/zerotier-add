@@ -1,9 +1,0 @@
-#! /bin/zsh
-cd /var/lib/zerotier-one/scripts
-echo
-echo "New tunnel:"
-./approve-peer $@
-echo
-echo "New tunnel listing:"
-./all-users
-echo
