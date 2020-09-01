@@ -7,5 +7,5 @@ updates=(`git diff --name-only bryce-update...origin/bryce-update | grep "config
 git merge origin/master
 
 for update in $updates; do
-  /evix/scripts/ts/$(update).sh
+  /evix/scripts/ts/$update.sh
 done
