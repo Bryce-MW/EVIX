@@ -22,4 +22,4 @@ done
 
 if [ host == "" ]; then
   exit -1
-done
+fi
