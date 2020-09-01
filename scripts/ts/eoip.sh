@@ -1,4 +1,4 @@
-#! \bin\bash
+#! /bin/bash
 
 host=`/evix/scripts/hostname.sh`
 ip=`/evix/scripts/ts/ip.sh $host`
