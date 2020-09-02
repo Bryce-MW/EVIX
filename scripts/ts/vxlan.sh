@@ -18,4 +18,4 @@ function single {
 
 export -f single
 
-cat /evix/config/peers/$host.vxlan | xargs -L 1 -I {} bash -c 'single "$@"' _ {}
+cat /evix/config/peers/$host.vxlan | xargs -L 1 -I {} bash -c 'single "$@"' single {}
