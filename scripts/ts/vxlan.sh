@@ -6,7 +6,7 @@ ipv6=`/evix/scripts/get-val.sh $host vxlan-ipv6`
 port_d=`/evix/scripts/get-val.sh $host vxlan-port`
 
 function single {
-  local port=${3:=$port_d}
+  local port=${3:-$port_d}
   if [[ $2 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     ip link add vtep$1 type vxlan id $1 local $ip remote $2 dstport $port
   else
