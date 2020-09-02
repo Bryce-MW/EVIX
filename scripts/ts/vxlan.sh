@@ -5,6 +5,7 @@ ip=`/evix/scripts/ts/ip.sh $host`
 ipv6=`/evix/scripts/get-val.sh $host vxlan-ipv6`
 port_d=`/evix/scripts/get-val.sh $host vxlan-port`
 
+
 function single {
   local port=${3:-$port_d}
   if [[ $2 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -17,5 +18,8 @@ function single {
 }
 
 export -f single
+export port_d
+export ip
+export ipv6
 
-cat /evix/config/peers/$host.vxlan | xargs -L 1 -I {} bash -c 'single "$@"' single {}
+cat /evix/config/peers/$host.vxlan | xargs -L 1 bash -c 'single "$@"' single
