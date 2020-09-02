@@ -16,4 +16,6 @@ function single {
   ovs-vsctl add-port vmbr0 vtep$1
 }
 
-cat peers.vxlan | xargs -L 1 single
+export -f single
+
+cat /evix/config/peers/$host.vxlan | xargs -L 1 single
