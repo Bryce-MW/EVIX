@@ -13,7 +13,7 @@ if [ "`/evix/scripts/get-value $host is-ts`" == "true" ]; then
 
   ip link set up vmbr0
 
-done
+fi
 
 if [ -f "/evix/config/reboot/$hostname.sh" ]; then
   /evix/config/reboot/$hostname.sh
