@@ -2,7 +2,7 @@ host=`/evix/scripts/hostname.sh`
 
 branch=`git branch --show-current`
 
-git fetch --recurse-submodules -j 8
+git fetch --recurse-submodules
 
 updates=(`git diff --name-only $branch...origin/$branch | grep "config/peers/$host" | cut -d '.' -f2`)
 
