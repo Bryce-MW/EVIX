@@ -2,7 +2,7 @@
 
 host=`/evix/scripts/hostname.sh`
 
-git submodule update -C /evix --init --recursive
+git -C /evix submodule update --init --recursive
 
 if [ "`/evix/scripts/get-val.sh $host is-ts`" == "true" ]; then
 
