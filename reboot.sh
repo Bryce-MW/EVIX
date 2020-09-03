@@ -4,7 +4,7 @@ host=`/evix/scripts/hostname.sh`
 
 git submodule update --init --recursive
 
-if [ "`/evix/scripts/get-value $host is-ts`" == "true" ]; then
+if [ "`/evix/scripts/get-value.sh $host is-ts`" == "true" ]; then
 
   /evix/scripts/ts/vxlan.sh
   /evix/scripts/ts/eoip.sh
