@@ -1,0 +1,3 @@
+[submodule "bgpq3"]
+	path = run/bgpq3
+	url = https://github.com/snar/bgpq3.git

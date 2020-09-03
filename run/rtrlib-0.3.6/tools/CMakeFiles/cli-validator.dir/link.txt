@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wall -std=gnu99 -fstack-protector-all -O3 -DNDEBUG   CMakeFiles/cli-validator.dir/cli-validator.c.o  -o cli-validator -rdynamic ../librtr.so.0.3.6 -lrt -lpthread -lssh -Wl,-rpath,/evix/rtrlib-0.3.6 

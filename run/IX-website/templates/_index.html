@@ -1,0 +1,76 @@
+{% filter indent(2) %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ ix.shortname }}: {{ ix.location }} Internet Exchange</title>
+    {{ m_res_import.meta(false, "width=device-width, initial-scale=1.0", "viewport") }}
+    {{ m_res_import.meta(false, ix.shortname + ": " + ix.location + " Internet Exchange Website", "description") }}
+    {{ m_res_import.meta(false, ix.shortname + " - CIRA - CIRA Labs", "author") }}
+  
+  
+    {% block css %}
+      {{ m_res_import.link(true, "css/normalize.cardio.css") }}
+      {{ m_res_import.link(true, "css/bootstrap.cardio.css") }}
+      {{ m_res_import.link(true, "css/owl.cardio.css") }}
+      {{ m_res_import.link(true, "css/animate.cardio.css") }}
+      {{ m_res_import.link(true, "fonts/font-awesome-4.1.0/css/font-awesome.min.css") }}
+      {{ m_res_import.link(true, "fonts/eleganticons/et-icons.css") }}
+      {{ m_res_import.link(true, "css/cardio.css") }}
+      {{ m_res_import.link(true, "css/ix.css") }}
+    {% endblock %}
+    
+
+    {# end IE9 compat #}
+    {{ m_compat.ie9_js(false, "https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js") }}
+    {# end IE9 compat #}
+    
+    
+    {% block icons %}
+      {{ m_res_import.link(true, "ico/apple-icon-57x57.png", "apple-touch-icon", "57x57") }}
+      {{ m_res_import.link(true, "ico/apple-icon-60x60.png", "apple-touch-icon", "60x60") }}
+      {{ m_res_import.link(true, "ico/apple-icon-72x72.png", "apple-touch-icon", "72x72") }}
+      {{ m_res_import.link(true, "ico/apple-icon-76x76.png", "apple-touch-icon", "72x72") }}
+      {{ m_res_import.link(true, "ico/apple-icon-114x114.png", "apple-touch-icon", "114x114") }}
+      {{ m_res_import.link(true, "ico/apple-icon-120x120.png", "apple-touch-icon", "120x120") }}
+      {{ m_res_import.link(true, "ico/apple-icon-144x144.png", "apple-touch-icon", "144x144") }}
+      {{ m_res_import.link(true, "ico/apple-icon-152x152.png", "apple-touch-icon", "152x152") }}
+      {{ m_res_import.link(true, "ico/apple-icon-180x180.png", "apple-touch-icon", "180x180") }}
+      {{ m_res_import.link(true, "ico/android-icon-192x192.png", "icon", "192x192", "image/png") }}
+      {{ m_res_import.link(true, "ico/favicon-32x32.png", "icon", "32x32", "image/png") }}
+      {{ m_res_import.link(true, "ico/favicon-96x96.png", "icon", "96x96", "image/png") }}
+      {{ m_res_import.link(true, "ico/favicon-16x16.png", "icon", "16x16", "image/png") }}
+      {{ m_res_import.link(true, "ico/manifest.json", "manifest") }}
+
+      {{ m_res_import.meta(false, "#ffffff", "msapplication-TileColor") }}
+      {{ m_res_import.meta(true, "ico/ms-icon-144x144.png", "msapplication-TileImage") }}
+      {{ m_res_import.meta(false, "#ffffff", "theme-color") }}
+    {% endblock %}
+
+  </head>
+
+  <body>
+    {% block body %}
+    {% endblock %}
+    <!-- Holder for mobile navigation -->
+	  <div class="mobile-nav">
+      <ul>
+      </ul>
+      <a href="#" class="close-link"><i class="arrow_up"></i></a>
+    </div>
+    {% block js %}
+      {{ m_res_import.js(true, "js/cardio.jquery-1.11.1.min.js") }}
+      {{ m_res_import.js(true, "js/cardio.owl.carousel.min.js") }}
+      {{ m_res_import.js(true, "js/cardio.bootstrap.min.js") }}
+      {{ m_res_import.js(true, "js/cardio.wow.min.js") }}
+      {{ m_res_import.js(true, "js/cardio.typewriter.js") }}
+      {{ m_res_import.js(true, "js/cardio.jquery.onepagenav.js") }}
+      {{ m_res_import.js(true, "js/cardio.main.js") }}
+      {{ m_res_import.js(true, "js/ix-navbar.js") }}
+      {{ m_res_import.js(true, "js/ix.js") }}
+    {% endblock %}
+  </body>
+
+</html>
+{% endfilter %}

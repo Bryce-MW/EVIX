@@ -1,0 +1,56 @@
+
+librtr0 (0.3.6-1) stable; urgency=low
+
+  * New upstream version 0.3.6
+  * rtrlib/lib/ Change API and add lrtr_ prefix to prevent namespace
+    conflicts with third party applications
+  * Change API for rtr_mgr_init and rtr_init to improve error handling
+  * Change preference order of finding cache servers, according to RFC 6810
+  * Improve behavior of cache server groups, switch to preferred
+    group as soon as cache server is online again
+  * Improve error handling in rtr_mgr_init
+  * Improve timing behavior (expire interval, refresh interval etc.)
+  * Fix bug in rtr_mgr_close_all_groups_except_one to prevent deadlock
+  * Fix memory leaks, race condition, and buffer overflow/underflow
+  * Improve debugging and status values
+  * Update SSH transport to new LibSSH API
+
+librtr0 (0.3.5-1) stable; urgency=low
+
+  * New upstream version 0.3.5
+  * Change license from LGPLv3 to MIT license
+  * Fix bug in pfx_table_src_remove, a lock was not released
+  * Fix bug in rtr_purge_outdated_records that removed prefixes incorrectly
+  * Create and install rtrlib.pc pkg-config
+  * Update code style
+  * Add support for OS X (10.10)
+  * Add new tool cli-validator
+
+librtr0 (0.3.0-1) stable; urgency=low
+
+  * New upstream version 0.3.0
+  * Added support for IETF draft draft-ietf-sidr-rpki-rtr-rfc6810-bis-02
+  * Minor changes of the library API (see doxygen documentation).
+
+ -- Nils Bars <nils.bars@haw-hamburg.de>  Sun, 28 Dec 2014 18:30:00 +0000
+
+librtr0 (0.2.4-1) stable; urgency=low
+
+  * New upstream version 0.2.4
+
+ -- Fabian Holler <mail@fholler.de>  Sun, 24 Nov 2013 18:30:09 +0000
+
+librtr0 (0.2.3-1) stable; urgency=low
+
+  * New upstream version 0.2.3
+  * Remove unused variable from debian/rules
+  * Deactivate make test run during package build
+
+ -- Fabian Holler <git@fholler.de>  Thu, 17 Oct 2013 17:10:00 +1000
+
+librtr0 (0.2.2-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Fabian Holler <inet@fholler.de>  Thu, 16 Jun 2013 22:36:16 +1000
+

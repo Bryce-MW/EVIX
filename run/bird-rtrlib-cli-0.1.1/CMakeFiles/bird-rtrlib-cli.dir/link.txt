@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wall -std=gnu99   CMakeFiles/bird-rtrlib-cli.dir/bird-rtrlib-cli.c.o CMakeFiles/bird-rtrlib-cli.dir/bird.c.o CMakeFiles/bird-rtrlib-cli.dir/rtr.c.o CMakeFiles/bird-rtrlib-cli.dir/cli.c.o CMakeFiles/bird-rtrlib-cli.dir/config.c.o  -o bird-rtrlib-cli -rdynamic /usr/local/lib/x86_64-linux-gnu/librtr.so -Wl,-rpath,/usr/local/lib/x86_64-linux-gnu 

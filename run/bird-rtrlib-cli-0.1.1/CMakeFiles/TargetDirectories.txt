@@ -1,0 +1,3 @@
+/evix/bird-rtrlib-cli-0.1.1/CMakeFiles/edit_cache.dir
+/evix/bird-rtrlib-cli-0.1.1/CMakeFiles/rebuild_cache.dir
+/evix/bird-rtrlib-cli-0.1.1/CMakeFiles/bird-rtrlib-cli.dir

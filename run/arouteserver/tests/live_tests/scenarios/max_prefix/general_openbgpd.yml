@@ -1,0 +1,18 @@
+cfg:
+        rs_as: 999
+        router_id: "192.0.2.2"
+        gtsm: False
+        filtering:
+                irrdb:
+                        tag_as_set: False
+                        enforce_origin_in_as_set: False
+                        enforce_prefix_in_as_set: False
+                max_prefix:
+                        action: "shutdown"
+                        peering_db:
+                                enabled: True
+                                increment:
+                                        absolute: 1
+                                        relative: 20
+                        general_limit_ipv4: 4
+                        general_limit_ipv6: 4

@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wall -std=gnu99 -fstack-protector-all -g   CMakeFiles/test_lpfst.dir/test_lpfst.c.o  -o test_lpfst -rdynamic ../librtr.so.0.3.6 -lrt -lpthread -lssh -Wl,-rpath,/evix/rtrlib-0.3.6 

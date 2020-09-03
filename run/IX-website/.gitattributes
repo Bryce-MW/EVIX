@@ -1,0 +1,10 @@
+templates/*.html linguist-language=html+jinja
+templates/nav/*.html linguist-language=html+jinja
+templates/page/*.html linguist-language=html+jinja
+
+templates/static/css/cardio.css linguist-vendored
+templates/static/css/*.cardio.css linguist-vendored
+templates/static/js/cardio.*.js linguist-vendored
+templates/static/fonts/* linguist-vendored
+
+run_ix_website.py linguist-vendored
