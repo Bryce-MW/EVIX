@@ -1,6 +1,6 @@
 host=`/evix/scripts/hostname.sh`
 
-branch=`git branch --show-current`
+branch=`git branch | grep '*' | cut -d " " -f2`
 
 git fetch --recurse-submodules
 
