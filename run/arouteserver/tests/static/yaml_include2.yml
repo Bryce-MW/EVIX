@@ -1,3 +1,0 @@
-  filtering:
-    next_hop:
-      policy: "same-as"

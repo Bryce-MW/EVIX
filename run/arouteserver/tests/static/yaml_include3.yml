@@ -1,4 +1,0 @@
-    ipv4_pref_len:
-      !include yaml_include4.yml
-    ipv6_pref_len:
-      !include yaml_include4.yml
