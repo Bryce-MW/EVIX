@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class GShutScenario(LiveScenario):
     __test__ = False
@@ -90,6 +92,8 @@ class GShutScenarioBIRD(GShutScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -99,11 +103,17 @@ class GShutScenarioBIRD(GShutScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     perform_graceful_shutdown=True),
+                                     perform_graceful_shutdown=True,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class GShutScenarioBIRD2(GShutScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class GShutScenarioOpenBGPD(GShutScenario):
     __test__ = False
@@ -126,12 +136,12 @@ class GShutScenarioOpenBGPD(GShutScenario):
             ]
         )
 
-class GShutScenarioOpenBGPD62(GShutScenarioOpenBGPD):
+class GShutScenarioOpenBGPDPrevious(GShutScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.2"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class GShutScenarioOpenBGPD63(GShutScenarioOpenBGPD):
+class GShutScenarioOpenBGPDLatest(GShutScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.3"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

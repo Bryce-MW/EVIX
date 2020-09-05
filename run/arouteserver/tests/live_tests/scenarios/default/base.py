@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class DefaultConfigScenario(LiveScenario):
     __test__ = False
@@ -47,7 +49,7 @@ class DefaultConfigScenario(LiveScenario):
 
     def set_instance_variables(self):
         self.rs = self._get_instance_by_name("rs")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -56,6 +58,8 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -64,17 +68,26 @@ class DefaultConfigScenarioBIRD(DefaultConfigScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class DefaultConfigScenarioBIRD2(DefaultConfigScenarioBIRD):
+
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                     DefaultConfigScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
+
+    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -84,8 +97,20 @@ class DefaultConfigScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version="6.3"),
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bgpd.conf"
                 )
             ]
         )
+
+class DefaultConfigScenarioOpenBGPDPrevious(DefaultConfigScenarioOpenBGPD):
+
+    __test__ = False
+
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
+
+class DefaultConfigScenarioOpenBGPDLatest(DefaultConfigScenarioOpenBGPD):
+
+    __test__ = False
+
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

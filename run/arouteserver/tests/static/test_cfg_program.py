@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ class TestProgramConfig(unittest.TestCase):
             ("bgpq3_path", "bgpq3"),
             ("bgpq3_host", "rr.ntt.net"),
             ("bgpq3_sources", ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,BBOI,"
-                               "BELL,JPIRR,LEVEL3,RADB,RGNET,SAVVIS,TC")),
+                               "BELL,JPIRR,LEVEL3,RADB,RGNET,TC")),
             ("rtt_getter_path", ""),
             ("threads", 4),
             ("cache_expiry",
@@ -113,7 +113,16 @@ class TestProgramConfig(unittest.TestCase):
         """Program config: setup"""
         self.pr_cfg.setup(destination_directory=self.temp_dir)
         errors = self.pr_cfg.verify_templates()
-        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(errors), 0,
+                         msg="The fingerprint of one or more template files "
+                             "is different than the one reported in the file "
+                             "templates/fingerprints.yml, probably because of "
+                             "changes made to the content of the templates.\n"
+                             "\n- {}\n\n"
+                             "Run ./utils/update_fingerprints.py to "
+                             "update the fingerprints.yml file.".format(
+                                 "\n- ".join(errors)
+                             ))
 
     def test_031_setup_and_setup_again(self):
         """Program config: setup, then setup again"""

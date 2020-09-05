@@ -56,7 +56,7 @@ Built to group as many tests as possible in a single scenario.
     Originated prefixes:
 
     ===========    ===========     ==============  ===========================================
-    Prefix ID      Prefix          Feature         Expected result    
+    Prefix ID      Prefix          Feature         Expected result
     ===========    ===========     ==============  ===========================================
     AS1_good1      1.0.1.0/24
     AS1_good2      1.0.2.0/24
@@ -69,7 +69,7 @@ Built to group as many tests as possible in a single scenario.
 
   - AS-AS2 (AS2, 2.0.0.0/16)
   - AS-AS2_CUSTOMERS (AS101, AS103, 101.0.0.0/16, 103.0.0.0/16)
-  
+
   Not enabled to perform graceful BGP session shutdown.
 
   clients:
@@ -183,6 +183,34 @@ Built to group as many tests as possible in a single scenario.
                              rt:64538:20                                                    AS2 1x, AS3 2x
     ==========  ============ ================= ============================================ ========================
 
+- **AS222**:
+
+  AS-SETs:
+
+  - AS-AS222 (AS333, 222.0.0.0/8)
+  - white list routes: exact 222.1.1.0/24 w/o origin AS
+
+  Used for tests about RFC 6907 7.1.9 and BCP172/RFC 6472.
+
+  clients:
+
+  - AS222_1 (192.0.2.222)
+
+    Originated prefixes:
+
+    =================   ============  =====================  ====================================
+    Prefix ID           Prefix        AS_PATH                Expected result
+    =================   ============  =====================  ====================================
+    AS222_aggregate1    222.1.1.0/24  222, 333, {333 333}    rejected because RPKI INVALID (this
+                                                             route passes IRR filters because of
+                                                             a client-level white_list_route
+    AS222_aggregate2    222.2.2.0/24  222, 333, {333 333}    BIRD: rejected because IRR origin
+                                                             invalid
+    AS222_aggregate3    222.3.3.0/24  222, 333, {444 555}    OpenBGPD: accepted because IRR
+                                                             origin validation is done on the
+                                                             last non-aggregated ASN
+    =================   ============  =====================  ====================================
+
 - **AS101**:
 
   clients:
@@ -217,6 +245,8 @@ Built to group as many tests as possible in a single scenario.
   AS101_other_l_comm    101.0.5.0/24                 add 888:0:0, NOT scrubbed by rs
   AS101_bad_good_comms  101.0.6.0/24                 add 65530:1,999:65530:1,777:0,777:0:0, 65530 are scrubbed by rs, 777:** are kept
   AS101_transitfree_1   101.0.7.0/24     [101 174]   fail as_path_contains_transit_free_asn
+  AS101_neverviars_1    101.0.10.0/24    [101 666]   fail never via route-servers ASNs (PeeringDB)
+  AS101_neverviars_2    101.0.11.0/24    [101 777]   fail never via route-servers ASNs ('asns' list)
   AS101_roa_valid1      101.0.8.0/24                 roa check ok (roa n. 1), tagged with 64512:1 / 999:64512:1
   AS101_roa_invalid1    101.0.9.0/24                 roa check fail (roa n. 2, bad origin ASN), rejected
   AS101_roa_badlen      101.0.128.0/24               roa check fail (roa n. 3, bad length), rejected
@@ -240,3 +270,4 @@ Built to group as many tests as possible in a single scenario.
   AS104_arin_1          104.0.1.0/24     [101 104]   Accepted from AS1 via ARIN Whois DB dump; rejected by others
   AS104_nicbr_1         104.1.1.0/24     [101 104]   Accepted from AS1 via NIC.BR Whois DB dump; rejected by others
   ====================  ==============   =========== ==================================================================================
+

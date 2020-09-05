@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,9 +19,13 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.ipaddresses import IPNetwork
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
-                                                      LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
+                                                      LiveScenario_TagRejectPolicy, \
+                                                      LiveScenario_TagAndRejectRejectPolicy
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.exabgp import ExaBGPInstance
 
 class BasicScenario(LiveScenario):
     __test__ = False
@@ -36,6 +40,7 @@ class BasicScenario(LiveScenario):
         "AS-AS1_CUSTOMERS": [101, 103, 104],
         "AS-AS2": [2],
         "AS-AS2_CUSTOMERS": [101, 103],
+        "AS-AS222": [333],
     }
     R_SET = {
         "AS-AS1": [
@@ -52,6 +57,9 @@ class BasicScenario(LiveScenario):
         "AS-AS2_CUSTOMERS": [
             "AS101_allowed_prefixes",
             "AS103_allowed_prefixes",
+        ],
+        "AS-AS222": [
+            "AS222_allowed_prefixes"
         ],
     }
     RTT = {
@@ -129,6 +137,20 @@ class BasicScenario(LiveScenario):
                         "/etc/bird/bird.conf"
                     )
                 ],
+            ),
+            ExaBGPInstance(
+                "AS222",
+                cls.DATA["AS222_IPAddress"],
+                [
+                    (
+                        cls.build_other_cfg("AS222.j2"),
+                        "/etc/exabgp/exabgp.conf"
+                    ),
+                    (
+                        cls.use_static_file("exabgp.env"),
+                        "/etc/exabgp/exabgp.env"
+                    )
+                ],
             )
         ]
 
@@ -140,6 +162,7 @@ class BasicScenario(LiveScenario):
         self.AS3 = self._get_instance_by_name("AS3")
         self.AS4 = self._get_instance_by_name("AS4")
         self.AS101 = self._get_instance_by_name("AS101")
+        self.AS222 = self._get_instance_by_name("AS222")
         self.rs = self._get_instance_by_name("rs")
 
     def test_010_setup(self):
@@ -153,6 +176,7 @@ class BasicScenario(LiveScenario):
         self.session_is_up(self.rs, self.AS2)
         self.session_is_up(self.rs, self.AS3)
         self.session_is_up(self.rs, self.AS4)
+        self.session_is_up(self.rs, self.AS222)
         self.session_is_up(self.AS101, self.AS1_1)
         self.session_is_up(self.AS101, self.AS1_2)
         self.session_is_up(self.AS101, self.AS2)
@@ -277,6 +301,58 @@ class BasicScenario(LiveScenario):
         self.receive_route(self.rs, self.DATA["AS1_whitel_4"], as_path="1 1011")
         self.receive_route(self.rs, self.DATA["AS1_whitel_5"], as_path="1 1000")
 
+    def test_040_bad_prefixes_received_by_rs_aggregate1(self):
+        """{}: bad prefixes received by rs: AS_SET origin, RFC6907 7.1.9"""
+
+        # Route that is allowed by an explicit 'white_list_route' that matches
+        # the prefix but that doesn't enforce the origin ASN (so that the IRR
+        # origin validation check is passed), but that later on is rejected by
+        # the RPKI BOV check.
+        #
+        # Details on https://github.com/pierky/arouteserver/pull/56
+
+        self.receive_route(self.rs, self.DATA["AS222_aggregate1"],
+                           as_path="222 333", as_set="333 333",
+                           filtered=True, reject_reason=14)
+
+    def test_040_bad_prefixes_received_by_rs_aggregate2(self):
+        """{}: bad prefixes received by rs: IRR check for AS_SET origin, BIRD"""
+
+        if isinstance(self.rs, OpenBGPDInstance):
+            raise unittest.SkipTest("BIRD specific")
+
+        # Route that is rejected by the IRR-based origin validation check.
+        #
+        # This test case is specific for BIRD, it's used to verify that
+        # bgp_path.last would not match any ASN in the right-most AS_SET
+        # used to originate this route nor the last non aggregated ASN,
+        # regardless of the fact that they are all 333 (which is included
+        # in the IRR as-set for this client).
+        #
+        # Details on https://github.com/pierky/arouteserver/pull/56
+
+        self.receive_route(self.rs, self.DATA["AS222_aggregate2"],
+                           as_path="222 333", as_set="333 333",
+                           filtered=True, reject_reason=9)
+
+    def test_040_bad_prefixes_received_by_rs_aggregate3(self):
+        """{}: bad prefixes received by rs: IRR check for AS_SET origin, OpenBGPD"""
+
+        if isinstance(self.rs, BIRDInstance):
+            raise unittest.SkipTest("OpenBGPD specific")
+
+        # Route that is accepted by OpenBGPD.
+        #
+        # This test covers the behaviour of OpenBGPD, that matches the
+        # last non aggregated ASN in the AS_PATH. 333 is the ASN included
+        # in the IRR as-set for this client.
+        #
+        # Details on https://github.com/pierky/arouteserver/pull/56
+
+        self.receive_route(self.rs, self.DATA["AS222_aggregate3"],
+                           as_path="222 333", as_set="444 555",
+                           filtered=False)
+
     def test_040_bad_prefixes_received_by_rs_bogon(self):
         """{}: bad prefixes received by rs: bogon"""
         self.receive_route(self.rs, self.DATA["bogon1"], self.AS1_1,
@@ -336,6 +412,22 @@ class BasicScenario(LiveScenario):
                            self.AS3, as_path="3 174 33",
                            next_hop=self.AS3, filtered=True, reject_reason=8)
         self.log_contains(self.rs, "AS_PATH [(path 3 174 33)] contains transit-free ASN - REJECTING " + self.DATA["AS3_transitfree_2"])
+
+    def test_040_bad_prefixes_received_by_rs_never_via_rs_peeringdb(self):
+        """{}: bad prefixes received by rs: never via route servers ASN in AS-PATH (PeeringDB)"""
+
+        self.receive_route(self.rs, self.DATA["AS101_neverviars_1"],
+                           self.AS1_1, as_path="1 101 666",
+                           next_hop=self.AS1_1, filtered=True, reject_reason=15)
+        self.log_contains(self.rs, "AS_PATH [(path 1 101 666)] contains never via route-servers ASN - REJECTING " + self.DATA["AS101_neverviars_1"])
+
+    def test_040_bad_prefixes_received_by_rs_never_via_rs_asn(self):
+        """{}: bad prefixes received by rs: never via route servers ASN in AS-PATH (asns list)"""
+
+        self.receive_route(self.rs, self.DATA["AS101_neverviars_2"],
+                           self.AS1_1, as_path="1 101 777",
+                           next_hop=self.AS1_1, filtered=True, reject_reason=15)
+        self.log_contains(self.rs, "AS_PATH [(path 1 101 777)] contains never via route-servers ASN - REJECTING " + self.DATA["AS101_neverviars_2"])
 
     def test_040_bad_prefixes_received_by_rs_aspath_len(self):
         """{}: bad prefixes received by rs: AS_PATH len"""
@@ -462,7 +554,7 @@ class BasicScenario(LiveScenario):
                 with six.assertRaisesRegex(self, AssertionError, "Routes not found."):
                     self.receive_route(inst, prefix)
 
-        # Among the clients, only AS3 is expected to not see the 
+        # Among the clients, only AS3 is expected to not see the
         # following prefixes because AS1 and AS2
         # receive them on their session with AS101
         for prefix in (self.DATA["AS101_no_rset"],
@@ -572,7 +664,7 @@ class BasicScenario(LiveScenario):
 
     def test_061_bad_communities_scrubbed_by_rs_std(self):
         """{}: bad communities scrubbed by rs (std)"""
-        
+
         self.receive_route(self.rs, self.DATA["AS101_bad_std_comm"], self.AS1_1, std_comms=[])
         self.receive_route(self.rs, self.DATA["AS101_bad_std_comm"], self.AS2, std_comms=[])
 
@@ -1044,28 +1136,64 @@ class BasicScenario_TagRejectPolicy(LiveScenario_TagRejectPolicy):
                                as_path="1", next_hop=self.AS1_1,
                                filtered=True, reject_reason=1)
 
+class BasicScenario_TagAndRejectRejectPolicy(LiveScenario_TagAndRejectRejectPolicy,
+                                             BasicScenario_TagRejectPolicy):
+    pass
+
 class BasicScenarioBIRD(BasicScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird_local_file"
+
+    @classmethod
+    def _get_local_file(cls):
+        local_filename = cls._get_local_file_name()
+
+        res = []
+        for ip_ver in (4, 6):
+            if ip_ver == cls.IP_VER or cls.IP_VER is None:
+                res.append(
+                    (
+                        cls.use_static_file("{}.local{}".format(local_filename, ip_ver)),
+                        "/etc/bird/footer{}.local".format(ip_ver)
+                    )
+                )
+        return res
 
     @classmethod
     def _setup_rs_instance(cls):
+        if cls.IP_VER is None:
+            ip_vers = [4, 6]
+        else:
+            ip_vers = [cls.IP_VER]
+
         return cls.RS_INSTANCE_CLASS(
             "rs",
             cls.DATA["rs_IPAddress"],
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                        local_files=["footer{}".format(cls.IP_VER)]),
+                                     target_version=cls.TARGET_VERSION,
+                                     local_files=["footer{}".format(ip_ver) for ip_ver in ip_vers]),
                     "/etc/bird/bird.conf"
-                ),
-                (
-                    cls.use_static_file("bird_local_file.local{}".format(cls.IP_VER)),
-                    "/etc/bird/footer{}.local".format(cls.IP_VER)
                 )
-            ],
+            ] + cls._get_local_file(),
         )
+
+class BasicScenarioBIRD2(BasicScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
+
+    @classmethod
+    def _get_local_file_name(cls):
+        return "bird2_local_file"
 
 class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
     __test__ = False
@@ -1097,17 +1225,12 @@ class BasicScenarioOpenBGPD(BasicScenario_TagRejectPolicy, BasicScenario):
             ]
         )
 
-class BasicScenarioOpenBGPD62(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPDPrevious(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.2"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class BasicScenarioOpenBGPD63(BasicScenarioOpenBGPD):
+class BasicScenarioOpenBGPDLatest(BasicScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.3"
-
-class BasicScenarioOpenBGPD64(BasicScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

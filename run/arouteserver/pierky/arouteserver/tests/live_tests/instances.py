@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -243,6 +243,7 @@ class Route(object):
         self.prefix = prefix
         self.via = kwargs.get("via", None)
         self.as_path = kwargs.get("as_path", None)
+        self.as_set = kwargs.get("as_set", None)
         self.next_hop = kwargs.get("next_hop", None)
         self.localpref = kwargs.get("localpref", None)
         if self.localpref:

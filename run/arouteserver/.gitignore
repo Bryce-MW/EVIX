@@ -24,6 +24,7 @@ lib64/
 parts/
 sdist/
 var/
+!tests/var/
 wheels/
 *.egg-info/
 .installed.cfg
@@ -84,7 +85,7 @@ celerybeat-schedule
 .env
 
 # virtualenv
-.venv/
+.venv*/
 venv/
 ENV/
 

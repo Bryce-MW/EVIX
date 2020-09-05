@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
+                                                          OpenBGPDPreviousInstance, \
+                                                          OpenBGPDLatestInstance
 
 class TagASSetScenario(LiveScenario):
     __test__ = False
@@ -90,7 +93,7 @@ class TagASSetScenario(LiveScenario):
         self.AS4 = self._get_instance_by_name("AS4")
         self.AS5 = self._get_instance_by_name("AS5")
         self.AS6 = self._get_instance_by_name("AS6")
-        
+
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -679,6 +682,8 @@ class TagASSetScenarioBIRD(TagASSetScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
+    TARGET_VERSION = None
+    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -687,11 +692,17 @@ class TagASSetScenarioBIRD(TagASSetScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
+                                     target_version=cls.TARGET_VERSION),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
+
+class TagASSetScenarioBIRD2(TagASSetScenarioBIRD):
+    __test__ = False
+
+    TARGET_VERSION = "2.0.7"
 
 class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
     __test__ = False
@@ -714,17 +725,12 @@ class TagASSetScenarioOpenBGPD(LiveScenario_TagRejectPolicy, TagASSetScenario):
             ]
         )
 
-class TagASSetScenarioOpenBGPD62(TagASSetScenarioOpenBGPD):
+class TagASSetScenarioOpenBGPDPrevious(TagASSetScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.2"
+    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
 
-class TagASSetScenarioOpenBGPD63(TagASSetScenarioOpenBGPD):
+class TagASSetScenarioOpenBGPDLatest(TagASSetScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = "6.3"
-
-class TagASSetScenarioOpenBGPD64(TagASSetScenarioOpenBGPD):
-    __test__ = False
-
-    TARGET_VERSION = "6.4"
+    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -135,6 +135,13 @@ class ConfigParserGeneral(ConfigParserBase):
         f["transit_free"]["asns"] = ValidatorASNList(
             mandatory=False
         )
+        f["never_via_route_servers"] = OrderedDict()
+        f["never_via_route_servers"]["peering_db"] = ValidatorBool(
+            default=True
+        )
+        f["never_via_route_servers"]["asns"] = ValidatorASNList(
+            mandatory=False
+        )
 
         f["irrdb"] = OrderedDict()
         i = f["irrdb"]
@@ -190,30 +197,33 @@ class ConfigParserGeneral(ConfigParserBase):
 
         f["reject_policy"] = OrderedDict()
         f["reject_policy"]["policy"] = ValidatorOption(
-            "policy", ("reject", "tag"), default="reject"
+            "policy", ("reject", "tag", "tag_and_reject"), default="reject"
         )
 
         c["rpki_roas"] = OrderedDict()
         r = c["rpki_roas"]
         r["source"] = ValidatorOption("source",
-            ("ripe-rpki-validator-cache", "rtrlib"),
+            ("ripe-rpki-validator-cache", "rtr"),
             mandatory=True,
             default="ripe-rpki-validator-cache"
         )
-        r["ripe_rpki_validator_url"] = ValidatorText(
-            mandatory=True,
-            default="http://localcert.ripe.net:8088/export.json"
+        r["ripe_rpki_validator_url"] = ValidatorListOf(
+            ValidatorText, mandatory=True,
+            default=[
+                "https://rpki-validator.ripe.net/api/export.json",
+                "https://rpki.gin.ntt.net/api/export.json"
+            ]
         )
         r["allowed_trust_anchors"] = ValidatorListOf(
             ValidatorText, mandatory=True, default=[
-                "APNIC from AFRINIC RPKI Root",
-                "APNIC from ARIN RPKI Root",
-                "APNIC from IANA RPKI Root",
-                "APNIC from LACNIC RPKI Root",
-                "APNIC from RIPE RPKI Root",
+                "APNIC RPKI Root",
                 "AfriNIC RPKI Root",
                 "LACNIC RPKI Root",
-                "RIPE NCC RPKI Root"
+                "RIPE NCC RPKI Root",
+                "apnic",
+                "afrinic",
+                "lacnic",
+                "ripe"
             ]
         )
 
@@ -376,8 +386,8 @@ class ConfigParserGeneral(ConfigParserBase):
                             unique_communities.append(comm[fmt])
 
         # The 'reject_cause' and 'rejected_route_announced_by' communities
-        # can be set only if 'reject_policy' is 'tag'.
-        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] != "tag":
+        # can be set only if 'reject_policy' is 'tag' or 'tag_and_reject'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] not in  ["tag", "tag_and_reject"]:
             for comm in ("reject_cause", "rejected_route_announced_by"):
                 reject_comm_is_set = False
                 for fmt in ("std", "ext", "lrg"):
@@ -388,10 +398,10 @@ class ConfigParserGeneral(ConfigParserBase):
                     errors = True
                     logging.error(
                         "The '{}' community can be set only if "
-                        "'reject_policy.policy' is 'tag'.".format(comm))
+                        "'reject_policy.policy' is 'tag' or 'tag_and_reject'.".format(comm))
 
-        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag'.
-        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] == "tag":
+        # The 'reject_cause' comm is mandatory when 'reject_policy' is 'tag' or 'tag_and_reject'.
+        if self.cfg["cfg"]["filtering"]["reject_policy"]["policy"] in ["tag", "tag_and_reject"]:
             reject_comm_is_set = False
             for fmt in ("std", "ext", "lrg"):
                 if self.cfg["cfg"]["communities"]["reject_cause"][fmt]:
@@ -401,7 +411,7 @@ class ConfigParserGeneral(ConfigParserBase):
                 errors = True
                 logging.error(
                     "The 'reject_cause' community must be configured when "
-                    "'reject_policy.policy' is 'tag'.")
+                    "'reject_policy.policy' is 'tag' or 'tag_and_reject'.")
 
         # Overlapping communities?
         try:

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,13 +25,6 @@ from pierky.arouteserver.ipaddresses import IPAddress, IPNetwork
 from pierky.arouteserver.tests.base import ARouteServerTestCase
 from pierky.arouteserver.tests.mocked_env import MockedEnv
 from pierky.arouteserver.tests.live_tests.instances import BGPSpeakerInstance
-from pierky.arouteserver.tests.live_tests.bird import BIRDInstanceIPv4, \
-                                                      BIRDInstanceIPv6
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPD60Instance, \
-                                                          OpenBGPD61Instance, \
-                                                          OpenBGPD62Instance, \
-                                                          OpenBGPD63Instance, \
-                                                          OpenBGPD64Instance
 
 
 class LiveScenario(ARouteServerTestCase):
@@ -368,9 +361,12 @@ class LiveScenario(ARouteServerTestCase):
 
                 cls.debug("Starting instance '{}'...".format(instance.name))
                 instance.start()
-        except:
-            cls.tearDownClass()
-            raise
+        except Exception as e:
+            try:
+                cls.tearDownClass()
+            except:
+                pass
+            raise e
 
     @staticmethod
     def get_instance_tag(instance_or_class):
@@ -379,21 +375,10 @@ class LiveScenario(ARouteServerTestCase):
         else:
             _class = instance_or_class
 
-        if _class is BIRDInstanceIPv4 or \
-            _class is BIRDInstanceIPv6:
-            tag = "bird16"
-        elif _class is OpenBGPD60Instance:
-            tag = "openbgpd60"
-        elif _class is OpenBGPD61Instance:
-            tag = "openbgpd61"
-        elif _class is OpenBGPD62Instance:
-            tag = "openbgpd62"
-        elif _class is OpenBGPD63Instance:
-            tag = "openbgpd63"
-        elif _class is OpenBGPD64Instance:
-            tag = "openbgpd64"
-        else:
-            msg = "Unknown instance type: "
+        try:
+            tag = _class.TAG
+        except:
+            msg = "'TAG' missing for instance of type "
             if isinstance(instance_or_class, BGPSpeakerInstance):
                 msg += instance_or_class.name
             else:
@@ -496,7 +481,7 @@ class LiveScenario(ARouteServerTestCase):
 
     def receive_route(self, inst, prefix, other_inst=None, as_path=None,
                       next_hop=None, std_comms=None, lrg_comms=None,
-                      ext_comms=None, local_pref=None,
+                      ext_comms=None, local_pref=None, as_set=None,
                       filtered=None, only_best=None, reject_reason=None):
         """Test if the BGP speaker receives the expected route(s).
 
@@ -525,6 +510,9 @@ class LiveScenario(ARouteServerTestCase):
 
             local_pref (int): if given, only routes with local-pref equal
                 to this value are considered.
+
+            as_set (str): if given, only routes with this AS_SET are
+                considered.
 
             filtered (bool): if given, only routes that have been (not)
                 filtered are considered.
@@ -608,7 +596,7 @@ class LiveScenario(ARouteServerTestCase):
             else:
                 reject_reasons = list(reject_reason)
             for code in reject_reasons:
-                assert code in range(1,15), "invalid reject_reason"
+                assert code in range(1,16), "invalid reject_reason"
 
         include_filtered = filtered if filtered is not None else False
         best_only = only_best if only_best is not None else False
@@ -645,12 +633,15 @@ class LiveScenario(ARouteServerTestCase):
                 if local_pref is not None and route.localpref != local_pref:
                     errors.append("{{inst}} receives {{prefix}} with local-pref {local_pref} and not with {{local_pref}}.".format(local_pref=route.localpref))
                     err = True
+                if as_set is not None and route.as_set != as_set:
+                    errors.append("{{inst}} receives {{prefix}} with AS_SET {as_set} and not with {{as_set}}.".format(as_set=route.as_set))
+                    err = True
                 if filtered is not None and route.filtered != filtered:
                     errors.append(
                         "{{inst}} receives {{prefix}} from {via}, AS_PATH {as_path}, NEXT_HOP {next_hop} "
                         "but it is {filtered_status} while it is expected to be {filtered_exp}.".format(
                             via=route.via,
-                            as_path=route.as_path,
+                            as_path=route.as_path if not route.as_set else route.as_path + " (AS_SET {})".format(route.as_set),
                             next_hop=route.next_hop,
                             filtered_status="filtered" if route.filtered else "not filtered",
                             filtered_exp="filtered" if filtered else "not filtered"
@@ -702,6 +693,8 @@ class LiveScenario(ARouteServerTestCase):
                 criteria.append("with ext comms {}".format(ext_comms))
             if local_pref:
                 criteria.append("with local-pref {}".format(local_pref))
+            if as_set:
+                criteria.append("with as_set {}".format(as_set))
             if filtered is True:
                 criteria.append("filtered")
             if reject_reasons:
@@ -733,6 +726,7 @@ class LiveScenario(ARouteServerTestCase):
                     lrg_comms=lrg_comms,
                     ext_comms=ext_comms,
                     local_pref=local_pref,
+                    as_set=as_set,
                 ) for err_msg in errors
             ])
             failure += self._instance_log_contains_errors_warning(inst)
@@ -893,6 +887,7 @@ class LiveScenario_TagRejectPolicy(object):
 
     REJECT_CAUSE_COMMUNITY = "^65520:(\d+)$"
     REJECTED_ROUTE_ANNOUNCED_BY_COMMUNITY = "^rt:65520:(\d+)$"
+    REJECT_POLICY = "tag"
 
     @classmethod
     def _get_cfg_general(cls, orig_file="general.yml"):
@@ -903,7 +898,7 @@ class LiveScenario_TagRejectPolicy(object):
         with open(orig_path, "r") as f:
             cfg = yaml.safe_load(f.read())
 
-        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": "tag"}
+        cfg["cfg"]["filtering"]["reject_policy"] = {"policy": cls.REJECT_POLICY}
         if "communities" not in cfg["cfg"]:
             cfg["cfg"]["communities"] = {}
         cfg["cfg"]["communities"]["reject_cause"] = {"std": "65520:dyn_val"}
@@ -913,3 +908,8 @@ class LiveScenario_TagRejectPolicy(object):
             yaml.safe_dump(cfg, f, default_flow_style=False)
 
         return dest_rel_path
+
+class LiveScenario_TagAndRejectRejectPolicy(LiveScenario_TagRejectPolicy):
+    """Same as LiveScenario_TagRejectPolicy, but with 'tag_and_reject' reject policy."""
+
+    REJECT_POLICY = "tag_and_reject"

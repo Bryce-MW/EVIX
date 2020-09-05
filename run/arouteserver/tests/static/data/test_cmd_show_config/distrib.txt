@@ -17,6 +17,9 @@ configured          reject_invalid_as_in_as_path: True
                     transit_free:
 default               action: None
 configured            asns: 174, 209, 286, 701, 1239, 1299, 2828, 2914, 3257, 3320, 3356, 3549, 5511, 6453, 6461, 6762, 6830, 7018, 12956
+                    never_via_route_servers:
+configured            peering_db: True
+default               asns: None
                     irrdb:
 configured            enforce_origin_in_as_set: True
 configured            enforce_prefix_in_as_set: True
@@ -48,16 +51,18 @@ default               restart_after: 15
 configured            policy: reject
                   rpki_roas:
 configured          source: ripe-rpki-validator-cache
-configured          ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
+configured          ripe_rpki_validator_url:
+configured            - https://rpki-validator.ripe.net/api/export.json
+configured            - https://rpki.gin.ntt.net/api/export.json
 configured          allowed_trust_anchors:
-configured            - APNIC from AFRINIC RPKI Root
-configured            - APNIC from ARIN RPKI Root
-configured            - APNIC from IANA RPKI Root
-configured            - APNIC from LACNIC RPKI Root
-configured            - APNIC from RIPE RPKI Root
+configured            - APNIC RPKI Root
 configured            - AfriNIC RPKI Root
 configured            - LACNIC RPKI Root
 configured            - RIPE NCC RPKI Root
+configured            - apnic
+configured            - afrinic
+configured            - lacnic
+configured            - ripe
                   blackhole_filtering:
 configured          announce_to_client: True
 default             policy_ipv4: None

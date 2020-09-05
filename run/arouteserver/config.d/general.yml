@@ -167,6 +167,30 @@ cfg:
         3257, 3320, 3356, 3549, 5511, 6453, 6461,
         6762, 6830, 7018, 12956
 
+    never_via_route_servers:
+      # Similarly to what happens with the 'transit_free' config
+      # knob, any route with one of these ASNs in the AS_PATH
+      # will be rejected.
+      # If the 'peering_db' option below within this section is
+      # set to True, ARouteServer acquires the list of ASNs from
+      # PeeringDB (based on the 'info_never_via_route_servers'
+      # attribute).
+      # If 'peering_db' is False and 'asns' is not set or empty,
+      # the feature will be implicitly disabled.
+
+      # When set to True, the list of networks is automatically
+      # retrieved from PeeringDB.
+      #
+      # Default: True
+      peering_db: True
+
+      # Comma separated list of ASNs which will be used to filter
+      # incoming routes. When 'peering_db' is True, the ASNs
+      # listed here are added to those retrieved from PeeringDB.
+      #
+      # Default: none
+      #asns:
+
     irrdb:
       # With regards of the following two options, if no AS-SET
       # is given in the clients configuration file for the
@@ -451,6 +475,10 @@ cfg:
       # If it is set to 'tag', they are tagged as described above
       # (and not propagated anyway to other clients). In this case,
       # the 'reject_cause' BGP community must be also set.
+      # If it is set to 'tag_and_reject', they are tagged as in 'tag'
+      # but also discarded as in 'reject' mode.
+      #
+      # OpenBGPD: only 'reject' and 'tag' modes are allowed.
       #
       # Can be overwritten on a client-by-client basis.
       #
@@ -465,17 +493,30 @@ cfg:
     # The source used to gather RPKI ROAs.
     #
     # Can be one of the following options:
-    # - 'rtrlib': ROAs are loaded using the external program
-    #   rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
-    #   The name of the table where send the ROAs to is 'RPKI'.
-    # - 'ripe-rpki-validator-cache': ROAs are fetched via
-    #   HTTP from the RIPE RPKI Validator cache
-    #   (http://localcert.ripe.net:8088/export.json by default).
+    # - 'rtr': ROAs are loaded from an external RTR source.
+    #   rtrllib (https://github.com/rtrlib/bird-rtrlib-cli) can be
+    #   used for BIRD 1.6.x; in BIRD v2 there is built-in support
+    #   for the RTR protocol.
+    #   The name of the table where send the ROAs to is 'RPKI' for
+    #   BIRD 1.6.x and 'RPKI4' and 'RPKI6' for BIRD v2.
+    #   In BIRD v2, an external file 'rpki_rtr_config.local' must be
+    #   found within the same directory where the main configuration
+    #   file is stored (/etc/bird usually) and must contain the BIRD 2
+    #   configuration for 'protocol rpki'. An example on how to
+    #   setup that file can be found in the examples/bird2_rpki_rtr
+    #   directory (please note, in order to use the RTR protocol BIRD
+    #   must be compiled with --enable-libssh).
+    # - 'ripe-rpki-validator-cache': ROAs are loaded from a JSON
+    #   file in RIPE NCC RPKI Validator cache format.
     #
-    #   Please note that this method is far from guaranteeing
+    #   Known compatible implementations at time of writing:
+    #   - RIPE NCC RPKI Validator: https://www.ripe.net
+    #   - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
+    #
+    #   Please note that the second method is far from guaranteeing
     #   that a cryptographically validated dataset is retrieved
     #   from a trusted cache, unless the URL of a local, trusted
-    #   instance of RPKI Validator is provided below in the
+    #   instance of a RPKI validator is provided below in the
     #   'ripe_rpki_validator_url' option.
     #
     # OpenBGPD: only the 'ripe-rpki-validator-cache' source
@@ -484,22 +525,29 @@ cfg:
     # Default: ripe-rpki-validator-cache
     source: "ripe-rpki-validator-cache"
 
-    # RIPE RPKI Validator URL.
+    # URLs of files in RIPE NCC RPKI Validator cache format.
     # Meaningful only when 'source' is 'ripe-rpki-validator-cache'.
-    # It can be an 'http://' or 'https://' URL or the path of a
-    # local file.
+    # Multiple URLs can be provided here; they will be tried in
+    # the same order in which they are listed below.
+    # They can be 'http://' or 'https://' URLs or paths of
+    # local files.
     #
-    # Default: http://localcert.ripe.net:8088/export.json
-    ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+    # Default: RIPE NCC instance, NTT instance
+    ripe_rpki_validator_url:
+      - "https://rpki-validator.ripe.net/api/export.json"
+      - "https://rpki.gin.ntt.net/api/export.json"
 
     # When using the 'ripe-rpki-validator-cache' source, only the
     # following Trust Anchors will be taken into account.
     #
     # Values must be taken among those published in the RIPE RPKI
-    # Validator Configured Trust Anchors page:
-    # http://localcert.ripe.net:8088/trust-anchors
+    # Validator cache file configured above.
     #
-    # Before enabling the 'ARIN RPKI Root', please consider the
+    # Configured Trust Anchors pages:
+    # - NTT instance: https://rpki.gin.ntt.net/trust-anchors
+    # - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
+    #
+    # Before enabling any ARIN TA, please consider the
     # following URLs:
     #
     # http://lists.arin.net/pipermail/arin-ppml/2017-January/031231.html
@@ -508,15 +556,16 @@ cfg:
     #
     # Default: APNIC, AfriNIC, LACNIC and RIPE NCC.
     allowed_trust_anchors:
-      - "APNIC from AFRINIC RPKI Root"
-      - "APNIC from ARIN RPKI Root"
-      - "APNIC from IANA RPKI Root"
-      - "APNIC from LACNIC RPKI Root"
-      - "APNIC from RIPE RPKI Root"
+      - "APNIC RPKI Root"
       - "AfriNIC RPKI Root"
       - "LACNIC RPKI Root"
       - "RIPE NCC RPKI Root"
-      #- "ARIN RPKI Root"
+      #- "ARIN"
+      - "apnic"
+      - "afrinic"
+      - "lacnic"
+      - "ripe"
+      #- "arin"
 
   blackhole_filtering:
     # Destination-based blackholing policy: if a policy is given,
@@ -687,7 +736,7 @@ cfg:
     # Prefix/origin AS present in client's AS-SET.
     #
     # If 'tag_as_set' = True, prefixes that are (not) part of an
-    # AS-SET or whose origin ASN is (not) part of an AS-SET are 
+    # AS-SET or whose origin ASN is (not) part of an AS-SET are
     # tagged with the following BGP communities, provided that they
     # are set below.
     #
@@ -744,9 +793,9 @@ cfg:
       #std:
       #lrg:
       #ext:
- 
+
     # Control communities.
-    # 
+    #
     # Routes that are tagged with the following community are not
     # announced to any client, unless they are also tagged with the
     # 'announce_to_peer' communities: in this case, such routes are
@@ -969,8 +1018,8 @@ cfg:
       #ext:
 
     # This BGP community is used when the 'reject_policy' option is
-    # set to 'tag'. It is used to track the code of the reason that
-    # led the route to be considered as invalid.
+    # set to 'tag' or 'tag_and_reject'. It is used to track the code
+    # of the reason that led the route to be considered as invalid.
     #
     # The following community is scrubbed from inbound routes.
     #
@@ -982,9 +1031,9 @@ cfg:
       #ext:
 
     # This BGP community is used when the 'reject_policy' option is
-    # set to 'tag'. If configured, it is used to track the ASN
-    # of the peer that announced the invalid route to the route
-    # server.
+    # set to 'tag' or 'tag_and_reject'. If configured, it is used
+    # to track the ASN of the peer that announced the invalid route
+    # to the route server.
     #
     # The following community is scrubbed from inbound routes.
     #

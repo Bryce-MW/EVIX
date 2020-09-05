@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ from .enrichers.irrdb import IRRDBConfigEnricher_ASNs, \
                              IRRDBConfigEnricher_Prefixes
 from .enrichers.pdb_as_set import PeeringDBConfigEnricher_ASSet
 from .enrichers.pdb_max_prefix import PeeringDBConfigEnricher_MaxPrefix
+from .enrichers.pdb_never_via_route_servers import NeverViaRouteServersEnricher
 from .enrichers.rpki_roas import RPKIROAsEnricher
 from .enrichers.rtt import RTTGetterConfigEnricher
 from .errors import MissingDirError, MissingFileError, BuilderError, \
@@ -56,6 +57,24 @@ class ConfigBuilder(object):
     DEFAULT_VERSION = None
 
     IGNORABLE_ISSUES = []
+
+    REJECT_REASONS = {
+        "1": "Invalid AS_PATH length",
+        "2": "Prefix is bogon",
+        "3": "Prefix is in global blacklist",
+        "4": "Invalid AFI",
+        "5": "Invalid NEXT_HOP",
+        "6": "Invalid left-most ASN",
+        "7": "Invalid ASN in AS_PATH",
+        "8": "Transit-free ASN in AS_PATH",
+        "9": "Origin ASN not in IRRDB AS-SETs",
+        "10": "IPv6 prefix not in global unicast space",
+        "11": "Prefix is in client blacklist",
+        "12": "Prefix not in IRRDB AS-SETs",
+        "13": "Invalid prefix length",
+        "14": "RPKI INVALID route",
+        "15": "Never via route-servers ASN in AS_PATH",
+    }
 
     def validate_bgpspeaker_specific_configuration(self):
         """Check compatibility between config and target BGP speaker
@@ -283,7 +302,7 @@ class ConfigBuilder(object):
 
                 - *--local-files-dir* CLI argument.
 
-            bgpq3_path (str): path to the 'bgpq3' external program; this will
+            bgpq3_path (str): path to the 'bgpq3' or 'bgpq4' external program; this will
                 be used to expand AS macros and to obtain the list of
                 authorized origin ASNs and prefixes from IRRDBs.
 
@@ -291,7 +310,7 @@ class ConfigBuilder(object):
 
                 - *bgpq3_path* program's configuration file option.
 
-            bgpq3_host (str): the host that will be queried by bgpq3; this
+            bgpq3_host (str): the host that will be queried by bgpq3/bgpq4; this
                 will be used to set the *-h* argument of the program.
 
                 Same of:
@@ -299,8 +318,8 @@ class ConfigBuilder(object):
                 - *bgpq3_host* program's configuration file option.
 
             bgpq3_sources (str): a comma separated list of sources that will
-                be used by the bgpq3 program; this will be used to set the
-                *-S* argument of bgpq3.
+                be used by the bgpq3/bgpq4 program; this will be used to set the
+                *-S* argument of the program.
 
                 Same of:
 
@@ -316,7 +335,7 @@ class ConfigBuilder(object):
                 - *rtt_getter_path* program's configuration file option.
 
             threads (int): number of concurrent threads used to gather
-                additional data from external sources (bgpq3, PeeringDB, ...)
+                additional data from external sources (bgpq3/bgpq4, PeeringDB, ...)
 
                 Same of:
 
@@ -419,6 +438,9 @@ class ConfigBuilder(object):
         # { "<len>": [{"prefix": "<ip>/<len>", "max_len": x, "asn": "AS<n>"}]
         self.rpki_roas = {}
 
+        # [<asn (int)>]
+        self.never_via_route_servers_asns = []
+
         # { "<origin_asn>": ["a/b", "c/d"] }
         self.arin_whois_records = {}
         self.registrobr_whois_records = {}
@@ -517,6 +539,12 @@ class ConfigBuilder(object):
         if irrdb_cfg["use_registrobr_bulk_whois_data"]["enabled"]:
             used_enricher_classes.append(RegistroBRWhoisDBDumpEnricher)
 
+        self.never_via_route_servers_asns = list(
+            set(filtering["never_via_route_servers"]["asns"] or [])
+        )
+        if filtering["never_via_route_servers"]["peering_db"]:
+            used_enricher_classes.append(NeverViaRouteServersEnricher)
+
         for enricher_class in used_enricher_classes:
             enricher = enricher_class(self, threads=self.threads)
             try:
@@ -562,6 +590,10 @@ class ConfigBuilder(object):
 
         self.data = {}
         self.data["ip_ver"] = self.ip_ver
+        if self.ip_ver is None:
+            self.data["list_ip_vers"] = [4, 6]
+        else:
+            self.data["list_ip_vers"] = [self.ip_ver]
         self.data["cfg"] = self.cfg_general
         self.data["bogons"] = self.cfg_bogons
         self.data["clients"] = self.cfg_clients
@@ -570,10 +602,12 @@ class ConfigBuilder(object):
         self.data["rpki_roas"] = sorted_rpki_roas()
         self.data["arin_whois_records"] = self.arin_whois_records
         self.data["registrobr_whois_records"] = self.registrobr_whois_records
+        self.data["never_via_route_servers_asns"] = self.never_via_route_servers_asns
         self.data["live_tests"] = self.live_tests
         self.data["rtt_based_functions_are_used"] = \
             self.cfg_general.rtt_based_functions_are_used
         self.data["perform_graceful_shutdown"] = self.perform_graceful_shutdown
+        self.data["reject_reasons"] = self.REJECT_REASONS
 
         def ipaddr_ver(ip):
             return IPNetwork(ip).version
@@ -583,7 +617,17 @@ class ConfigBuilder(object):
                 return True
             return IPNetwork(ip).version == self.ip_ver
 
+        def is_ipver(data, ip_ver):
+            prefix = data
+            return IPNetwork(prefix).version == ip_ver
+
         def include_local_file(local_file_id):
+            # The 'rpki_rtr_config' local_file_id is always allowed
+            # to be included, because it's referenced directly in
+            # the Jinja2 template for RPKI configuration.
+            if local_file_id == "rpki_rtr_config":
+                return self._include_local_file(local_file_id)
+
             if local_file_id not in self.LOCAL_FILES_IDS:
                 raise AssertionError(
                     "Local file ID '{}' is referenced in J2 "
@@ -629,6 +673,7 @@ class ConfigBuilder(object):
             undefined=StrictUndefined
         )
         env.tests["current_ipver"] = current_ipver
+        env.tests["is_ipver"] = is_ipver
         env.filters["community_is_set"] = community_is_set
         env.filters["ipaddr_ver"] = ipaddr_ver
         env.filters["include_local_file"] = include_local_file
@@ -685,14 +730,16 @@ class BIRDConfigBuilder(ConfigBuilder):
              "scrub_communities_in", "scrub_communities_out",
              "apply_blackhole_filtering_policy"]
 
-    AVAILABLE_VERSION = ["1.6.3", "1.6.4"]
-    DEFAULT_VERSION = "1.6.4"
+    AVAILABLE_VERSION = ["1.6.3", "1.6.4", "1.6.6", "1.6.7", "1.6.8",
+                         "2.0.7"]
+    DEFAULT_VERSION = "1.6.8"
 
     def validate_bgpspeaker_specific_configuration(self):
-        if self.ip_ver is None:
+        if self.ip_ver is None and \
+           version.parse(self.target_version) < version.parse("2.0"):
             raise BuilderError(
                 "An explicit target IP version is needed "
-                "to build BIRD configuration. Use the "
+                "to build BIRD 1.x configuration. Use the "
                 "--ip-ver command line argument to supply one."
             )
 
@@ -737,8 +784,8 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                        "footer"]
     LOCAL_FILES_BASE_DIR = "/etc/bgpd"
 
-    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4"]
-    DEFAULT_VERSION = "6.3"
+    AVAILABLE_VERSION = ["6.0", "6.1", "6.2", "6.3", "6.4", "6.5", "6.6", "6.7"]
+    DEFAULT_VERSION = "6.6"
 
     IGNORABLE_ISSUES = ["path_hiding", "transit_free_action",
                         "add_path", "max_prefix_action",
@@ -778,6 +825,14 @@ class OpenBGPDConfigBuilder(ConfigBuilder):
                 "for OpenBGPD.".format(transit_free_action)
             ):
                 res = False
+
+        reject_policy = self.cfg_general["filtering"]["reject_policy"]["policy"]
+        if reject_policy == "tag_and_reject":
+            res = False
+            logging.error(
+                "For OpenBGP, 'reject_policy' can't be set to "
+                "'tag_and_reject'."
+            )
 
         add_path_clients = []
         max_prefix_action_clients = []

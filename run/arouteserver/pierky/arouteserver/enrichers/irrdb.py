@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -249,8 +249,9 @@ class IRRDBConfigEnricher(BaseConfigEnricher):
             if not client_irrdb["enforce_origin_in_as_set"] and \
                 not client_irrdb["enforce_prefix_in_as_set"] and \
                 not self.builder.cfg_general["filtering"]["irrdb"]["tag_as_set"]:
-                    # Client does not require AS-SETs info to be gathered.
-                    continue
+
+                # Client does not require AS-SETs info to be gathered.
+                continue
 
             if self.builder.ip_ver is not None:
                 ip = client["ip"]

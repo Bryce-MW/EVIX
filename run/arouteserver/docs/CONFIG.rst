@@ -31,7 +31,7 @@ The ``arouteserver setup`` command can be used to setup the environment where AR
 Route server's configuration
 ----------------------------
 
-Route server's general configuration and policies are outlined in the ``general.yml`` file. 
+Route server's general configuration and policies are outlined in the ``general.yml`` file.
 
 Configuration details and options can be found within the distributed `general <https://github.com/pierky/arouteserver/blob/master/config.d/general.yml>`__ and `clients <https://github.com/pierky/arouteserver/blob/master/config.d/clients.yml>`__ configuration files on GitHub or in the :doc:`GENERAL` page.
 
@@ -135,7 +135,7 @@ In this scenario, the route server's configuration will look like this:
 IRRDBs-based filtering
 **********************
 
-The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag routes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_: installations details on :doc:`INSTALLATION` page.
+The ``filtering.irrdb`` section of the configuration files allows to use IRRDBs information to filter or to tag routes entering the route server. Information are acquired using the external program `bgpq3 <https://github.com/snar/bgpq3>`_ or `bgpq4 <https://github.com/bgp/bgpq4>`_: installations details on :doc:`INSTALLATION` page.
 
 One or more AS-SETs can be used to gather information about authorized origin ASNs and prefixes that a client can announce to the route server. AS-SETs can be set in the ``clients.yml`` file on a two levels basis:
 
@@ -180,7 +180,7 @@ Example:
      - asn: 44
        ip: "192.0.2.44"
 
-With this configuration, the following values will be used to run the bgpq3 program:
+With this configuration, the following values will be used to run the bgpq3/bgpq4 program:
 
 - **AS-AS11NETS** will be used for 192.0.2.11 (it's configured at client-level for that client);
 - **AS-AS22MAIN** for the 192.0.2.22 client (it's inherited from the ``asns``-level configuration of AS22, client's AS);
@@ -241,9 +241,15 @@ ROAs sources
 
 A couple of methods can be used to acquire RPKI data (ROAs):
 
-- (BIRD and OpenBGPD) the builtin method based on `RIPE RPKI Validator cache <http://localcert.ripe.net:8088/>`__ export file: the URL of a local and trusted instance of RPKI Validator should be provided to ensure that a cryptographically validated datased is used. By default, the URL of the public instance is used.
+- (BIRD and OpenBGPD) the builtin method based on `RIPE RPKI Validator format <https://rpki-validator.ripe.net>`__ export files: the URL of a local and trusted instance of RPKI Validator should be provided to ensure that a cryptographically validated datased is used. By default, the URLs of some  public instances are used.
 
-- (BIRD only) external tools from the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__. One or more trusted local validating caches should be used to get and validate RPKI data before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found.
+- (BIRD only) external resources can be used to pull ROAs from using the RTR protocol:
+
+  - BIRD 1.6.x: the `rtrlib <http://rpki.realmv6.org/>`_ suite: `rtrlib <https://github.com/rtrlib>`__ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`__.
+
+  - BIRD v2: the `built-in RTR protocol <https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13>`_ implementation.
+
+  One or more trusted local validating caches should be used to get and validate ROAs before pushing them to BIRD. An overview is provided on the `rtrlib GitHub wiki <https://github.com/rtrlib/rtrlib/wiki/Background>`__, where also an `usage guide <https://github.com/rtrlib/rtrlib/wiki/Usage-of-the-RTRlib>`__ can be found. For BIRD v2, an example of how to configure the RTR protocol can be found in the ``examples/bird2_rpki_rtr`` directory (`also on GitHub <https://github.com/pierky/arouteserver/tree/master/examples/bird2_rpki_rtr>`_).
 
 The configuration of ROAs source can be done within the ``rpki_roas`` section of the ``general.yml`` file.
 
@@ -350,7 +356,7 @@ These files must be present on the host running the route server.
       	neighbor 192.0.2.99 as 65535;
       	rs client;
         secondary;
-      
+
       	import none;
       	export all;
       }
@@ -362,21 +368,21 @@ These files must be present on the host running the route server.
 
      $ arouteserver openbgpd --use-local-files header post-clients
      include "/etc/bgpd/header.local"
-     
+
      AS 999
      router-id 192.0.2.2
 
      [...]
 
      group "clients" {
-     
+
              neighbor 192.0.2.11 {
                      [...]
              }
      }
-     
+
      include "/etc/bgpd/post-clients.local"
-     
+
      [...]
 
   In the example above, the ``header`` and ``post-clients`` inclusion points are enabled and allow to insert two ``include`` statements into the generated configuration: one at the start of the file and one between clients declaration and filters.
@@ -389,24 +395,24 @@ These files must be present on the host running the route server.
      $ arouteserver openbgpd --use-local-files client footer --local-files-dir /etc/
      AS 999
      router-id 192.0.2.2
-     
+
      [...]
-     
+
      group "clients" {
-     
+
              neighbor 192.0.2.11 {
                      include "/etc/client.local"
                      [...]
              }
-     
+
              neighbor 192.0.2.22 {
                      include "/etc/client.local"
                      [...]
              }
      }
-     
+
      [...]
-     
+
      include "/etc/footer.local"
 
   The example above uses the ``client`` label, that is used to add an ``include`` statement into every neighbor configuration. Also, the base directory is set to ``/etc/``.
@@ -431,28 +437,28 @@ Example:
      $ arouteserver bird --ip-ver 4 --use-local-files header --use-hooks pre_receive_from_client
      router id 192.0.2.2;
      define rs_as = 999;
-     
+
      log "/var/log/bird.log" all;
      log syslog all;
      debug protocols all;
-     
+
      protocol device {};
-     
+
      table master sorted;
-     
+
      include "/etc/bird/header.local";
-     
+
      [...]
-     
+
      filter receive_from_AS3333_1 {
              if !(source = RTS_BGP ) then
                      reject "source != RTS_BGP - REJECTING ", net;
-     
+
              if !hook_pre_receive_from_client(3333, 192.0.2.11, "AS3333_1") then
                      reject "hook_pre_receive_from_client returned false - REJECTING ", net;
-     
+
              scrub_communities_in();
-     
+
      [...]
 
 Details about hook functions can be found in the :doc:`BIRD_HOOKS` page.
@@ -472,36 +478,24 @@ The goal of this feature is to allow the deployment of route collectors that can
 
 The reason that brought the server to reject the route is identified using a numeric value in the last part of the BGP Community; the list of reject reasons follow:
 
-  ===== =========================================================
-     ID Reason
-  ===== =========================================================
-      0 Special meaning: the route must be treated as rejected. *
-
-      1 Invalid AS_PATH length
-      2 Prefix is bogon
-      3 Prefix is in global blacklist
-      4 Invalid AFI
-      5 Invalid NEXT_HOP
-      6 Invalid left-most ASN
-      7 Invalid ASN in AS_PATH
-      8 Transit-free ASN in AS_PATH
-      9 Origin ASN not in IRRDB AS-SETs
-     10 IPv6 prefix not in global unicast space
-     11 Prefix is in client blacklist
-     12 Prefix not in IRRDB AS-SETs
-     13 Invalid prefix length
-     14 RPKI INVALID route
-
-  65535 Unknown
-  ===== =========================================================
+.. include:: REJECT_REASON_COMMUNITIES.txt
 
 \* This is not really a reject reason code, it only means that the route must be treated as rejected and must not be propagated to clients.
+
+On BIRD, it's also possible to configure the ``reject_policy`` using the ``tag_and_reject`` value: doing this, the ``reject_reason`` and optionally the ``rejected_route_announced_by`` BGP communities are still attached to the invalid routes, but then they are rejected by BIRD. Since the BIRD-specific ``import keep filtered on`` configuration statement is used, those routes remain available within the BIRD daemon and can be seen using BIRD-specific commands like ``show route filtered all``.
 
 Caveats and limitations
 ***********************
 
 Not all features offered by ARouteServer are supported by both BIRD and OpenBGPD.
-The following list of limitations is based on the currently supported versions of BIRD (1.6.3 and 1.6.4) and OpenBGPD (OpenBSD 6.1 up to 6.4).
+The following list of limitations is based on the currently supported versions of BIRD and OpenBGPD.
+
+- IRR filtering of routes whose AS_PATH ends with an AS_SET
+
+  - BIRD: routes are rejected by the IRR filters.
+  - OpenBGPD: if the last non-aggregated AS in the AS_PATH is included in the list of ASNs generated from the IRR records, the routes pass the IRR filters.
+
+    More details on `GitHub PR56 <https://github.com/pierky/arouteserver/pull/56>`_ (commit `a65934a <https://github.com/pierky/arouteserver/commit/a65934ad0ca636d7d381f705508f128b0ac17e5e>`_).
 
 - OpenBGPD
 
@@ -513,9 +507,9 @@ The following list of limitations is based on the currently supported versions o
 
   - OpenBGPD does not offer a way to delete **extended communities** using wildcard (``rt xxx:*``): peer-ASN-specific extended communities (such as ``prepend_once_to_peer``, ``do_not_announce_to_peer``) are not scrubbed from routes that leave OpenBGPD route servers and so they are propagated to the route server clients.
 
-  - **Graceful shutdown** is supported only on OpenBGPD 6.2 or later.
-
   - The Site of Origin Extended BGP communities in the range 65535:* are reserved for internal reasons.
+
+A list of all the features and their support level among the BGP speakers is maintained on the :ref:`Supported BGP speakers and features` section of this documentation.
 
 Depending on the features that are enabled in the ``general.yml`` and ``clients.yml`` files, compatibility issues may arise; in this case, ARouteServer logs one or more errors, which can be then acknowledged and ignored using the ``--ignore-issues`` command line option:
 

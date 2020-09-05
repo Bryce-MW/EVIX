@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -77,8 +77,7 @@ class ConfigParserBase(object):
 
         def expand_env_vars(doc):
             res = doc
-            for v in os.environ:
-                res = re.sub("\$\{" + v + "\}", os.environ[v], res)
+            res = os.path.expandvars(res)
             res = re.sub("\$\{[A-Za-z0-9_]+\}", "", res)
             return res
 
@@ -112,6 +111,16 @@ class ConfigParserBase(object):
 
     def load(self, cfg_path):
         self._load_from_yaml_file(cfg_path)
+
+        try:
+            self.parse()
+        except ARouteServerError as e:
+            if str(e):
+                logging.error(str(e))
+            raise ConfigError()
+
+    def load_from_dict(self, input_dict):
+        self.cfg = input_dict
 
         try:
             self.parse()
@@ -224,7 +233,7 @@ def build_rpki_roas(cfg):
     """Build rpki_roas.
 
     Also used to identify those cases where filtering.rpki is enable
-    (and then 'rtrlib' is implicitly used for ROAs collection) and
+    (and then 'rtr' is implicitly used for ROAs collection) and
     filtering.irrdb.rpki_roas_as_route_objects is enabled and source
     is set to 'ripe-rpki-validator-cache'.
     """
@@ -264,9 +273,9 @@ def build_rpki_roas(cfg):
         if rpki.get("enabled", False) is not True:
             return False, None
 
-        rpki_roas["source"] = "rtrlib"
+        rpki_roas["source"] = "rtr"
 
-        return True, "rtrlib"
+        return True, "rtr"
 
     roas_as_routes_used, roas_as_routes_src = from_rpki_roas_as_route_objects()
     rpki_used, rpki_src = from_rpki()
@@ -277,7 +286,7 @@ def build_rpki_roas(cfg):
             "A deprecated syntax triggered an issue with the configuration "
             "of RPKI BGP Origin Validation (filtering.rpki) and ROAs-as-route-"
             "objects (filtering.irrdb.rpki_roas_as_route_objects). "
-            "The former uses rtrlib as source for ROAs, while the "
+            "The former uses RTR as source for ROAs, while the "
             "latter is configured to use the RIPE RPKI Validator "
             "cache file. "
             "To fix this issue, convert them to the new syntax and configure "
@@ -294,6 +303,30 @@ def build_rpki_roas(cfg):
                 "filtering.irrdb.rpki_roas_as_route_objects."
             )
         cfg["rpki_roas"] = rpki_roas
+
+def convert_ripe_rpki_validator_url(cfg):
+    if "rpki_roas" not in cfg:
+        return
+    if not isinstance(cfg["rpki_roas"], dict):
+        return
+    if "ripe_rpki_validator_url" not in cfg["rpki_roas"]:
+        return
+    if not isinstance(cfg["rpki_roas"]["ripe_rpki_validator_url"], list):
+        cfg["rpki_roas"]["ripe_rpki_validator_url"] = [cfg["rpki_roas"]["ripe_rpki_validator_url"]]
+
+def convert_rpki_roas_source_rtrlib_into_rtr(cfg):
+    if "rpki_roas" not in cfg:
+        return
+    if not isinstance(cfg["rpki_roas"], dict):
+        return
+    if "source" not in cfg["rpki_roas"]:
+        return
+    if cfg["rpki_roas"]["source"] == "rtrlib":
+        logging.warning("A deprecated configuration is used for "
+                        "filtering.rpki_roas.source: 'rtrlib' has "
+                        "been replaced by 'rtr', soon it will be "
+                        "no longer a valid value.")
+        cfg["rpki_roas"]["source"] = "rtr"
 
 def convert_deprecated(cfg):
     if not cfg:
@@ -312,3 +345,9 @@ def convert_deprecated(cfg):
 
     # Convert filtering.rpki (< v0.17.0) into the new format
     convert_filtering_rpki(cfg)
+
+    # Convert ripe_rpki_validator_url (<= v0.20.0) into a list
+    convert_ripe_rpki_validator_url(cfg)
+
+    # Convert rpki_roas.source from rtrlib into rtr (<= v0.22.2)
+    convert_rpki_roas_source_rtrlib_into_rtr(cfg)

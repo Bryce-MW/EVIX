@@ -276,6 +276,11 @@ cfg:
           absolute: 100
           relative: 15
       restart_after: 30
+    never_via_route_servers:
+      asns:
+      - 2914
+      - 3491
+      peering_db: true
     next_hop:
       policy: same-as
     reject_invalid_as_in_as_path: true
@@ -318,15 +323,16 @@ cfg:
   router_id: 192.0.2.2
   rpki_roas:
     allowed_trust_anchors:
-    - APNIC from AFRINIC RPKI Root
-    - APNIC from ARIN RPKI Root
-    - APNIC from IANA RPKI Root
-    - APNIC from LACNIC RPKI Root
-    - APNIC from RIPE RPKI Root
+    - APNIC RPKI Root
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
-    ripe_rpki_validator_url: examples/rich/ripe-rpki-cache.json
+    - apnic
+    - afrinic
+    - lacnic
+    - ripe
+    ripe_rpki_validator_url:
+    - examples/rich/ripe-rpki-cache.json
     source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
@@ -686,7 +692,7 @@ clients:
       max_prefix:
         action: restart
         limit_ipv4: 150
-        limit_ipv6: 126
+        limit_ipv6: 138
         peering_db:
           enabled: true
           increment:
@@ -987,12 +993,6 @@ arin_whois_db_records
 ---------------------
 AS10745:
 - exact: false
-  ge: 24
-  le: 32
-  length: 24
-  max_length: 32
-  prefix: 192.136.136.0
-- exact: false
   ge: 48
   le: 128
   length: 48
@@ -1003,15 +1003,85 @@ AS10745:
   le: 32
   length: 24
   max_length: 32
-  prefix: 192.149.252.0
+  prefix: 192.136.136.0
+- exact: false
+  ge: 48
+  le: 128
+  length: 48
+  max_length: 128
+  prefix: '2001:500:110::'
 - exact: false
   ge: 24
   le: 32
   length: 24
   max_length: 32
   prefix: 199.43.0.0
+- exact: false
+  ge: 24
+  le: 32
+  length: 24
+  max_length: 32
+  prefix: 192.149.252.0
 
 
 registrobr_whois_db_records
----------------------
+---------------------------
 {}
+
+
+never_via_route_servers_asns
+----------------------------
+- 2914
+- 3491
+- 1299
+- 8607
+- 12322
+- 13030
+- 3320
+- 1273
+- 174
+- 6830
+- 19151
+- 8365
+- 8075
+- 6908
+- 11164
+- 17451
+- 34108
+- 8943
+- 37271
+- 8455
+- 57866
+- 36459
+- 7155
+- 263328
+- 46450
+- 52973
+- 27947
+- 265914
+- 134041
+- 138023
+- 263258
+- 54295
+- 209395
+- 138953
+- 58768
+- 328572
+- 393573
+- 393684
+- 269156
+- 207353
+- 209699
+- 270544
+- 328582
+- 267373
+- 267442
+- 269535
+- 48265
+- 39967
+- 213252
+- 213190
+- 60412
+- 207484
+- 268091
+- 270781

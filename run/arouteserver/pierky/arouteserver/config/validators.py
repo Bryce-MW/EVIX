@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -209,15 +209,15 @@ class ValidatorListOf(ConfigParserValidator):
         ConfigParserValidator.__init__(self, *args, **kwargs)
         self.cls = cls
 
-    def _validate(self, l):
-        if not isinstance(l, list):
+    def _validate(self, lst):
+        if not isinstance(lst, list):
             raise ConfigError("Invalid format: must be a list")
 
-        for v in l:
+        for v in lst:
             validator = self.cls()
             v = validator.validate(v)
 
-        return l
+        return lst
 
 class ValidatorPrefixListEntry(ConfigParserValidator):
 

@@ -12,30 +12,24 @@ jobs:
 
     # All the "standard" tests, run on push/PR.
     - stage: test
-      env: TOXENV=py34-syntax
-      python: "3.4"
+      env: TOXENV=py36-syntax
+      python: "3.6"
       install:
         - pip install tox
-    - env: TOXENV=py27-flake8
-      python: "2.7"
+    - env: TOXENV=py36-flake8
+      python: "3.6"
       install:
         - pip install tox
-    - env: TOXENV=py34-flake8
-      python: "3.4"
+    - env: TOXENV=py36
+      python: "3.6"
       install:
         - pip install tox
-    - env: TOXENV=py27
-      python: "2.7"
-      install:
-        - pip install tox
-        - docker pull pierky/bird:1.6.4
-    - env: TOXENV=py34
-      python: "3.4"
-      install:
-        - pip install tox
-        - docker pull pierky/bird:1.6.4
-    - env: TOXENV=py27-coverage
-      python: "2.7"
+        - docker pull pierky/bird:1.6.8
+        - docker pull pierky/bird:2.0.7
+        - docker pull pierky/openbgpd:6.7p0
+        - docker pull pierky/exabgp:4.2.7
+    - env: TOXENV=py36-coverage
+      python: "3.6"
       install:
         - pip install tox
         - pip install coveralls
@@ -44,19 +38,13 @@ jobs:
 
     # External resources tests, run on push/PR and via cron job.
     - stage: test external resources
-      env: TOXENV=py34-extres
-      python: "3.4"
+      env: TOXENV=py36-extres
+      python: "3.6"
       install:
         - pip install tox
       before_script:
         - ./tests/external_resources/install_bgpq3.sh
-    - env: TOXENV=py27-extres
-      python: "2.7"
-      install:
-        - pip install tox
-      before_script:
-        - ./tests/external_resources/install_bgpq3.sh
-
+        - ./tests/external_resources/install_bgpq4.sh
     # Installation tests on Ubuntu, Debian, CentOS, run on push/PR with tags.
 
     # CentOS, latest
@@ -64,35 +52,21 @@ jobs:
       stage: installation tests
       install: skip
       script: ./tests/docker/build
-      env: DISTRO=centos-latest PYVER=2
+      env: DISTRO=centos-latest PYVER=3
 
     # Ubuntu, latest
-    - <<: *installation-stage
-      env: DISTRO=ubuntu-latest PYVER=2
     - <<: *installation-stage
       env: DISTRO=ubuntu-latest PYVER=3
 
     # Ubuntu, rolling
     - <<: *installation-stage
-      env: DISTRO=ubuntu-rolling PYVER=2
-    - <<: *installation-stage
       env: DISTRO=ubuntu-rolling PYVER=3
 
-    # Ubuntu, Trusty
-    - <<: *installation-stage
-      env: DISTRO=ubuntu-trusty PYVER=2
-    - <<: *installation-stage
-      env: DISTRO=ubuntu-trusty PYVER=3
-
     # Debian, stable
-    - <<: *installation-stage
-      env: DISTRO=debian-stable PYVER=2
     - <<: *installation-stage
       env: DISTRO=debian-stable PYVER=3
 
     # Debian, oldstable
-    - <<: *installation-stage
-      env: DISTRO=debian-oldstable PYVER=2
     - <<: *installation-stage
       env: DISTRO=debian-oldstable PYVER=3
 

@@ -18,7 +18,10 @@ Example: in a configuration where blackhole filtering is enabled, an instance of
                          std_comms=["65535:666"], lrg_comms=[])
 
 `Travis CI log file <https://travis-ci.org/pierky/arouteserver/>`_ contains the latest built-in live tests results.
-Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests results including those run on OpenBGPD can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
+Since (AFAIK) OpenBGPD can't be run on Travis CI platform, the full live tests results, including those run on OpenBGPD, can be found on `this file <https://github.com/pierky/arouteserver/blob/master/tests/last>`_.
+Starting with version 6.5, the Portable edition of OpenBGPD has been used to run some tests on TravisCI too.
+
+A summary of the integration testing results and the BGP speakers which are tested can be found on the :ref:`Integration testing coverage` section of this documentation.
 
 Setting up the environment to run live tests
 --------------------------------------------
@@ -32,7 +35,7 @@ Setting up the environment to run live tests
 
      docker network create --ipv6 --subnet=192.0.2.0/24 --subnet=2001:db8:1:1::/64 arouteserver
 
-3. Route server client instances used in live tests are based on BIRD 1.6.4, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.4`` image is expected to be found on the local Docker repository.
+3. Route server client instances used in live tests are based on BIRD 1.6.8, as well as the BIRD-based version of the route server used in built-in live tests; the ``pierky/bird:1.6.8`` image is expected to be found on the local Docker repository. Also, for OpenBGPD Portable edition tests, ``pierky/openbgpd:6.6p0`` must be there.
    Build the Docker image (or pull it from `Dockerhub <https://hub.docker.com/r/pierky/bird/>`_):
 
    .. code:: bash
@@ -41,11 +44,14 @@ Setting up the environment to run live tests
       # from https://github.com/pierky/dockerfiles
       mkdir ~/dockerfiles
       cd ~/dockerfiles
-      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.4/Dockerfile
-      docker build -t pierky/bird:1.6.4 -f Dockerfile.bird .
+      curl -o Dockerfile.bird -L https://raw.githubusercontent.com/pierky/dockerfiles/master/bird/1.6.8/Dockerfile
+      docker build -t pierky/bird:1.6.8 -f Dockerfile.bird .
+      curl -o Dockerfile.openbgpd -L https://raw.githubusercontent.com/pierky/dockerfiles/master/openbgpd/6.6p0/Dockerfile
+      docker build -t pierky/openbgpd:6.6p0 -f Dockerfile.openbgpd .
 
       # or pull it from Dockerhub
-      docker pull pierky/bird:1.6.4
+      docker pull pierky/bird:1.6.8
+      docker pull pierky/openbgpd:6.6p0
 
 If there is no plan to run tests on the OpenBGPD-based version of the route server, no further settings are needed.
 To run tests on the OpenBGPD-based version too, the following steps must be done as well.
@@ -81,15 +87,15 @@ OpenBGPD live-tests environment
       sudo virsh pool-define-as --name vms_pool --type dir --target ~/vms
       sudo virsh pool-start vms_pool
       sudo virt-install \
-        -n arouteserver_openbgpd60 \
+        -n arouteserver_openbgpd66 \
         -r 512 \
         --vcpus=1 \
-        --os-variant=openbsd4 \
+        --os-variant=openbsd4.2 \
         --accelerate \
-        -v -c install60.iso \
+        -v -c install66.iso \
         -w bridge:br-2d2956ce4b64 \
         --graphics vnc,listen=0.0.0.0 \
-        --disk path=~/vms/arouteserver_openbgpd.qcow2,size=5,format=qcow2
+        --disk path=~/vms/arouteserver_openbgpd66.qcow2,size=5,format=qcow2
 
    Finally, add the current user to the libvirtd group to allow management of the VM:
 

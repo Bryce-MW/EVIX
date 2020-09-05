@@ -42,14 +42,14 @@ A list of BGP communities is also automatically built.
    Route server policy definition file generated successfully!
    ===========================================================
    
-   The content of the general configuration file will now be written to examples
-   /auto-config/bird-general.yml
+   The content of the general configuration file will now be written to
+   examples/auto-config/bird-general.yml
    
    Some notes:
    
     - Accepted prefix lengths are 8-24 for IPv6 and 12-48 for IPv6.
-    - Routes with 'transit-free networks' ASNs in the middle of AS_PATH are
-   rejected.
+    - Routes with 'transit-free networks' or 'never via route-server' (PeeringDB)
+   ASNs in the middle of AS_PATH are rejected.
     - IRR-based filters are enabled; prefixes that are more specific of those
    registered are accepted.
     - PeeringDB is used to fetch AS-SETs for those clients that are not explicitly

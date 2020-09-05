@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ class BasicScenario_Data4(object):
         "AS3_1_IPAddress":          "192.0.2.31",
         "AS4_1_IPAddress":          "192.0.2.41",
         "AS101_IPAddress":          "192.0.2.101",
+        "AS222_IPAddress":          "192.0.2.222",
         "RoutesCollector_IPAddress":"192.0.2.99",
 
         "AS1_allowed_prefixes":     "1.0.0.0/8",
@@ -58,9 +59,9 @@ class BasicScenario_Data4(object):
         "AS2_nonclient_nexthop2_nh":"192.0.2.23",
 
         "AS3_blacklist1":           "3.0.1.0/24",
-	"AS3_cc_AS1only":           "3.0.2.0/24",
-	"AS3_cc_not_AS1":           "3.0.3.0/24",
-	"AS3_cc_none":              "3.0.4.0/24",
+        "AS3_cc_AS1only":           "3.0.2.0/24",
+        "AS3_cc_not_AS1":           "3.0.3.0/24",
+        "AS3_cc_none":              "3.0.4.0/24",
         "AS3_prepend1any":          "3.0.5.0/24",
         "AS3_prepend2any":          "3.0.6.0/24",
         "AS3_prepend3any":          "3.0.7.0/24",
@@ -92,6 +93,8 @@ class BasicScenario_Data4(object):
         "AS101_bad_good_comms":     "101.0.6.0/24",
         "AS101_no_rset":            "101.1.0.0/24",
         "AS101_transitfree_1":      "101.0.7.0/24",
+        "AS101_neverviars_1":       "101.0.10.0/24",
+        "AS101_neverviars_2":       "101.0.11.0/24",
         "AS101_roa_routeobj_1":     "101.2.0.0/17",
         "AS101_roa_routeobj_2":     "101.2.1.0/24",
         "AS101_roa_routeobj_3":     "101.2.128.0/24",
@@ -110,6 +113,11 @@ class BasicScenario_Data4(object):
 
         "AS104_arin_1":             "104.0.1.0/24",
         "AS104_nicbr_1":            "104.1.1.0/24",
+
+        "AS222_allowed_prefixes":   "222.0.0.0/8",
+        "AS222_aggregate1":         "222.1.1.0/24",
+        "AS222_aggregate2":         "222.2.2.0/24",
+        "AS222_aggregate3":         "222.3.3.0/24",
 
         "Default_route":            "0.0.0.0/0",
     }

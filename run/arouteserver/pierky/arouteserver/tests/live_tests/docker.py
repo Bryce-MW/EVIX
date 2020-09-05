@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 Pier Carlo Chiodi
+# Copyright (C) 2017-2020 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -174,6 +174,7 @@ class DockerInstance(BGPSpeakerInstance):
                     stderr=subprocess.PIPE
                 )
                 stdout, stderr = process.communicate()
+                print("cmd:", cmd)
                 print("STDOUT:")
                 print(stdout)
                 print("STDERR:")
