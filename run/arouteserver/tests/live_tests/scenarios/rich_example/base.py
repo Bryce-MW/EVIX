@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,9 +17,6 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
 
 class RichConfigExampleScenario(LiveScenario):
     __test__ = False
@@ -60,7 +57,7 @@ class RichConfigExampleScenario(LiveScenario):
 
     def set_instance_variables(self):
         self.rs = self._get_instance_by_name("rs")
-
+        
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -69,12 +66,6 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
-    IP_VER = None
-
-    @classmethod
-    def _get_local_file(cls):
-        return "bird.client.local"
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -84,33 +75,21 @@ class RichConfigExampleScenarioBIRD(RichConfigExampleScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     local_files=["client"],
-                                     target_version=cls.TARGET_VERSION),
+                                     local_files=["client"]),
                     "/etc/bird/bird.conf"
                 ),
                 (
-                    cls.use_static_file(cls._get_local_file()),
+                    cls.use_static_file("bird.client.local"),
                     "/etc/bird/client.local"
                 )
             ]
         )
-
-class RichConfigExampleScenarioBIRD2(RichConfigExampleScenarioBIRD):
-    __test__ = False
-
-    TARGET_VERSION = "2.0.7"
-
-    @classmethod
-    def _get_local_file(cls):
-        return "bird2.client.local"
 
 class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                         RichConfigExampleScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = OpenBGPDConfigBuilder
-
-    TARGET_VERSION = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -120,20 +99,8 @@ class RichConfigExampleScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             [
                 (
                     cls.build_rs_cfg("openbgpd", "main.j2", "rs.conf", None,
-                                     target_version=cls.TARGET_VERSION),
+                                     target_version="6.3"),
                     "/etc/bgpd.conf"
                 )
             ]
         )
-
-class RichConfigExampleScenarioOpenBGPDPrevious(RichConfigExampleScenarioOpenBGPD):
-
-    __test__ = False
-
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
-
-class RichConfigExampleScenarioOpenBGPDLatest(RichConfigExampleScenarioOpenBGPD):
-
-    __test__ = False
-
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION

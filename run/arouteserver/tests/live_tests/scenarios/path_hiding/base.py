@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,9 +19,7 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class PathHidingScenario(LiveScenario):
@@ -103,7 +101,7 @@ class PathHidingScenario(LiveScenario):
         self.AS3 = self._get_instance_by_name("AS3")
         self.AS4 = self._get_instance_by_name("AS4")
         self.AS101 = self._get_instance_by_name("AS101")
-
+        
     def test_010_setup(self):
         """{}: instances setup"""
         pass
@@ -147,8 +145,6 @@ class PathHidingScenarioBIRD(PathHidingScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
-    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -158,17 +154,11 @@ class PathHidingScenarioBIRD(PathHidingScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general=cls.CFG_GENERAL,
-                                     target_version=cls.TARGET_VERSION),
+                                     cfg_general=cls.CFG_GENERAL),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
-
-class PathHidingScenarioBIRD2(PathHidingScenarioBIRD):
-    __test__ = False
-
-    TARGET_VERSION = "2.0.7"
 
 class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenario):
     __test__ = False
@@ -192,15 +182,20 @@ class PathHidingScenarioOpenBGPD(LiveScenario_TagRejectPolicy, PathHidingScenari
             ]
         )
 
-class PathHidingScenarioOpenBGPDPrevious(PathHidingScenarioOpenBGPD):
+class PathHidingScenarioOpenBGPD62(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
+    TARGET_VERSION = "6.2"
 
-class PathHidingScenarioOpenBGPDLatest(PathHidingScenarioOpenBGPD):
+class PathHidingScenarioOpenBGPD63(PathHidingScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
+    TARGET_VERSION = "6.3"
+
+class PathHidingScenarioOpenBGPD64(PathHidingScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.4"
 
 class PathHidingScenario_MitigationOn(object):
 

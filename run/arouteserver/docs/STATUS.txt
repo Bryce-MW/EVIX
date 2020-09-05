@@ -10,8 +10,6 @@ Mentions / endorsements:
 
 - Anurag Bhatia, APNIC46, 12 September 2018: `video <https://www.youtube.com/watch?v=XfSNQbiR1cg&t=3140>`__, `slides <https://conference.apnic.net/46/assets/files/APNC402/Automate-your-IX-config.pdf>`__ (PDF)
 
-- Claudio Jeker, RIPE Labs, 28 November 2018: `OpenBGPD - Adding Diversity to the Route Server Landscape <https://labs.ripe.net/Members/claudio_jeker/openbgpd-adding-diversity-to-route-server-landscape>`__.
-
 Who is using ARouteServer?
 --------------------------
 
@@ -19,39 +17,17 @@ Who is using ARouteServer?
 
 - `CATNIX <http://www.catnix.net/en/>`__, BIRD.
 
-- `DO-IX <https://www.do-ix.net/>`__, BIRD.
-
-- `FCIX <https://fcix.net/>`__, BIRD.
-
-- `GAVLIX <https://gavlix.se/>`__.
-
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
 
-- `MIX <https://www.mix-it.net/>`__, BIRD.
-
-- `Netnod <https://www.netnod.se/>`__, BIRD and GoBGP\ :sup:`1`\.
-
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
-
-- `QCIX <http://www.qcix.net/>`__, BIRD.
-
-- `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
-
-- `Unmetered.Exchange <https://unmetered.exchange/>`__, BIRD.
-
-- `VANIX <https://vanix.ca/>`__.
-
-- `YEGIX <https://yegix.ca>`__, OpenBGPD.
 
 - `YXEIX <http://yxeix.ca/>`__, BIRD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
 
 Are you using it? Do you want to be listed here? `Drop me a message <https://pierky.com/#contactme>`__!
-
-\ :sup:`1`\: GoBGP configurations are generated using a fork of the project which is still WIP and that hopefully will be merged upstream in the future.
 
 Status
 ------

@@ -7,14 +7,12 @@ fi
 
 export PYTHONPATH="`pwd`"
 
-mkdir -p var/cache &>/dev/null
-
 RES_FILE=`mktemp`
 echo 0 > $RES_FILE
 
 function reset() {
 	AROUTESERVER="./scripts/arouteserver"
-	CFG_FILE="tests/var/arouteserver.yml"
+	CFG_FILE="var/build_doc.yml"
 	GENERAL="config.d/general.yml"
 	CLIENTS="config.d/clients.yml"
 	BOGONS="config.d/bogons.yml"
@@ -224,24 +222,6 @@ SUB_TEST="$LINENO"
 build_cmd "openbgpd" --ignore-issues "large_communities" | must_not_contain "'do_not_announce_to_peer'"
 
 # ---------------------------------------------
-reset
-TITLE="OpenBGPD tag_and_reject reject policy"
-GENERAL="tests/var/general.yml"
-cat << EOF > $GENERAL
-cfg:
-  rs_as: 999
-  router_id: "192.0.2.2"
-  filtering:
-    reject_policy:
-      policy: tag_and_reject
-EOF
-
-EXP_ERR="ERROR For OpenBGP, 'reject_policy' can't be set to 'tag_and_reject'."
-
-SUB_TEST="$LINENO"
-build_cmd "openbgpd" | must_not_contain "$EXP_ERR"
-
-# ---------------------------------------------
 # clients-from-euroix
 reset
 TITLE="clients-from-euroix"
@@ -254,10 +234,7 @@ SUB_TEST="$LINENO"
 run_cmd "clients-from-euroix" --url https://portal.lonap.net/apiv1/member-list/list 1 | must_contain "AS-APPLE"
 # 0.6 schema version:
 SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://ixp.getafix.ph/api/v4/member-export/ixf/0.6 2 | must_contain "description: GetaFIX AS112 Blackhole"
-# 0.7 schema version:
-SUB_TEST="$LINENO"
-run_cmd "clients-from-euroix" --url https://ixpmanager.swissix.ch/api/v4/member-export/ixf/0.7 1 | must_contain "description: Packet Clearing House"
+run_cmd "clients-from-euroix" --url https://www.swissix.ch/euroix/create-json-ixp-member-list.php 1 | must_contain "description: Microsoft"
 
 # ---------------------------------------------
 ERROR=`cat $RES_FILE`

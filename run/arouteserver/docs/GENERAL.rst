@@ -317,44 +317,6 @@ in the left-most position.
 
 
 
-'Never via route-servers' networks: ``never_via_route_servers``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Similarly to what happens with the **transit_free** config
-knob, any route with one of these ASNs in the AS_PATH
-will be rejected.
-If the **peering_db** option below within this section is
-set to True, ARouteServer acquires the list of ASNs from
-PeeringDB (based on the **info_never_via_route_servers**
-attribute).
-If **peering_db** is False and **asns** is not set or empty,
-the feature will be implicitly disabled.
-
-- ``peering_db``:
-  When set to True, the list of networks is automatically
-  retrieved from PeeringDB.
-
-
-  Default: **True**
-
-  Example:
-
-  .. code:: yaml
-
-     peering_db: True
-
-
-
-- ``asns``:
-  Comma separated list of ASNs which will be used to filter
-  incoming routes. When **peering_db** is True, the ASNs
-  listed here are added to those retrieved from PeeringDB.
-
-
-  Default: **none**
-
-
-
 IRRDB filters: ``irrdb``
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -874,11 +836,6 @@ Reject policy: ``reject_policy``
   If it is set to **tag**, they are tagged as described above
   (and not propagated anyway to other clients). In this case,
   the **reject_cause** BGP community must be also set.
-  If it is set to **tag_and_reject**, they are tagged as in **tag**
-  but also discarded as in **reject** mode.
-
-
-  OpenBGPD: only **reject** and **tag** modes are allowed.
 
 
   Can be overwritten on a client-by-client basis.
@@ -910,38 +867,20 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
   Can be one of the following options:
 
 
-  - **rtr**: ROAs are loaded from an external RTR source.
-    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli) can be
-    used for BIRD 1.6.x; in BIRD v2 there is built-in support
-    for the RTR protocol.
-    The name of the table where send the ROAs to is **RPKI** for
-    BIRD 1.6.x and **RPKI4** and **RPKI6** for BIRD v2.
-    In BIRD v2, an external file **rpki_rtr_config.local** must be
-    found within the same directory where the main configuration
-    file is stored (/etc/bird usually) and must contain the BIRD 2
-    configuration for 'protocol rpki'. An example on how to
-    setup that file can be found in the examples/bird2_rpki_rtr
-    directory (please note, in order to use the RTR protocol BIRD
-    must be compiled with --enable-libssh).
+  - **rtrlib**: ROAs are loaded using the external program
+    rtrllib (https://github.com/rtrlib/bird-rtrlib-cli).
+    The name of the table where send the ROAs to is **RPKI**.
 
 
-  - **ripe-rpki-validator-cache**: ROAs are loaded from a JSON
-    file in RIPE NCC RPKI Validator cache format.
+  - **ripe-rpki-validator-cache**: ROAs are fetched via
+    HTTP from the RIPE RPKI Validator cache
+    (http://localcert.ripe.net:8088/export.json by default).
 
 
-  Known compatible implementations at time of writing:
-
-
-  - RIPE NCC RPKI Validator: https://www.ripe.net
-
-
-  - Routinator: https://nlnetlabs.nl/projects/rpki/routinator/
-
-
-  Please note that the second method is far from guaranteeing
+  Please note that this method is far from guaranteeing
   that a cryptographically validated dataset is retrieved
   from a trusted cache, unless the URL of a local, trusted
-  instance of a RPKI validator is provided below in the
+  instance of RPKI Validator is provided below in the
   **ripe_rpki_validator_url** option.
 
 
@@ -960,15 +899,20 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
 
 - ``ripe_rpki_validator_url``:
-  URLs of files in RIPE NCC RPKI Validator cache format.
+  RIPE RPKI Validator URL.
   Meaningful only when **source** is **ripe-rpki-validator-cache**.
-  Multiple URLs can be provided here; they will be tried in
-  the same order in which they are listed below.
-  They can be **http://** or **https://** URLs or paths of
-  local files.
+  It can be an **http://** or **https://** URL or the path of a
+  local file.
 
 
-  Default: **RIPE NCC instance, NTT instance**
+  Default: **http://localcert.ripe.net:8088/export.json**
+
+  Example:
+
+  .. code:: yaml
+
+     ripe_rpki_validator_url: "http://localcert.ripe.net:8088/export.json"
+
 
 
 - ``allowed_trust_anchors``:
@@ -977,19 +921,11 @@ when **filtering.irrdb.use_rpki_roas_as_route_objects** or
 
 
   Values must be taken among those published in the RIPE RPKI
-  Validator cache file configured above.
+  Validator Configured Trust Anchors page:
+  http://localcert.ripe.net:8088/trust-anchors
 
 
-  Configured Trust Anchors pages:
-
-
-  - NTT instance: https://rpki.gin.ntt.net/trust-anchors
-
-
-  - RIPE NCC instance: https://rpki-validator.ripe.net/trust-anchors
-
-
-  Before enabling any ARIN TA, please consider the
+  Before enabling the 'ARIN RPKI Root', please consider the
   following URLs:
 
 
@@ -1567,8 +1503,8 @@ Reject cause
 
 - ``reject_cause``:
   This BGP community is used when the **reject_policy** option is
-  set to **tag** or **tag_and_reject**. It is used to track the code
-  of the reason that led the route to be considered as invalid.
+  set to **tag**. It is used to track the code of the reason that
+  led the route to be considered as invalid.
 
 
   The following community is scrubbed from inbound routes.
@@ -1584,9 +1520,9 @@ Reject cause
 
 - ``rejected_route_announced_by``:
   This BGP community is used when the **reject_policy** option is
-  set to **tag** or **tag_and_reject**. If configured, it is used
-  to track the ASN of the peer that announced the invalid route
-  to the route server.
+  set to **tag**. If configured, it is used to track the ASN
+  of the peer that announced the invalid route to the route
+  server.
 
 
   The following community is scrubbed from inbound routes.

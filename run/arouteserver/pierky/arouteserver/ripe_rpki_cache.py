@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,18 +27,18 @@ class RIPE_RPKI_ROAs(CachedObject):
 
     EXPIRY_TIME_TAG = "ripe_rpki_roas"
 
-    DEFAULT_URL = "https://rpki-validator.ripe.net/api/export.json"
+    DEFAULT_URL = "http://localcert.ripe.net:8088/export.json"
 
     def __init__(self, *args, **kwargs):
         CachedObject.__init__(self, *args, **kwargs)
 
-        self.urls = kwargs.get("ripe_rpki_validator_url",
-                               [self.DEFAULT_URL])
+        self.url = kwargs.get("ripe_rpki_validator_url",
+                              self.DEFAULT_URL)
 
         self.roas = {}
 
     def load_data(self):
-        logging.debug("Loading RPKI ROAs...")
+        logging.debug("Fetching RPKI ROAs from {}".format(self.url))
 
         CachedObject.load_data(self)
 
@@ -47,12 +47,11 @@ class RIPE_RPKI_ROAs(CachedObject):
     def _get_object_filename(self):
         return "ripe-rpki-cache.json"
 
-    def _get_data_from_url(self, url):
-        if url.lower().startswith(("http://", "https://")):
-            logging.debug("Fetching RPKI ROAs from {}".format(url))
+    def _get_data(self):
+        if self.url.lower().startswith(("http://", "https://")):
+            response = requests.get(self.url,
+                                    headers={'Accept': 'text/json'})
             try:
-                response = requests.get(url,
-                                        headers={'Accept': 'text/json'})
                 response.raise_for_status()
                 raw = response.content
             except requests.exceptions.HTTPError as e:
@@ -60,25 +59,24 @@ class RIPE_RPKI_ROAs(CachedObject):
                     "HTTP error while retrieving ROAs from "
                     "RIPE RPKI Validator cache ({}): "
                     "{}".format(
-                        url, str(e)
+                        self.url, str(e)
                     )
                 )
             except Exception as e:
                 raise RPKIValidatorCacheError(
                     "Error while retrieving ROAs from "
                     "RIPE RPKI Validator cache ({}): {}".format(
-                        url, str(e)
+                        self.url, str(e)
                     )
                 )
         else:
-            logging.debug("Loading RPKI ROAs from {} file".format(url))
             try:
-                raw = open(url, "rb").read()
+                raw = open(self.url, "rb").read()
             except Exception as e:
                 raise RPKIValidatorCacheError(
                     "Error while reading ROAs from file "
                     "{}: {}".format(
-                        url, str(e)
+                        self.url, str(e)
                     )
                 )
 
@@ -88,7 +86,7 @@ class RIPE_RPKI_ROAs(CachedObject):
             raise RPKIValidatorCacheError(
                 "Error while parsing ROAs from "
                 "RIPE RPKI Validator cache ({}): {}".format(
-                    url, str(e)
+                    self.url, str(e)
                 )
             )
 
@@ -102,17 +100,12 @@ class RIPE_RPKI_ROAs(CachedObject):
         for roa in roas["roas"]:
             try:
                 asn = roa.get("asn", None)
-                if asn is None:
+                if not asn:
                     raise ValueError("missing ASN")
-                if isinstance(asn, int):
-                    roa["asn"] = "AS{}".format(asn)
-                elif asn.isdigit():
-                    roa["asn"] = "AS{}".format(asn)
-                else:
-                    if not asn.startswith("AS"):
-                        raise ValueError("invalid ASN: " + asn)
-                    if not asn[2:].isdigit():
-                        raise ValueError("invalid ASN: " + asn)
+                if not asn.startswith("AS"):
+                    raise ValueError("invalid ASN: " + asn)
+                if not asn[2:].isdigit():
+                    raise ValueError("invalid ASN: " + asn)
 
                 if "ta" not in roa:
                     raise ValueError("missing trust anchor")
@@ -126,13 +119,11 @@ class RIPE_RPKI_ROAs(CachedObject):
                     raise ValueError("invalid prefix: " + prefix)
 
                 max_len = roa.get("maxLength", None)
-                if max_len is None:
+                if not max_len:
                     raise ValueError("missing maxLength")
                 if not isinstance(max_len, int):
                     if not max_len.isdigit():
                         raise ValueError("invalid maxLength: " + max_len)
-                    else:
-                        roa["maxLength"] = int(max_len)
 
             except ValueError as e:
                 logging.warning("Invalid ROA: {}, {}".format(
@@ -149,22 +140,3 @@ class RIPE_RPKI_ROAs(CachedObject):
                 continue
 
         return roas
-
-    def _get_data(self):
-        # List of (url, error)
-        errors = []
-        for url in self.urls:
-            try:
-                res = self._get_data_from_url(url)
-                logging.info(
-                        "RPKI ROAs loaded successfully from {}".format(url)
-                )
-                return res
-            except RPKIValidatorCacheError as e:
-                logging.warning(str(e))
-                errors.append((url, str(e)))
-
-        exc_msg = "Impossible to load RPKI ROAs:\n"
-        for url, err in errors:
-            exc_msg += " - while trying {}: {}\n".format(url, err)
-        raise RPKIValidatorCacheError(exc_msg)

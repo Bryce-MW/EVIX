@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,9 +19,7 @@ import unittest
 from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance, \
-                                                          OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
+from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDInstance
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
 
 class BGPCommunitiesScenario(LiveScenario):
@@ -217,10 +215,6 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
 
-    TARGET_VERSION = None
-
-    IP_VER = None
-
     @classmethod
     def _setup_rs_instance(cls):
         return cls.RS_INSTANCE_CLASS(
@@ -228,17 +222,11 @@ class BGPCommunitiesScenarioBIRD(BGPCommunitiesScenario):
             cls.DATA["rs_IPAddress"],
             [
                 (
-                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     target_version=cls.TARGET_VERSION),
+                    cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER),
                     "/etc/bird/bird.conf"
                 )
             ]
         )
-
-class BGPCommunitiesScenarioBIRD2(BGPCommunitiesScenarioBIRD):
-    __test__ = False
-
-    TARGET_VERSION = "2.0.7"
 
 class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
                                      BGPCommunitiesScenario):
@@ -262,14 +250,19 @@ class BGPCommunitiesScenarioOpenBGPD(LiveScenario_TagRejectPolicy,
             ]
         )
 
-
-class BGPCommunitiesScenarioOpenBGPDPrevious(BGPCommunitiesScenarioOpenBGPD):
+class BGPCommunitiesScenarioOpenBGPD62(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.TARGET_VERSION
+    TARGET_VERSION = "6.2"
 
 
-class BGPCommunitiesScenarioOpenBGPDLatest(BGPCommunitiesScenarioOpenBGPD):
+class BGPCommunitiesScenarioOpenBGPD63(BGPCommunitiesScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDLatestInstance.TARGET_VERSION
+    TARGET_VERSION = "6.3"
+
+
+class BGPCommunitiesScenarioOpenBGPD64(BGPCommunitiesScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.4"

@@ -19,7 +19,7 @@ Configurations built using the files provided in the ``examples/rich`` directory
 
 - GTSM and ADD-PATH are enabled by default on the route server.
 - Next-hop filtering allows clients to set NEXT_HOP of any client in the same AS.
-- Local networks are filtered, and also transit-free ASNs, "never via route-servers" networks, invalid paths and prefixes/origin ASNs which are not authorized by clients' AS-SETs.
+- Local networks are filtered, and also transit-free ASNs, invalid paths and prefixes/origin ASNs which are not authorized by clients' AS-SETs.
 - Dataset used for prefix validation extended using ARIN and NIC.BR Whois DB dump and RPKI ROAs.
 - RPKI-based Origin Validation is enabled; INVALID routes are rejected.
 - A max-prefix limit is enforced on the basis of PeeringDB information.
@@ -131,14 +131,14 @@ A list of BGP communities is also automatically built.
    Route server policy definition file generated successfully!
    ===========================================================
    
-   The content of the general configuration file will now be written to
-   examples/auto-config/bird-general.yml
+   The content of the general configuration file will now be written to examples
+   /auto-config/bird-general.yml
    
    Some notes:
    
     - Accepted prefix lengths are 8-24 for IPv6 and 12-48 for IPv6.
-    - Routes with 'transit-free networks' or 'never via route-server' (PeeringDB)
-   ASNs in the middle of AS_PATH are rejected.
+    - Routes with 'transit-free networks' ASNs in the middle of AS_PATH are
+   rejected.
     - IRR-based filters are enabled; prefixes that are more specific of those
    registered are accepted.
     - PeeringDB is used to fetch AS-SETs for those clients that are not explicitly
@@ -166,22 +166,3 @@ IX-F Member Export files
 The files reported within this directory were generated using the ``ixf-member-export`` `command <https://arouteserver.readthedocs.io/en/latest/USAGE.html#ixf-member-export-command>`__.
 
 https://github.com/pierky/arouteserver/blob/master/examples/ixf-member-export
-
-BIRD v2 RPKI RTR configuration
-------------------------------
-
-This is an example of using BIRD v2 with an external source for RPKI ROAs.
-
-BIRD v2 has built-in support for the RTR protocol, that allows to connect the BGP daemon directly to a local cache (a "validator").
-
-.. note:: In order to enable the RTR protocol, BIRD must be compiled with ``--enable-libssh``.
-
-To configure BIRD v2 with ARouteServer in order to fetch ROAs using RTR, the ``rpki_roas.source`` option must be set to ``rtr`` and a local *rpki_rtr_config.local* file must be placed inside the same directory where the main BIRD configuration file is created (*/etc/bird* by default, or a custom one set using the ``--local-files-dir`` command line argument of ARouteServer).
-
-The *rpki_rtr_config.local* file is expected to contain the snippet of BIRD config needed to setup a *rpki protocol*, accordingly to what is documented in the official BIRD web site: https://bird.network.cz/?get_doc&v=20&f=bird-6.html#ss6.13
-
-The names of the tables where ROAs will be injected into must be ``RPKI4`` and ``RPKI6``.
-
-An example configuration is reported in the *rpki_rtr_config.local* file that can be found within this directory.
-
-https://github.com/pierky/arouteserver/blob/master/examples/bird2_rpki_rtr

@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ class BasicScenario_Data6(object):
         "AS3_1_IPAddress":          "2001:db8:1:1::31",
         "AS4_1_IPAddress":          "2001:db8:1:1::41",
         "AS101_IPAddress":          "2001:db8:1:1::101",
-        "AS222_IPAddress":          "2001:db8:1:1::222",
         "RoutesCollector_IPAddress":"2001:db8:1:1::999",
 
         "AS1_allowed_prefixes":     "2a01::/32",
@@ -60,8 +59,8 @@ class BasicScenario_Data6(object):
 
         "AS3_blacklist1":           "2a03:0:1::/48",
         "AS3_cc_AS1only":           "2a03:0:2::/48",
-        "AS3_cc_not_AS1":           "2a03:0:3::/48",
-        "AS3_cc_none":              "2a03:0:4::/48",
+	"AS3_cc_not_AS1":           "2a03:0:3::/48",
+	"AS3_cc_none":              "2a03:0:4::/48",
         "AS3_prepend1any":          "2a03:0:5::/48",
         "AS3_prepend2any":          "2a03:0:6::/48",
         "AS3_prepend3any":          "2a03:0:7::/48",
@@ -93,8 +92,6 @@ class BasicScenario_Data6(object):
         "AS101_bad_good_comms":     "3101:0:6::/48",
         "AS101_no_rset":            "3101:1::/48",
         "AS101_transitfree_1":      "3101:0:7::/48",
-        "AS101_neverviars_1":       "3101:0:10::/48",
-        "AS101_neverviars_2":       "3101:0:11::/48",
 
         "AS101_roa_valid1":         "3101:0:8::/48",
         "AS101_roa_invalid1":       "3101:0:9::/48",
@@ -115,11 +112,6 @@ class BasicScenario_Data6(object):
 
         "AS104_arin_1":             "3104:0:1::/48",
         "AS104_nicbr_1":            "3104:1:1::/48",
-
-        "AS222_allowed_prefixes":   "3222::/32",
-        "AS222_aggregate1":         "3222:0:1::/48",
-        "AS222_aggregate2":         "3222:0:2::/48",
-        "AS222_aggregate3":         "3222:0:3::/48",
 
         "Default_route":            "::/0",
     }

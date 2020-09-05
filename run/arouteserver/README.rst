@@ -38,16 +38,15 @@ How it works
               - "RIPE::AS-FOO"
         ...
 
-#. ARouteServer acquires external information to enrich them: i.e. `bgpq3`_/`bgpq4`_ for IRR data, `PeeringDB`_ for max-prefix limit and AS-SETs, ...
+#. ARouteServer acquires external information to enrich them: i.e. `bgpq3`_ for IRR data, `PeeringDB`_ for max-prefix limit and AS-SETs, ...
 
 #. `Jinja2`_ built-in templates are used to render the final route server's configuration file.
 
-   Currently, **BIRD** (>= 1.6.3 up to 1.6.8), **BIRD v2** (starting from 2.0.7 - support for BIRD v2 is in `early stages <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html>`_) and **OpenBGPD** (OpenBSD 6.1 up to 6.7 and also OpenBGPD Portable 6.7p0) are supported, with almost `feature parity <https://arouteserver.readthedocs.io/en/latest/SUPPORTED_SPEAKERS.html#supported-features>`_ between them.
+   Currently, **BIRD** (1.6.3 and 1.6.4) and **OpenBGPD** (OpenBSD 6.1 up to 6.4) are supported, with almost feature parity between them.
 
-**Validation** and testing of the configurations generated with this tool are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios and to validate the behaviour of the route server after configuring it with ARouteServer. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
+**Validation** and testing are performed using the built-in **live tests** framework: `Docker`_ instances are used to simulate several scenarios, and more custom scenarios can be built on the basis of the user's needs. More details on the `Live tests <https://arouteserver.readthedocs.io/en/latest/LIVETESTS.html>`_ section.
 
 .. _bgpq3: https://github.com/snar/bgpq3
-.. _bgpq4: https://github.com/bgp/bgpq4
 .. _PeeringDB: https://www.peeringdb.com/
 .. _Jinja2: http://jinja.pocoo.org/
 .. _Docker: https://www.docker.com/
@@ -63,7 +62,7 @@ Features
   - minimum and maximum IPv4/IPv6 **prefix length**;
   - maximum **AS_PATH length**;
   - reject **invalid AS_PATHs** (containing `private/invalid ASNs <http://mailman.nanog.org/pipermail/nanog/2016-June/086078.html>`_);
-  - reject AS_PATHs containing **transit-free** or **never via route-servers** ASNs (using `PeeringDB info_never_via_route_servers attribute <https://github.com/peeringdb/peeringdb/issues/394>`_);
+  - reject AS_PATHs containing **transit-free** ASNs;
   - reject **bogons**;
   - **max-prefix limit** based on global or client-specific values or on **PeeringDB** data.
 
@@ -144,8 +143,6 @@ Mentions / endorsements:
 
 - Anurag Bhatia, APNIC46, 12 September 2018: `video <https://www.youtube.com/watch?v=XfSNQbiR1cg&t=3140>`__, `slides <https://conference.apnic.net/46/assets/files/APNC402/Automate-your-IX-config.pdf>`__ (PDF)
 
-- Claudio Jeker, RIPE Labs, 28 November 2018: `OpenBGPD - Adding Diversity to the Route Server Landscape <https://labs.ripe.net/Members/claudio_jeker/openbgpd-adding-diversity-to-route-server-landscape>`__.
-
 Who is using ARouteServer?
 --------------------------
 
@@ -153,39 +150,17 @@ Who is using ARouteServer?
 
 - `CATNIX <http://www.catnix.net/en/>`__, BIRD.
 
-- `DO-IX <https://www.do-ix.net/>`__, BIRD.
-
-- `FCIX <https://fcix.net/>`__, BIRD.
-
-- `GAVLIX <https://gavlix.se/>`__.
-
 - `IX-Denver <http://ix-denver.org/>`__, BIRD.
 
 - `MBIX <http://www.mbix.ca/>`__, BIRD.
 
-- `MIX <https://www.mix-it.net/>`__, BIRD.
-
-- `Netnod <https://www.netnod.se/>`__, BIRD and GoBGP\ :sup:`1`\.
-
 - `PIT-IX <https://pit-ix.net/>`__, BIRD.
-
-- `QCIX <http://www.qcix.net/>`__, BIRD.
-
-- `SwissIX <https://www.swissix.ch/>`__, OpenBGPD.
-
-- `Unmetered.Exchange <https://unmetered.exchange/>`__, BIRD.
-
-- `VANIX <https://vanix.ca/>`__.
-
-- `YEGIX <https://yegix.ca>`__, OpenBGPD.
 
 - `YXEIX <http://yxeix.ca/>`__, BIRD.
 
 - `YYCIX <https://yycix.ca>`__, OpenBGPD.
 
 Are you using it? Do you want to be listed here? `Drop me a message <https://pierky.com/#contactme>`__!
-
-\ :sup:`1`\: GoBGP configurations are generated using a fork of the project which is still WIP and that hopefully will be merged upstream in the future.
 
 Status
 ------

@@ -1,3 +1,0 @@
-cfg:
-  router_id: "192.0.2.2"
-  !include general-shared.yml

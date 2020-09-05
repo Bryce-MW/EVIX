@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -88,34 +88,12 @@ class AS_SET_Bundle(object):
             )
         self.name = re.sub("[^a-zA-Z0-9_]", "_", self.name)
 
-        # The name will be used to generate config statements
-        # like AS_SET_<name>_asns and AS_SET_<name>_prefixes.
-        #
-        # In BIRD there is a limit of 64 characters for symbols:
-        #
-        #   #define SYM_MAX_LEN 64
-        #
-        # so every name that, once concatenated to the prefix
-        # and suffix above, will be longer than 64 characters
-        # is here truncated, and a "random" tag is attached
-        # to it in order to make it unique.
-        #
-        # 16 is the length of "AS_SET_" + "_prefixes", the longest
-        # combination of prefix and suffix.
-
-        if len(self.name) + 16 > 64:
-            TAG_LEN = 5
-            hash_str = hashlib.md5(self.name.encode("utf-8")).hexdigest()
-            tag = hash_str[:TAG_LEN]
-            max_name_len = 64 - 16 - TAG_LEN - 1
-            self.name = self.name[:max_name_len] + "_" + tag
-
 class IRRDBInfo(CachedObject, AS_SET_Bundle):
 
     BGPQ3_DEFAULT_HOST = "rr.ntt.net"
     BGPQ3_DEFAULT_SOURCES = ("RIPE,APNIC,AFRINIC,ARIN,NTTCOM,ALTDB,"
                              "BBOI,BELL,JPIRR,LEVEL3,RADB,RGNET,"
-                             "TC")
+                             "SAVVIS,TC")
     EXPIRY_TIME_TAG = "irr_as_sets"
 
     def __init__(self, object_names, *args, **kwargs):
@@ -126,8 +104,6 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         self.bgpq3_host = kwargs.get("bgpq3_host", self.BGPQ3_DEFAULT_HOST)
         self.bgpq3_sources = kwargs.get("bgpq3_sources",
                                         self.BGPQ3_DEFAULT_SOURCES)
-
-        self.bgpq = "bgpq4" if "bgpq4" in self.bgpq3_path else "bgpq3"
 
         AS_SET_Bundle.__init__(self, object_names)
 
@@ -153,15 +129,14 @@ class IRRDBInfo(CachedObject, AS_SET_Bundle):
         out, err = proc.communicate()
 
         if proc.returncode != 0:
-            err_msg = "{} exit code is {}".format(self.bgpq, proc.returncode)
+            err_msg = "bgpq3 exit code is {}".format(proc.returncode)
             if err is not None and err.strip():
                 err_msg += ", stderr: {}".format(err)
             raise ValueError(err_msg)
 
         if err is not None and err.strip():
-            logging.warning("{} succeeded but an error was "
+            logging.warning("bgpq3 succeeded but an error was "
                             "printed when executing '{}': {}".format(
-                                self.bgpq,
                                 " ".join(cmd), err.strip()
                             ))
 
@@ -214,9 +189,8 @@ class ASSet(IRRDBInfo):
             data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
-                "Error while parsing {} output "
+                "Error while parsing bgpq3 output "
                 "for the following command: '{}': {}".format(
-                    self.bgpq,
                     " ".join(cmd), str(e)
                 )
             )
@@ -275,9 +249,8 @@ class RSet(IRRDBInfo):
             data = json.loads(out.decode("utf-8"))
         except Exception as e:
             raise IRRDBToolsError(
-                "Error while parsing {} output "
+                "Error while parsing bgpq3 output "
                 "for the following command: '{}': {}".format(
-                    self.bgpq,
                     " ".join(cmd), str(e)
                 )
             )

@@ -254,9 +254,6 @@ cfg:
           absolute: 100
           relative: 15
       restart_after: 15
-    never_via_route_servers:
-      asns: null
-      peering_db: true
     next_hop:
       policy: strict
     reject_invalid_as_in_as_path: true
@@ -299,17 +296,15 @@ cfg:
   router_id: 192.0.2.2
   rpki_roas:
     allowed_trust_anchors:
-    - APNIC RPKI Root
+    - APNIC from AFRINIC RPKI Root
+    - APNIC from ARIN RPKI Root
+    - APNIC from IANA RPKI Root
+    - APNIC from LACNIC RPKI Root
+    - APNIC from RIPE RPKI Root
     - AfriNIC RPKI Root
     - LACNIC RPKI Root
     - RIPE NCC RPKI Root
-    - apnic
-    - afrinic
-    - lacnic
-    - ripe
-    ripe_rpki_validator_url:
-    - https://rpki-validator.ripe.net/api/export.json
-    - https://rpki.gin.ntt.net/api/export.json
+    ripe_rpki_validator_url: http://localcert.ripe.net:8088/export.json
     source: ripe-rpki-validator-cache
   rs_as: 999
   rtt_thresholds:
@@ -841,63 +836,5 @@ arin_whois_db_records
 
 
 registrobr_whois_db_records
----------------------------
+---------------------
 {}
-
-
-never_via_route_servers_asns
-----------------------------
-- 1299
-- 8607
-- 12322
-- 13030
-- 3320
-- 1273
-- 174
-- 6830
-- 19151
-- 8365
-- 8075
-- 6908
-- 11164
-- 2914
-- 17451
-- 3491
-- 34108
-- 8943
-- 37271
-- 8455
-- 57866
-- 36459
-- 7155
-- 263328
-- 46450
-- 52973
-- 27947
-- 265914
-- 134041
-- 138023
-- 263258
-- 54295
-- 209395
-- 138953
-- 58768
-- 328572
-- 393573
-- 393684
-- 269156
-- 207353
-- 209699
-- 270544
-- 328582
-- 267373
-- 267442
-- 269535
-- 48265
-- 39967
-- 213252
-- 213190
-- 60412
-- 207484
-- 268091
-- 270781

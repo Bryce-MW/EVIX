@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -67,9 +67,6 @@ class TestConfigureCmd(ARouteServerTestCase):
                         3257, 3320, 3356, 3549, 5511, 6453, 6461,
                         6762, 6830, 7018, 12956
                     ]
-                },
-                "never_via_route_servers": {
-                    "peering_db": True
                 },
                 "irrdb": {
                     "enforce_origin_in_as_set": True,
@@ -284,40 +281,6 @@ class TestConfigureCmd(ARouteServerTestCase):
         self.mock_answers([
             "openbgpd",
             "6.4",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build()
-
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
-
-    def test_openbgpd65_simple(self):
-        """Configure command: OpenBGPD 6.5, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.mock_answers([
-            "openbgpd",
-            "6.5",
-            "999",
-            "192.0.2.1",
-            "192.0.2.0/24,2001:db8::/32"
-        ])
-        dic = self.configure_and_build()
-
-        for comm_name in dic["cfg"]["communities"]:
-            self.assertTrue("std" in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("ext" not in dic["cfg"]["communities"][comm_name])
-            self.assertTrue("lrg" in dic["cfg"]["communities"][comm_name])
-
-    def test_openbgpd67_simple(self):
-        """Configure command: OpenBGPD 6.7, simple"""
-        self.expected_config["cfg"]["path_hiding"] = False
-        self.mock_answers([
-            "openbgpd",
-            "6.7",
             "999",
             "192.0.2.1",
             "192.0.2.0/24,2001:db8::/32"

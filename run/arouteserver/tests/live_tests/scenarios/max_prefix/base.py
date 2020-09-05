@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +20,6 @@ from pierky.arouteserver.builder import OpenBGPDConfigBuilder, BIRDConfigBuilder
 from pierky.arouteserver.tests.live_tests.base import LiveScenario, \
                                                       LiveScenario_TagRejectPolicy
 from pierky.arouteserver.tests.live_tests.bird import BIRDInstance
-from pierky.arouteserver.tests.live_tests.openbgpd import OpenBGPDPreviousInstance, \
-                                                          OpenBGPDLatestInstance
 
 class MaxPrefixScenario(LiveScenario):
     __test__ = False
@@ -97,8 +95,6 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
     __test__ = False
 
     CONFIG_BUILDER_CLASS = BIRDConfigBuilder
-    TARGET_VERSION = None
-    IP_VER = None
 
     @classmethod
     def _setup_rs_instance(cls):
@@ -108,8 +104,7 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
             [
                 (
                     cls.build_rs_cfg("bird", "main.j2", "rs.conf", cls.IP_VER,
-                                     cfg_general="general_bird.yml",
-                                     target_version=cls.TARGET_VERSION),
+                                     cfg_general="general_bird.yml"),
                     "/etc/bird/bird.conf"
                 )
             ]
@@ -179,11 +174,6 @@ class MaxPrefixScenarioBIRD(MaxPrefixScenario):
         self.rs.reload_config()
         self.test_020_sessions_up()
 
-class MaxPrefixScenarioBIRD2(MaxPrefixScenarioBIRD):
-    __test__ = False
-
-    TARGET_VERSION = "2.0.7"
-
 class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario):
     __test__ = False
 
@@ -219,12 +209,17 @@ class MaxPrefixScenarioOpenBGPD(LiveScenario_TagRejectPolicy, MaxPrefixScenario)
         for inst in (self.AS1, self.AS2, self.AS3, self.AS4):
             self.log_contains(inst, "the_rs: Received: Maximum number of prefixes reached")
 
-class MaxPrefixScenarioOpenBGPDPrevious(MaxPrefixScenarioOpenBGPD):
+class MaxPrefixScenarioOpenBGPD62(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDPreviousInstance.BGP_SPEAKER_VERSION
+    TARGET_VERSION = "6.2"
 
-class MaxPrefixScenarioOpenBGPDLatest(MaxPrefixScenarioOpenBGPD):
+class MaxPrefixScenarioOpenBGPD63(MaxPrefixScenarioOpenBGPD):
     __test__ = False
 
-    TARGET_VERSION = OpenBGPDLatestInstance.BGP_SPEAKER_VERSION
+    TARGET_VERSION = "6.3"
+
+class MaxPrefixScenarioOpenBGPD64(MaxPrefixScenarioOpenBGPD):
+    __test__ = False
+
+    TARGET_VERSION = "6.4"

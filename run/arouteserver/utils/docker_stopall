@@ -1,7 +1,0 @@
-#!/bin/bash
-
-for c in $(docker ps -f name=ars_ --format="{{.ID}}"); do
-    echo -n "Stopping ${c}... "
-    docker rm --force ${c} &>/dev/null
-    echo "OK"
-done

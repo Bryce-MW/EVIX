@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2020 Pier Carlo Chiodi
+# Copyright (C) 2017-2018 Pier Carlo Chiodi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,12 +72,7 @@ class KVMInstance(BGPSpeakerInstance):
                 "Error executing the following command:\n"
                 "\t{}\n"
                 "Output follows:\n\n"
-                "stdout:\n{}\n\n"
-                "----\n"
-                "stderr:\n{}\n\n"
-                "----\n"
-                "exit code: {}".format(cmd, e.output,
-                                       e.stderr, e.returncode)
+                "{}".format(cmd, e.output)
             )
 
     def is_running(self):
@@ -216,7 +211,6 @@ class KVMInstance(BGPSpeakerInstance):
 
         cmd = ("ssh -o BatchMode=yes -o ConnectTimeout=5 "
                "-o StrictHostKeyChecking=no "
-               "-o UserKnownHostsFile=/dev/null "
                "-o ServerAliveInterval=10 {user}@{ip} -i {path_to_key} "
                "{cmd}").format(
             user=self._get_ssh_user(),

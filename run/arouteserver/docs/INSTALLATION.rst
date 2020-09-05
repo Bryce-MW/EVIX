@@ -15,7 +15,7 @@ Some components used by ARouteServer need Python dev header files and static lib
    # CentOS
    yum -y install gcc python-devel
 
-Please note that ARouteServer also needs `bgpq3 <https://github.com/snar/bgpq3>`_ or `bgpq4 <https://github.com/bgp/bgpq4>`_ to build IRR-based filters: details on its installation can be found within the :ref:`External programs` section.
+Please note that ARouteServer also needs `bgpq3 <https://github.com/snar/bgpq3>`_ to build IRR-based filters: details on its installation can be found within the :ref:`External programs` section.
 
 Install using ``pip`` (suggested)
 ---------------------------------
@@ -97,9 +97,9 @@ External programs
 
 ARouteServer uses the following external programs:
 
-- (mandatory) `bgpq3 <https://github.com/snar/bgpq3>`_ or `bgpq4 <https://github.com/bgp/bgpq4>`_ are used to gather information from IRRDBs: at least one of them must be installed on the system where ARouteServer is executed.
-
-  To install bgpq3:
+- (mandatory) `bgpq3 <https://github.com/snar/bgpq3>`_ is used to gather information from IRRDBs.
+  
+  To install it:
 
   .. code:: bash
 
@@ -109,20 +109,7 @@ ARouteServer uses the following external programs:
     # make and gcc packages required
     ./configure
     make
-    sudo make install
-
-  To install bgpq4:
-
-  .. code:: bash
-
-    mkdir /path/to/bgpq4/directory
-    cd /path/to/bgpq4/directory
-    git clone https://github.com/bgp/bgpq4.git ./
-    # automake, autoconf, make and gcc packages required
-    ./bootstrap
-    ./configure
-    make
-    sudo make install
+    make install
 
 - (optional) `Docker <https://www.docker.com/>`_ is used to perform :doc:`live validation <LIVETESTS>` of configurations.
 
@@ -138,7 +125,7 @@ ARouteServer uses the following external programs:
 
   More details: https://wiki.debian.org/KVM
 
-- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; ARouteServer can use these tools to load RPKI data into BIRD 1.6.x. More details in :ref:`ROAs sources`.
+- (optional) `rtrlib <https://github.com/rtrlib>`_ and `bird-rtrlib-cli <https://github.com/rtrlib/bird-rtrlib-cli>`_; ARouteServer can use these tools to load RPKI data into BIRD. More details in :ref:`ROAs sources`.
 
   To install them:
 
@@ -146,15 +133,15 @@ ARouteServer uses the following external programs:
 
     curl -o rtrlib.zip -L https://github.com/rtrlib/rtrlib/archive/v0.3.6.zip
     unzip rtrlib.zip
-
+    
     cd rtrlib-0.3.6 && \
         cmake -D CMAKE_BUILD_TYPE=Release . && \
         make && \
         make install
-
+    
     curl -o bird-rtrlib-cli.zip -L https://github.com/rtrlib/bird-rtrlib-cli/archive/v0.1.1.zip
     unzip bird-rtrlib-cli.zip
-
+    
     cd bird-rtrlib-cli-0.1.1 && \
         cmake . && \
         make

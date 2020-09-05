@@ -3,131 +3,6 @@ Change log
 
 .. note:: **Upgrade notes**: after upgrading, run the ``arouteserver setup-templates`` command to sync the local templates with those distributed with the new version. More details on the `Upgrading <https://arouteserver.readthedocs.io/en/latest/INSTALLATION.html#upgrading>`__ section of the documentation.
 
-v0.26.0
--------
-
-- New: Add support for OpenBGPD/OpenBSD 6.7 and OpenBGPD Portable 6.7p0, also added to the integration testing suite.
-
-v0.25.1
--------
-
-- Fix: BIRD, use ``bgp_path.last``  since it's consistent with `RFC 6907 7.1.9-11 <https://tools.ietf.org/html/rfc6907#section-7.1.9>` (RPKI BOV of routes whose AS_PATH ends with an AS_SET).
-
-  More info: https://www.mail-archive.com/bird-users@network.cz/msg05152.html
-
-  Related: `PR #56 on GitHub <https://github.com/pierky/arouteserver/pull/56>`_.
-
-v0.25.0
--------
-
-- New feature: ``tag_and_reject`` reject policy for BIRD.
-
-  Invalid routes can be tagged with informational BGP communities and then discarded by BIRD.
-  With this option, alice-lg reject reasons are supported nicely, whilst keeping ``show routes all filtered`` working to keep birdwatcher happy.
-
-  Related: `PR #57 on GitHub <https://github.com/pierky/arouteserver/pull/57>`_.
-
-- Improvement: ``clients-from-euroix`` command, option ``--merge-from-custom-file`` to customise the list of clients generated from an Euro-IX JSON file.
-
-  More details on how to use this option can be found running ``arouteserver clients-from-euroix --help-merge-from-custom-file``.
-
-v0.24.1
--------
-
-- Improvement: add support for `bgpq4 <https://github.com/bgp/bgpq4>`_.
-
-  At least version 0.0.5 is required.
-
-  Related: `PR #53 on GitHub <https://github.com/pierky/arouteserver/pull/53>`_.
-
-- Fix: ``clients-from-euroix`` command, route server detection on Euro-IX schema versions 0.7 and 1.0.
-
-  In version 0.7 and 1.0 of the `Euro-IX member list JSON file <https://github.com/euro-ix/json-schemas>`_ the way the route server information are exported changed. The ``clients-from-euroix`` command was no longer able to filter out the IP addresses that represent the route server of the same IXP for which the members are processed, basically generating a client entry for the same route server being configured.
-
-v0.24.0
--------
-
-- New feature: *never via route-servers* ASNs filtering.
-
-  To drop routes containing an ASN which is classified as "never via route-servers" on PeeringDB (`info_never_via_route_servers` `attribute <https://github.com/peeringdb/peeringdb/issues/394>`_).
-
-  **Please note**: this feature is enabled by default.
-
-  Related: `issue #55 on GitHub <https://github.com/pierky/arouteserver/issues/55>`_.
-
-- Improvement: add `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ support to BIRD configs.
-
-  Changes the default BIRD time format to support `alice-lg/birdwatcher <https://github.com/alice-lg/birdwatcher>`_ out of the box.
-
-- Improvement: include a table with the reject codes in the HTML output.
-
-  Related: `issue #54 on GitHub <https://github.com/pierky/arouteserver/issues/54>`_.
-
-v0.23.0
--------
-
-- New: add support for BIRD v2.
-
-  **Please note**: BIRD v2 support is in early stages. Before moving any production platform to instances of BIRD v2 configured with this tool, please review the configurations carefully and run some simulations.
-
-- New: OpenBGPD/OpenBSD 6.6, OpenBGPD Portable 6.6p0 and BIRD 1.6.8 added to the integration testing suite.
-
-v0.22.2
--------
-
-- Fix: prevent environment variables with unknown escapes (like `\u`) from interrupting the execution.
-
-  Related: `issue #50 on GitHub <https://github.com/pierky/arouteserver/issues/50>`_.
-
-v0.22.1
--------
-
-- Fix: handle more formats for ROAs exported from the public instances of RIPE and NTT validators.
-
-  A new way of representing ASNs (without the "AS" prefix) and new TA names which were not matched by the default values of ``rpki_roas.allowed_trust_anchors`` prevented ROAs from being imported and correctly processed when the default settings were used.
-
-v0.22.0
--------
-
-This is the last release of ARouteServer for which Python 2.7 compatibility is guaranteed. From the next release, any new feature will not be tested against that version of Python.
-
-- New: `OpenBGPD Portable <https://github.com/openbgpd-portable/openbgpd-portable>` (release 6.5p1) also supported.
-
-  Release 6.5p1 of OpenBGPD Portable edition passed the integration testing suite.
-
-- New: add support for OpenBGPD/OpenBSD 6.5 enhancements.
-
-  Support for matching multiple communities at the same time allows to create more readable configurations.
-
-- Improvement: OpenBGPD, some filters refinement.
-
-  Avoid checking AS0 in AS_PATH since 6.4.
-  No needs to check routes of an address family different than the one used for the session.
-
-As announced with release 0.20.0, OpenBGPD/OpenBSD 6.2 is no longer tested. Also OpenBGPD/OpenBSD 6.3 tests have been decommissioned.
-Starting with this release, tests will be executed only against the 2 most recent releases of OpenBGPD/OpenBSD and against the last release of the supported major versions of BIRD.
-The implementation of new features may break compatibility of the configurations built for unsupported releases.
-
-v0.21.1
--------
-
-- Deprecation: SAVVIS IRR removed from the list of default sources used by bgpq3.
-
-- Fix (minor): truncate the max length of AS-SET names to 64 characters.
-
-  BIRD supports only names no longer than 64 characters.
-
-  Related: `issue #47 on GitHub <https://github.com/pierky/arouteserver/issues/47>`_.
-
-v0.21.0
--------
-
-- Improvement: when ``ripe-rpki-validator-cache`` is set as the source of ROAs, multiple URLs can now be specified to fetch data from.
-
-  URLs will be tried in the same order as they are configured; if the attempt to download ROAs from the first URL fails, the second URL will be tried, an so on.
-
-  By default, the `RIPE NCC public instance <https://rpki-validator.ripe.net/>`_ of the RIPE RPKI Validator will be tried first, then the `NTT instance <https://rpki.gin.ntt.net/>`_. The list of URLs can be set in the ``general.yml`` configuration file, ``roas.ripe_rpki_validator_url`` option.
-
 v0.20.0
 -------
 
@@ -149,9 +24,9 @@ Most of this release is based on the work made by `Claudio Jeker <https://github
 v0.19.1
 -------
 
-- Fix (BIRD configuration only): change ``bgp_path.last`` with ``bgp_path.last_nonaggregated``.
+- Fix (BIRD configuration only): change `bgp_path.last` with `bgp_path.last_nonaggregated`.
 
-  When a route is originated from the aggregation of two different routes using the AS_SET, ``bgp_path.last`` always returns 0, so the origin ASN validation against IRR always fails.
+  When a route is originated from the aggregation of two different routes using the AS_SET, `bgp_path.last` always returns 0, so the origin ASN validation against IRR always fails.
 
   Related: `issue #34 on GitHub <https://github.com/pierky/arouteserver/issues/34>`_.
 
@@ -322,7 +197,7 @@ v0.12.3
 - Improvement: always take the AS*n* macro into account when building IRRdb-based filters.
 
   Related: `issue #15 on GitHub <https://github.com/pierky/arouteserver/issues/15>`_.
-
+  
 v0.12.2
 -------
 
@@ -561,7 +436,7 @@ v0.1.0a6
 --------
 
 - New feature: RPKI-based filtering/tagging.
-
+  
 v0.1.0a5
 --------
 
