@@ -1,7 +1,7 @@
 #! /bin/bash
 
 host=`/evix/scripts/hostname.sh`
-ip=`/evix/scripts/ts/ip.sh $host`
+ip=`/evix/scripts/ip.sh $host`
 ipv6=`/evix/scripts/get-val.sh $host vxlan-ipv6`
 port_d=`/evix/scripts/get-val.sh $host vxlan-port`
 
