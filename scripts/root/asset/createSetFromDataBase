@@ -1,0 +1,68 @@
+#! /usr/bin/python3
+
+from validateASSET import getASSET
+import mysql.connector
+import socket, struct
+import datetime
+from os.path import expanduser
+from subprocess import call
+
+def unINT(INT):
+	return socket.inet_ntoa(struct.pack('!L', INT))
+
+mydb = mysql.connector.connect(
+	host="localhost",
+	user="evix",
+	passwd="***REMOVED***",
+	database="evix"
+)
+
+mycursor = mydb.cursor()
+
+mycursor.execute("SELECT asn, asset FROM peers;")
+
+updatedASN = []
+for line in mycursor:
+	updatedASN.append((getASSET(str(line[0])),line[0]))
+for new,old in zip(updatedASN,mycursor):
+	print ("AS " + new[1] + " was " + old[1] + " and is now " + new[0])
+
+#sql = "UPDATE peers SET ASSET = %s WHERE ASN = %s"
+#val = updatedASN
+
+#mycursor.executemany(sql, val)
+
+mydb.commit()
+
+IRREntry = """as-set:          AS-EVIX
+descr:           Members of EVIX
+remarks:         This object has been created automatically
+remarks:         using a python script which reads from our members database.
+remarks:         If there are errors, please email bryce@thenetworknerds.ca\n"""
+mycursor = mydb.cursor()
+mycursor.execute("SELECT ASN, description, website, location, status, address, address6, asset FROM peers;")
+
+for line in mycursor:
+#	print(str(line))
+	try:
+		IP = str(unINT(int(line[5])))
+	except TypeError:
+		IP = "No IPv4 Address"
+	if line[4] != 0:
+		IRREntry += "remarks:         --- " + str(line[1]) + " (AS"+str(line[0])+")---"+\
+		"\nremarks:         Website: "+str(line[2])+\
+		"\nremarks:         Location: "+str(line[3])+\
+		"\nremarks:         Status: "+str(line[4])+\
+		"\nremarks:         IPv4: "+IP+\
+		"\nremarks:         IPv6: "+str(line[6])+\
+		"\nmembers:         " + str(line[7]) + \
+		"\nremarks:\n"
+IRREntry+="""mnt-by:          MAINT-EVIX
+changed:         root@evix-svr1.evix.org """+\
+datetime.datetime.now().replace(microsecond=0).isoformat().split('T')[0].replace('-', '')+\
+"\nsource:          ALTDB"
+print (IRREntry)
+with open(expanduser("~/temporaryEmail"), 'w') as file:
+	file.write(IRREntry)
+	file.close()
+	call("mail -s \"[ALTDB] as-set: AS-EVIX [update]\" \"auto-dbm@altdb.net\" < ~/temporaryEmail",shell=True)
