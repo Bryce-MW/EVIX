@@ -5,4 +5,4 @@
       user: root
       key: "{{ item }}"
       state: present
-    with_lines: cat /evix/keys.txt
+    with_lines: cat /evix/config/keys.txt

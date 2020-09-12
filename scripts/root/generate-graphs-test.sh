@@ -18,7 +18,7 @@ daysecs=86400
 weeksecs=604800
 dayago=$((now - daysecs))
 weekago=$((now - weeksecs))
-outdir='/evix/IX-Website/templates/static/graphs'
+outdir='/evix/run/IX-Website/templates/static/graphs'
 token='***REMOVED***'
 TEXT="Switch Traffic - Created at $caldate $TZ"
 

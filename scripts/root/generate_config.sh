@@ -2,8 +2,8 @@
 
 #first generate the config
 export PYTHONPATH="`pwd`"
-/evix/arouteserver/scripts/arouteserver bird --ip-ver 4 -o /etc/bird/bird.conf
-/evix/arouteserver/scripts/arouteserver bird --ip-ver 6 -o /etc/bird/bird6.conf
+/evix/run/arouteserver/scripts/arouteserver bird --ip-ver 4 -o /etc/bird/bird.conf
+/evix/run/arouteserver/scripts/arouteserver bird --ip-ver 6 -o /etc/bird/bird6.conf
 
 #verify the syntax
 bird -p -c /etc/bird/bird.conf

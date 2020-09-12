@@ -9,29 +9,29 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ];then
   exit
 fi
 
-cd /evix/openvpn-ca/
+cd /evix/run/openvpn-ca/
 ./easyrsa build-client-full as_$1 nopass
 res=$?
 if [ $res -eq 0 ];then
   if [ $2 -ne "noipv4" ]; then
     echo "ifconfig-push $2 255.255.255.0
-    ifconfig-ipv6-push $3/64 ::" > /evix/configs/ccd/as_$1
+    ifconfig-ipv6-push $3/64 ::" > /evix/config/ccd/as_$1
     echo "Certificate Generated... pushing to tunnel servers."
   else
-    echo "ifconfig-ipv6-push $3/64 ::" > /evix/configs/ccd/as_$1
+    echo "ifconfig-ipv6-push $3/64 ::" > /evix/config/ccd/as_$1
     echo "Certificate Generated... pushing to tunnel servers."
   fi
-  /usr/bin/ansible-playbook /evix/playbooks/push_ccd.yml
+  /usr/bin/ansible-playbook /evix/config/playbooks/push_ccd.yml
   res=$?
   if [ $res -eq 0 ];then
     echo "CCD file pushed.  Credentials are:"
     echo "Server CA:"
-    cat /evix/openvpn-ca/pki/ca.crt
-    echo 
+    cat /evix/run/openvpn-ca/pki/ca.crt
+    echo
     echo "User cert:"
-    cat /evix/openvpn-ca/pki/issued/as_$1.crt
+    cat /evix/run/openvpn-ca/pki/issued/as_$1.crt
     echo
     echo "User key:"
-    cat /evix/openvpn-ca/pki/private/as_$1.key
+    cat /evix/run/openvpn-ca/pki/private/as_$1.key
   fi
 fi

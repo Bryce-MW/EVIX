@@ -2,6 +2,6 @@
   tasks:
     - name: Push CCD folder
       synchronize:
-        src: /evix/configs/ccd/
+        src: /evix/config/ccd/
         dest: /etc/openvpn/ccd/
 

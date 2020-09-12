@@ -2,12 +2,12 @@
   tasks:
     - name: Update bird config file
       template:
-        src: /evix/configs/bird.conf
+        src: /evix/config/bird/bird.conf
         dest: /etc/bird/bird.conf
       notify: reconfigure bird
     - name: Update bird6 config file
       template:
-        src: /evix/configs/bird6.conf
+        src: /evix/config/bird/bird6.conf
         dest: /etc/bird/bird6.conf
       notify: reconfigure bird6
     - template:
@@ -25,13 +25,13 @@
   tasks:
     - name: Update bird config file
       template:
-        src: /evix/configs/bird.conf
+        src: /evix/config/bird/bird.conf
         dest: /etc/bird/bird.conf
         mode: 0644
       notify: reconfigure bird
     - name: Update bird6 config file
       template:
-        src: /evix/configs/bird6.conf
+        src: /evix/config/bird/bird6.conf
         dest: /etc/bird/bird6.conf
         mode: 0644
       notify: reconfigure bird6

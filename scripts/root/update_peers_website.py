@@ -105,10 +105,6 @@ for client,_ in sorted(clients, key=lambda x: x[1]):
 			first_ip = False
 			first = False
 
-source_file = open("/evix/IX-Website/templates/page/ix_peers.html")
-source=source_file.read()
-source_file.close
-
 if __debug__:
 	print(header)
 	print("""
