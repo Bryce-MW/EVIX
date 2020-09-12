@@ -1,0 +1,48 @@
+- hosts: routeservers-primary 
+  tasks:
+    - name: Update bird config file
+      template:
+        src: /evix/configs/bird.conf
+        dest: /etc/bird/bird.conf
+      notify: reconfigure bird
+    - name: Update bird6 config file
+      template:
+        src: /evix/configs/bird6.conf
+        dest: /etc/bird/bird6.conf
+      notify: reconfigure bird6
+    - template:
+        src: /etc/bird/header.local
+        dest: /etc/bird/header.local
+  vars:
+    - rs_asn: 137933
+  handlers:
+    - name: reconfigure bird
+      command: /usr/sbin/birdc configure
+    - name: reconfigure bird6
+      command: /usr/sbin/birdc6 configure
+
+- hosts: routeservers-secondary
+  tasks:
+    - name: Update bird config file
+      template:
+        src: /evix/configs/bird.conf
+        dest: /etc/bird/bird.conf
+        mode: 0644
+      notify: reconfigure bird
+    - name: Update bird6 config file
+      template:
+        src: /evix/configs/bird6.conf
+        dest: /etc/bird/bird6.conf
+        mode: 0644
+      notify: reconfigure bird6
+    - template:
+        src: /etc/bird/header.local
+        dest: /etc/bird/header.local
+  vars:
+    - rs_asn: 209762
+  handlers: 
+    - name: reconfigure bird
+      command: /usr/sbin/birdc configure
+    - name: reconfigure bird6
+      command: /usr/sbin/birdc6 configure
+
