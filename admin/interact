@@ -330,7 +330,7 @@ def create(type):
 					return
 				ok = False
 				while not ok:
-					cursor.execute("SELECT 1 FROM ips WHERE ip=%s", (f"2602:fed2:fff:ffff::{ip}"))
+					cursor.execute("SELECT 1 FROM ips WHERE ip=%s", (f"2602:fed2:fff:ffff::{ip}",))
 					if not cursor.with_rows:
 						ok=True
 					else:
