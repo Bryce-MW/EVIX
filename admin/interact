@@ -357,7 +357,7 @@ for option in iter(ask(options), str(len(options))):
 	if not (option.isdigit() and int(option) < len(options)):
 		continue
 	option = options[int(option)]
-	object = ask_one(objects + (("Build from request",) if option=="create" else tuple()))
+	object = ask_one(objects + (("Build from request",) if option=="Create" else tuple()))
 	if option == "View":
 		results,result_type = search(object)
 		if len(results) == 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
