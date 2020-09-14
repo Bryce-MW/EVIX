@@ -7,7 +7,7 @@ fi
 
 SUCCESS=1
   #generate yaml from database
-  PEERS=$(/usr/bin/php /evix/scripts/root/pull_users.php)
+  PEERS=$(/usr/bin/php /evix/scripts/root/pull_peers.php)
   mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
   echo "$PEERS" > /etc/arouteserver/clients.yml
 
@@ -62,4 +62,4 @@ SUCCESS=1
   fi
 
     /usr/bin/ansible-playbook /evix/config/playbooks/push_bird.yml
-  fi
+
