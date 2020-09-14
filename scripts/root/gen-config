@@ -25,6 +25,6 @@ for i in cursor:
 		config[f"{server}.{type}"] = config.get(f"{server}.{type}", "") + f"{id} {ip} {additional_args}\n"
 
 for i in config:
-	#with open(f"/evix/config/peers/{i}", "w") as file:
+	with open(f"/evix/config/peers/{i}", "w") as file:
 		print(f"New config in /evix/config/peers/{i}:\n{config[i]}\n")
-		#file.write(config[i])
+		file.write(config[i])
