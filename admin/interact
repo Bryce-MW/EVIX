@@ -331,8 +331,8 @@ def create(type):
 					else:
 						ip += 1
 		if version == 6:
-			insert({"ip":f"2602:fed2:fff:ffff:6::{hex(ip)}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
-			ips.append(f"2602:fed2:fff:ffff:6::{hex(ip)}")
+			insert({"ip":f"2602:fed2:fff:ffff:6::{ip:x}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
+			ips.append(f"2602:fed2:fff:ffff:6::{ip:x}")
 		else:
 			insert({"ip":f"206.81.104.{ip}","version":4,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 			insert({"ip":f"2602:fed2:fff:ffff::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
@@ -340,6 +340,8 @@ def create(type):
 			ips.append(f"2602:fed2:fff:ffff:::{ip}")
 
 		connection = create_connection(server=request["tunnel_location"], type=request["tunnel_type"], client_id=client["id"], ips=ips)
+		insert(connection, "connections")
+		connection["id"] = cursor.lastrowid
 
 		print("New client details:")
 		print(formats["Clients"].format(**client))
@@ -431,7 +433,7 @@ for option in iter(ask(options), str(len(options))):
 					if object == "ASNs":
 						cursor.execute(f"DELETE FROM {object.lower()} WHERE asn=%s", (int(key),))
 					elif object == "IPs":
-						cursor.execute(f"DELETE FROM {object.lower()} WHERE ip=%s", (int(key),))
+						cursor.execute(f"DELETE FROM {object.lower()} WHERE ip=%s", (key,))
 					else:
 						cursor.execute(f"DELETE FROM {object.lower()} WHERE id=%s", (int(key),))
 				except mysql.connector.Error as err:
