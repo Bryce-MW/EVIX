@@ -1,0 +1,7 @@
+log/*
+
+*/__pycache__/
+
+backups/*
+config/bird/bird.conf
+config/bird/bird6.conf

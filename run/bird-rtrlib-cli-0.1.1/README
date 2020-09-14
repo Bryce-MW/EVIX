@@ -1,0 +1,60 @@
+BIRD RTRlib CLI Integration
+===========================
+
+Introduction
+------------
+
+This tool maintains the ROA table of the BIRD Internet Routing Daemon
+(http://bird.network.cz). It automatically adds and deletes ROA
+information using the RTRlib (http://rpki.realmv6.org/).
+
+This tool brings RPKI functionality to BIRD but does not require any
+changes to the BIRD code base. The program runs in parallel to the BIRD
+daemon and communicates with the daemon via the BIRD control socket.
+
+
+Requierements
+-------------
+
+To build the command line interface, (1) the CMake build system, (2)
+RTRlib with SSH support, and (3) BIRD must be installed.
+
+
+Compilation
+-----------
+
+* Generate Makefile
+
+  RTRlib was installed in default paths
+
+    cmake .
+
+  RTRlib was installed in a non-default directory <rtrlib>
+
+    cmake -DRTRLIB_INCLUDE=<rtrlib> -DRTRLIB_LIBRARY=</path/to/rtrlib.[a|so|dylib]> .
+
+
+* Build the command line interface
+
+    make
+
+
+Using
+-----
+
+* Create a ROA table in the bird.conf
+
+* Start BIRD RTRLIB CLI, i.e., connect to a BIRD control socket and RPKI
+  cache server, for example
+
+    ./bird-rtrlib-cli -b /var/run/bird.ctl -r rpki-validator.realmv6.org:8282
+
+* Help
+
+   ./bird-rtrlib-cli --help
+
+
+Contact
+-------
+
+Mailing List: rtrlib@googlegroups.com

@@ -1,0 +1,41 @@
+#! /bin/zsh
+
+cd json
+
+ls root-identities |
+xargs echo blank |
+xargs -n 1 find . -name |
+xargs tail -n +1 |
+tail -n -2 |
+sed -e 's/==> ..root-identities.//g' -e 's/<==//g' |
+xargs -n 2 |
+awk 'BEGIN{getline l < "server.middle"; getline m < "server.middle"}
+{print $2 l "\n" m $1}' |
+head -c -1 |
+cat server.head - server.end > roots.zerotier
+
+cat moon.json.head roots.zerotier moon.json.end > moon.json
+cat planet.json.head roots.zerotier planet.json.end > planet.json
+
+cd ../
+zerotier-idtool genmoon json/moon.json
+zerotier-idtool genmoon json/planet.json
+
+mv 0000000227883110.moon planet
+
+cp -u planet /evix/IX-Website/files/
+cp -u 0000002cb385e495.moon /evix/IX-Website/files/
+
+alt_id="~/.ssh/id_rsa"
+
+if (( EUID != 0 )); then
+  if [ ! -f ~/.ssh/alt/id_rsa ]; then
+    echo "It appears you may not have access to the tunnel servers?"
+    exit -1
+  fi
+  alt_id="~/.ssh/alt/id_rsa"
+fi
+
+scp -i $alt_id planet root@23.129.32.56:/var/lib/zerotier-one/
+scp -i $alt_id 0000002cb385e495.moon root@23.129.32.56:/var/lib/zerotier-one/moons.d/
+/evix/scripts/remote-scripts/runRemoteScript /evix/scripts/remote-scripts/scripts/zerotier-restart zt-root0

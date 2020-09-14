@@ -1,0 +1,7 @@
+- hosts: tunnelservers
+  tasks:
+    - name: Push CCD folder
+      synchronize:
+        src: /evix/config/ccd/
+        dest: /etc/openvpn/ccd/
+

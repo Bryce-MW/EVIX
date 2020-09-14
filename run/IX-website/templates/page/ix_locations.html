@@ -1,0 +1,32 @@
+{% block ixp_locations %}
+<div class="marketing">
+  
+  <h4>Fremont, CA, US</h4>
+  <ul>
+    <li>Our primary virtual switch location is in Fremont, California on the US West Coast.  This site has 1gbps of connectivity and direct peering to Hurricane Electric.<br/>The physical datacenter it is located in is Hurricane Electric's Fremont 2 DC</li>
+  </ul>
+  <br/>
+  <center>
+  	<h4>EVIX Fremont Daily Traffic Graph</h4>
+	  <img src="https://evix.org/mrtg/localhost_vmbr0-day.png" alt="Traffic Graph">
+  </center>
+<br/>
+  <h4>Amsterdam, The Netherlands</h4>
+  <ul>
+    <li>We have an extension switch in the Serverius DC1 datacenter located in Dronten, about 30KM away from Amsterdam, in The Netherlands.  <br/>This site is fed with a 250mbps circuit and has excellent peering into the rest of Europe.</li> 
+  </ul>
+<center>
+        <h4>EVIX Dronten Daily Traffic Graph</h4>
+          <img src="https://evix.org/mrtg/93.158.213.143_vmbr0-day.png" alt="Traffic Graph">
+  </center>
+<br/>
+  <h4>Auckland, NZ</h4>
+   <ul>
+      <li>The Asia-Pacfic region is served by an EVIX extension switch in New Zealand, offering much better latency to regional peers then tunneling through the US.  COnnectivity is provided by a 1gbps circuit to the Internet at large.</li>
+   </ul>
+      <center>
+         <h4>EVIX Auckland Daily Traffic Graph</h4>
+            <img src="https://evix.org/mrtg/103.131.30.249_vmbr0-day.png" alt="Traffic Graph">
+      </center>
+</div>
+{% endblock %}

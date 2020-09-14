@@ -1,0 +1,45 @@
+{% import '_macros_res_imports.html' as m_res_import with context %}
+
+<nav id="ix-nav" class="navbar">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      {% if ix.use_logo %}
+        <a class="navbar-brand" href="#">{{ m_res_import.image(true, "img/logo.png", ix.shortname, "ix-logo", "img/logo.png") }}</a>
+      {% else %}
+        <a class="navbar-brand" href="#"><h3 class="muted">{{ ix.shortname }}</h3></a>
+      {% endif %}
+      </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse ix-navbar" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right main-nav">
+        <li class="menu-li menu-li-home">
+          <a class="menu-btn-home" href="#home">Home</a>
+        </li>
+        <li class="menu-li menu-li-about">
+          <a class="menu-btn-about" href="#about">About</a>
+        </li>
+        <li class="menu-li menu-li-locations">
+          <a class="menu-btn-locations" href="#locations">Locations</a>
+        </li>
+	<li class="menu-li menu-li-contact">
+          <a class="menu-btn-contact" href="#contact">Get Conected</a>
+        </li>
+        <li class="menu-li menu-li-peers">
+          <a class="menu-btn-peers" href="#peers">Peers</a>
+        </li>
+        <li class="menu-li menu-li-faq" >
+          <a class="menu-btn-faq" href="#faq">FAQ</a>
+        </li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container-fluid -->
+</nav>

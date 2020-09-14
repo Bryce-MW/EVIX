@@ -1,4 +1,0 @@
-#! /bin/zsh
-
-cd /evix/scripts
-./approve_peer.sh $@

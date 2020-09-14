@@ -1,0 +1,2 @@
+ifconfig-push 206.81.104.59 255.255.255.0
+  ifconfig-ipv6-push 2602:fed2:fff:ffff::59/64 ::

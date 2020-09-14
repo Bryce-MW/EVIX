@@ -1,0 +1,10 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib/x86_64-linux-gnu
+
+Name: rtrlib
+Description: 
+Version: 0.3.6
+Requires: libssh >= 0.6.0
+Libs: -L${libdir} -lrtr
+Cflags: -I${includedir}
