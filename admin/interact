@@ -303,11 +303,11 @@ def create(type):
 		if "id" not in request:
 			insert(request, "requests")
 			request["id"] = cursor.lastrowid
-		client = build("Clients", check=True, defaults=requests)
+		client = build("Clients", check=True, defaults=request)
 		if "id" not in client:
 			insert(client, "clients")
 			client["id"] = cursor.lastrowid
-		asns = build("Clients", check=True, defaults=requests)
+		asns = build("Clients", check=True, defaults=request)
 		if "id" not in asns:
 			insert(asns, "clients")
 			asns["id"] = cursor.lastrowid
