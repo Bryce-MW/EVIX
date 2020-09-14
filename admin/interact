@@ -232,7 +232,7 @@ def create_connection(client_id, server=None, type=None, ips=None):
 		if results:
 			ids = tuple(int(i["tunnel_id"]) for i in results)
 			ids = tuple(i for i in ids if (i+1) not in ids)
-			connection["tunnel_id"] = str(min(id)+1)
+			connection["tunnel_id"] = str(min(ids)+1)
 		else:
 			connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.red))
 	else:
