@@ -331,7 +331,8 @@ def create(type):
 				ok = False
 				while not ok:
 					cursor.execute("SELECT 1 FROM ips WHERE ip=%s", (f"2602:fed2:fff:ffff::{ip}",))
-					if not cursor.with_rows:
+					results = tuple(cursor)
+					if not results:
 						ok=True
 					else:
 						ip += 1
