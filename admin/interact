@@ -227,7 +227,7 @@ def create_connection(client_id, server=None, type=None, ips=None):
 	else:
 		connection["type"] = type_names[ask_one(types)]
 	if connection["type"] in ("eoip", "vxlan"):
-		cursor.execute("SELECT min(tunnel_id) as tun_id FROM connections WHERE NOT EXSITS (SELECT 1 FROM connections c2 WHERE server=%(server)s AND type=%(type)s AND c2.tunnel_id=connections.tunnel_id + 1)", connection)
+		cursor.execute("SELECT min(tunnel_id) as tun_id FROM connections WHERE NOT EXSITS (SELECT 1 FROM connections AS c2 WHERE server=%(server)s AND type=%(type)s AND c2.tunnel_id=connections.tunnel_id + 1)", connection)
 		if cursor.with_rows:
 			connection["tunnel_id"] = str(tuple(cursor)[0])
 		else:
