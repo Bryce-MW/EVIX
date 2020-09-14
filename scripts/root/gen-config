@@ -4,4 +4,5 @@
 
 cd /evix
 
-git commit -a -m "Updated peers"
+git commit -a -m "Updated peers (script)"
+git push
