@@ -243,6 +243,7 @@ def create_connection(client_id, server=None, type=None, ips=None):
 			connection["additional_args"] = " ".join(ips)
 		else:
 			connection["additional_args"] = input(color("Assigned IPs (space seperated) => ", Colors.red))
+	return connection
 
 
 def create(type):
