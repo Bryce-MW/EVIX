@@ -308,8 +308,7 @@ def create(type):
 			insert(client, "clients")
 			client["id"] = cursor.lastrowid
 		asn = build("ASNs", check=True, defaults=request)
-		if "id" not in asns:
-			insert(asns, "asn")
+		insert(asn, "asn")
 		version = 4 if request["ipv4"] else 6
 		cursor.execute("SELECT * FROM ips WHERE version=%s", (version,))
 		all_ips = tuple(int(i["ip"].split(":")[-1].split(".")[-1], 16 if version==6 else 10) for i in cursor if ":6:" not in i["ip"])
