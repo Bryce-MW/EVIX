@@ -273,7 +273,7 @@ def create(type):
 			create(type)
 		version = int(version)
 		cursor.execute("SELECT * FROM ips WHERE version=%s", (version,))
-		all_ips = (int(i[ip].split(":")[-1].split(".")[-1], (16 if version==6 else 10)) for i in cursor if ":6:" not in i["ip"])
+		all_ips = tuple(int(i["ip"].split(":")[-1].split(".")[-1], (16 if version==6 else 10)) for i in cursor if ":6:" not in i["ip"])
 		ip = all_ips[0]
 		while ip in all_ips:
 			ip += 1
@@ -283,13 +283,14 @@ def create(type):
 					return
 				ok = False
 				while not ok:
-					cursor.execute("SELECT 1 FROM ips WHERE ip=%s", (f"2602:fed2:fff:ffff::{ip}"))
-					if not cursor.with_rows:
+					cursor.execute("SELECT 1 FROM ips WHERE ip=%s", (f"2602:fed2:fff:ffff::{ip}",))
+					results=tuple(cursor)
+					if not results:
 						ok=True
 					else:
 						ip += 1
 		if version == 6:
-			insert({"ip":f"2602:fed2:fff:ffff:6::{hex(ip)}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
+			insert({"ip":f"2602:fed2:fff:ffff:6::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 		else:
 			insert({"ip":f"206.81.104.{ip}","version":4,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 			insert({"ip":f"2602:fed2:fff:ffff::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
