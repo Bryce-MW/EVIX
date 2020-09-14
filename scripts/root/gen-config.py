@@ -18,7 +18,7 @@ cursor.execute("SELECT server,type,tunnel_id,ip,additional_args,client_id FROM c
 for i in cursor:
 	server,type,id,ip,additional_args,client_id = i
 	if type == "zerotier":
-		config[f"zerotier.peers"] = config.get(f"zerotier.peers", "") + f"{ip} {additonal_args}\n"
+		config[f"zerotier.peers"] = config.get(f"zerotier.peers", "") + f"{ip} {additional_args}\n"
 	elif type == "openvpn":
 		config[f"openvpn.peers"] = config.get(f"openvpn.peers", "") + f"{ip} {client_id} {additonal_args}\n"
 	else:
