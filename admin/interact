@@ -294,6 +294,10 @@ def create(type):
 		else:
 			insert({"ip":f"206.81.104.{ip}","version":4,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 			insert({"ip":f"2602:fed2:fff:ffff::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
+		print("New client details:")
+		cursor.execute("SELECT * FROM ips WHERE asn=%s", (asn["asn"],))
+		for ip in cursor:
+			print(formats["IPs"].format(**ip))
 	elif type == "Connections":
 		client = build("Clients", check=True)
 		if "id" not in client:
