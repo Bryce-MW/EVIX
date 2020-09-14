@@ -187,9 +187,10 @@ def build(type, defaults=dict(), check=False, ignore="id"):
 			values[field] = int(values[field])
 		if check:
 			cursor.execute(f"SELECT * FROM {type.lower()} WHERE {field}=%({field})s", values)
-			if cursor.with_rows:
+			results = tuple(cursor)
+			if results:
 				print("Existing object(s) exist. Would you like to choose one of them?")
-				strings = {formats[type].format(**i):i for i in cursor}
+				strings = {formats[type].format(**i):i for i in results}
 				result = ask_one(("None",) + tuple(strings.keys()))
 				if result != "None":
 					values = strings[result]
@@ -308,7 +309,7 @@ def create(type):
 		if "id" not in client:
 			insert(client, "clients")
 			client["id"] = cursor.lastrowid
-		client["client_id"] = client["id"]
+		request["client_id"] = client["id"]
 		asn = build("ASNs", check=True, defaults=request)
 		insert(asn, "asns")
 		version = 4 if request["ipv4"] else 6
