@@ -372,7 +372,7 @@ for option in iter(ask(options), str(len(options))):
 	object = ask_one(objects + (("Build from request",) if option=="Create" else tuple()))
 	if option == "View":
 		results,result_type = search(object)
-		if len(results) == 1 and len(results[tuple(results.keys()[0])][0]) >= 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
+		if len(results) == 1 and len(results[tuple(results.keys())[0]][0]) >= 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
 			for result in results:
 				for line in results[result]:
 					print(formats[object].format(**line))
@@ -387,7 +387,7 @@ for option in iter(ask(options), str(len(options))):
 		results,result_type = search(object)
 		cont = True
 		while cont:
-			if len(results) == 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
+			if len(results) == 1 and len(results[tuple(results.keys())[0]][0]) >= 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
 				for result in results:
 					for line in results[result]:
 						print(formats[object].format(**line))
