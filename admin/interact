@@ -141,7 +141,7 @@ def get_result_for(line, type, other_type):
 			return tuple(cursor)
 	elif type == "IPs":
 		if other_type == "Clients":
-			cursor.execute("SELECT * FROM clients WHERE id in (SELECT client_id FROM asns INNER JOIN ips ON asns.asn=ips.asn WHERE ips.ip=%(ip)s))", line)
+			cursor.execute("SELECT * FROM clients WHERE EXISTS (SELECT 1 FROM asns INNER JOIN ips ON asns.asn=ips.asn WHERE ips.ip=%(ip)s AND asns.clitne_id=clients.id))", line)
 			return tuple(cursor)
 		elif other_type == "ASNs":
 			cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", line)
