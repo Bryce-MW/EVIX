@@ -317,7 +317,7 @@ def create(type):
 					else:
 						ip += 1
 		if version == 6:
-			insert({"ip":f"2602:fed2:fff:ffff:6::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
+			insert({"ip":f"2602:fed2:fff:ffff:6::{ip:x}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 		else:
 			insert({"ip":f"206.81.104.{ip}","version":4,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 			insert({"ip":f"2602:fed2:fff:ffff::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
@@ -348,6 +348,7 @@ def create(type):
 		cursor.execute("SELECT * FROM ips WHERE version=%s", (version,))
 		all_ips = tuple(int(i["ip"].split(":")[-1].split(".")[-1], 16 if version==6 else 10) for i in cursor if ":6:" not in i["ip"])
 		ip = all_ips[0]
+		print(all_ips)
 		ips = list()
 		while ip in all_ips:
 			ip += 1
