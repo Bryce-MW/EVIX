@@ -10,10 +10,10 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ];then
 fi
 
 cd /evix/run/openvpn-ca/
-./easyrsa build-client-full as_$1 nopass
+./easyrsa build-client-full as_$1 nopass <<< "password"
 res=$?
 if [ $res -eq 0 ];then
-  if [ $2 -ne "noipv4" ]; then
+  if [ "$2" != "noipv4" ]; then
     echo "ifconfig-push $2 255.255.255.0
     ifconfig-ipv6-push $3/64 ::" > /evix/config/ccd/as_$1
     echo "Certificate Generated... pushing to tunnel servers."
