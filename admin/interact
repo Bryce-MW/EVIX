@@ -238,9 +238,14 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 			connection["tunnel_id"] = str(min(ids)+1)
 		else:
 			connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.red))
+	if connection["type"] == "openvpn":
+		if asn:
+			connection["tunnel_id"] = str(asn)
+		else:
+			connection["tunnel_id"] = input(color("ASN => ", Colors.red))
 	else:
-		connection["tunnel_id"] = input(color("Tunnel ID (interface,none for ovpn) => ", Colors.red))
-	connection["ip"] = input(color("Remote IP (ZT ID, none for local) => ", Colors.red))
+		connection["tunnel_id"] = input(color("Tunnel ID (interface for local) => ", Colors.red))
+	connection["ip"] = input(color("Remote IP (ZT ID, none for local or openvpn) => ", Colors.red))
 	connection["additional_args"] = ""
 	if connection["type"] == "vxlan":
 		connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.red))
@@ -269,7 +274,8 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 			print("IPv6 Found:")
 			for ip in ipv6:
 				print(" -", ip)
-		ipv4 = input(color("IPv6 (blank for none)=> ", Colors.red))
+		ipv6 = input(color("IPv6 (blank for none)=> ", Colors.red))
+		connection["additional_args"] = ipv4 + " " + ipv6
 		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", asn, ipv4 if ipv4 else "noipv4", ipv6], stdout=1, stderr=2)
 	return connection
 
@@ -372,7 +378,7 @@ def create(type):
 			ips.append(f"206.81.104.{ip}")
 			ips.append(f"2602:fed2:fff:ffff:::{ip}")
 
-		connection = create_connection(server=request["tunnel_location"], type=request["tunnel_type"], client_id=client["id"], ips=ips)
+		connection = create_connection(server=request["tunnel_location"], type=request["tunnel_type"], client_id=client["id"], ips=ips, asn=asn["asn"])
 		insert(connection, "connections")
 		connection["id"] = cursor.lastrowid
 
