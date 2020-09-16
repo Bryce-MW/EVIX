@@ -276,7 +276,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 				print(" -", ip)
 		ipv6 = input(color("IPv6 (blank for none)=> ", Colors.green))
 		connection["additional_args"] = ipv4 + " " + ipv6
-		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", asn, ipv4 if ipv4 else "noipv4", ipv6])
+		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", str(asn), ipv4 if ipv4 else "noipv4", ipv6], stdout=1, stderr=2)
 	return connection
 
 
@@ -376,7 +376,7 @@ def create(type):
 			insert({"ip":f"206.81.104.{ip}","version":4,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 			insert({"ip":f"2602:fed2:fff:ffff::{ip}","version":6,"asn":asn["asn"],"monitor":True,"provisioned":True}, "ips")
 			ips.append(f"206.81.104.{ip}")
-			ips.append(f"2602:fed2:fff:ffff:::{ip}")
+			ips.append(f"2602:fed2:fff:ffff::{ip}")
 
 		connection = create_connection(server=request["tunnel_location"], type=request["tunnel_type"], client_id=client["id"], ips=ips, asn=asn["asn"])
 		insert(connection, "connections")
