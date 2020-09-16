@@ -4,6 +4,9 @@ import mysql.connector
 from mysql.connector import errorcode
 from colorit import *
 from frozendict import frozendict
+import subprocess
+import ipaddress
+
 
 try:
 	database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
@@ -216,7 +219,7 @@ def edit(object, table, id_o, id="id"):
 		print("Could not edit object", str(err))
 
 
-def create_connection(client_id, server=None, type=None, ips=None):
+def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 	connection = dict(client_id=client_id)
 	if server:
 		connection["server"] = server
@@ -247,6 +250,27 @@ def create_connection(client_id, server=None, type=None, ips=None):
 			connection["additional_args"] = " ".join(ips)
 		else:
 			connection["additional_args"] = input(color("Assigned IPs (space seperated) => ", Colors.red))
+	elif connection["type"] == "openvpn":
+		if not asn:
+			asn = input(color("ASN => ", Colors.red))
+		ipv4 = []
+		ipv6 = []
+		for ip in ips:
+			if ipaddress.ip_address(ip).version == 4:
+				ipv4.append(ip)
+			else:
+				ipv6.append(ipv6)
+		if len(ipv4) > 0:
+			print("IPv4 Found:")
+			for ip in ipv4:
+				print(" -", ip)
+		ipv4 = input(color("IPv4 (blank for none)=> ", Colors.red))
+		if len(ipv6) > 0:
+			print("IPv6 Found:")
+			for ip in ipv6:
+				print(" -", ip)
+		ipv4 = input(color("IPv6 (blank for none)=> ", Colors.red))
+		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", asn, ipv4 if ipv4 else "noipv4", ipv6])
 	return connection
 
 
