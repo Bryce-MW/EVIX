@@ -230,7 +230,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 		connection["type"] = type
 	else:
 		connection["type"] = type_names[ask_one(types)]
-	if connection["type"] == "eoip" or connection["type"] == "vxlan":
+	if connection["type"] in ("eoip", "vxlan"):
 		cursor.execute("SELECT tunnel_id FROM connections WHERE server=%(server)s AND type=%(type)s", connection)
 		results = tuple(cursor)
 		if results:
@@ -239,7 +239,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 			connection["tunnel_id"] = str(min(ids)+1)
 		else:
 			connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.orange))
-	if connection["type"] == "openvpn":
+	elif connection["type"] == "openvpn":
 		if asn:
 			connection["tunnel_id"] = str(asn)
 		else:
@@ -249,7 +249,6 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 	connection["ip"] = input(color("Remote IP (ZT ID, none for local or openvpn) => ", Colors.orange))
 	connection["additional_args"] = ""
 	if connection["type"] == "vxlan":
-		connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.orange))
 		connection["additional_args"] = input(color("Custom Port (blank for default) => ", Colors.orange))
 	elif connection["type"] == "zerotier":
 		if ips:
