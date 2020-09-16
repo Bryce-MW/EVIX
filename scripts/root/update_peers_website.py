@@ -54,7 +54,8 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
 
     first = True
     multiple = asns_cursor.rowcount > 1
-    multiple_asns = multiple
+    n = 0
+    total = 0
     for asn in asns_cursor:
         ips_cursor.reset()
         ips_cursor.execute(
@@ -72,11 +73,14 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         type = connection['type']
         website = client['website'] if client['website'] else "javascript:alert('User has not set a website.')"
 
-        multiple_ips = max(len(ipv4), len(ipv6)) > 1
-        multiple = multiple or multiple_ips
+        n_ips = max(len(ipv4), len(ipv6))
+
+        multiple = multiple or n_ips > 1
+        n += n_ips
 
         first_ip = True
-        for i in range(max(len(ipv4), len(ipv6))):
+        for i in range(n_ips):
+            total += 1
             ipv4_str = ipv4[i]['ip'] if i < len(ipv4) else "-----"
             ipv6_str = ipv6[i]['ip'] if i < len(ipv6) else "-----"
 
@@ -98,9 +102,9 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         </tr></tbody>""".format(website=website, name=name, asn=asn,
                                 ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
             else:
-                if i == 0 and not multiple_asns:
+                if i == 0 and not multiple:
                     table += '\n\t<tbody class="hide2">'
-                elif i == 1 or multiple_asns:
+                elif i == 1 or multiple:
                     table += '\n\t<tbody class="hide2" style="display: none;">'
                 table += """
     <tr>
@@ -113,8 +117,8 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         <td class="peer-table-policy"><font color="grey">{type}</font></td>
     </tr>""".format(website=website, name=name, asn=asn,
                     ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
-                if i == multiple:
-                    table += '</tbody>'
+            if i == n:
+                table += '</tbody>'
             first_ip = False
             first = False
 
