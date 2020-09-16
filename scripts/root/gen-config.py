@@ -20,7 +20,7 @@ for i in cursor:
 	if type == "zerotier":
 		config[f"zerotier.peers"] = config.get(f"zerotier.peers", "") + f"{ip} {additional_args}\n"
 	elif type == "openvpn":
-		config[f"openvpn.peers"] = config.get(f"openvpn.peers", "") + f"{ip} {client_id} {additonal_args}\n"
+		config[f"openvpn.peers"] = config.get(f"openvpn.peers", "") + f"{ip} {client_id} {additional_args}\n"
 	else:
 		config[f"{server}.{type}"] = config.get(f"{server}.{type}", "") + f"{id} {ip} {additional_args}\n"
 
