@@ -9,7 +9,6 @@ import ipaddress
 import sys
 
 
-tty = open("/dev/tty", "w")
 try:
 	database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
 except mysql.connector.Error as err:
@@ -278,7 +277,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 				print(" -", ip)
 		ipv6 = input(color("IPv6 (blank for none)=> ", Colors.red))
 		connection["additional_args"] = ipv4 + " " + ipv6
-		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", asn, ipv4 if ipv4 else "noipv4", ipv6], stdout=tty, stderr=tty)
+		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", asn, ipv4 if ipv4 else "noipv4", ipv6])
 	return connection
 
 
