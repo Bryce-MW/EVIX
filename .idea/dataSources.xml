@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="EVIX" uuid="890d3b9e-a097-4bb7-9876-76708e5c764a">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://127.0.0.1:3306/evix</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="America/Vancouver" />
+      </driver-properties>
+    </data-source>
+  </component>
+</project>
