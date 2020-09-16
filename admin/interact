@@ -346,9 +346,8 @@ def create(type):
 		insert(asn, "asns")
 		version = 4 if request["ipv4"] else 6
 		cursor.execute("SELECT * FROM ips WHERE version=%s", (version,))
-		all_ips = tuple(int(i["ip"].split(":")[-1].split(".")[-1], 16 if version==6 else 10) for i in cursor if ":6:" not in i["ip"])
+		all_ips = sorted(tuple(int(i["ip"].split(":")[-1].split(".")[-1], 16 if version==6 else 10) for i in cursor if (version == 4 and ":6:" not in i["ip"]) or (version == 6 and ":6:" in i["ip"])))
 		ip = all_ips[0]
-		print(all_ips)
 		ips = list()
 		while ip in all_ips:
 			ip += 1
