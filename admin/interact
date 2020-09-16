@@ -182,11 +182,11 @@ def build(type, defaults=dict(), check=False, ignore="id"):
 		if ignore and field == ignore:
 			continue
 		if field in defaults:
-			values[field] = input(color(f"{field} [{defaults[field]}]=> ", Colors.orange))
+			values[field] = input(color(f"{field} [{defaults[field]}]=> ", Colors.green))
 			if values[field] == "":
 				values[field] = str(defaults[field])
 		else:
-			values[field] = input(color(f"{field} => ", Colors.orange))
+			values[field] = input(color(f"{field} => ", Colors.green))
 		if values[field].isdigit():
 			values[field] = int(values[field])
 		if check:
@@ -238,26 +238,26 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 			ids = tuple(i for i in ids if (i+1) not in ids)
 			connection["tunnel_id"] = str(min(ids)+1)
 		else:
-			connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.orange))
+			connection["tunnel_id"] = input(color("Tunnel ID => ", Colors.green))
 	elif connection["type"] == "openvpn":
 		if asn:
 			connection["tunnel_id"] = str(asn)
 		else:
-			connection["tunnel_id"] = input(color("ASN => ", Colors.orange))
+			connection["tunnel_id"] = input(color("ASN => ", Colors.green))
 	else:
-		connection["tunnel_id"] = input(color("Tunnel ID (interface for local) => ", Colors.orange))
-	connection["ip"] = input(color("Remote IP (ZT ID, none for local or openvpn) => ", Colors.orange))
+		connection["tunnel_id"] = input(color("Tunnel ID (interface for local) => ", Colors.green))
+	connection["ip"] = input(color("Remote IP (ZT ID, none for local or openvpn) => ", Colors.green))
 	connection["additional_args"] = ""
 	if connection["type"] == "vxlan":
-		connection["additional_args"] = input(color("Custom Port (blank for default) => ", Colors.orange))
+		connection["additional_args"] = input(color("Custom Port (blank for default) => ", Colors.green))
 	elif connection["type"] == "zerotier":
 		if ips:
 			connection["additional_args"] = " ".join(ips)
 		else:
-			connection["additional_args"] = input(color("Assigned IPs (space seperated) => ", Colors.orange))
+			connection["additional_args"] = input(color("Assigned IPs (space seperated) => ", Colors.green))
 	elif connection["type"] == "openvpn":
 		if not asn:
-			asn = input(color("ASN => ", Colors.orange))
+			asn = input(color("ASN => ", Colors.green))
 		ipv4 = []
 		ipv6 = []
 		for ip in ips:
@@ -269,12 +269,12 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 			print("IPv4 Found:")
 			for ip in ipv4:
 				print(" -", ip)
-		ipv4 = input(color("IPv4 (blank for none)=> ", Colors.orange))
+		ipv4 = input(color("IPv4 (blank for none)=> ", Colors.green))
 		if len(ipv6) > 0:
 			print("IPv6 Found:")
 			for ip in ipv6:
 				print(" -", ip)
-		ipv6 = input(color("IPv6 (blank for none)=> ", Colors.orange))
+		ipv6 = input(color("IPv6 (blank for none)=> ", Colors.green))
 		connection["additional_args"] = ipv4 + " " + ipv6
 		subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", asn, ipv4 if ipv4 else "noipv4", ipv6])
 	return connection
@@ -299,7 +299,7 @@ def create(type):
 		if "client_id" not in asn:
 			print("Please use existing asn")
 			create(type)
-		version = input(color("IP version => ", Colors.orange))
+		version = input(color("IP version => ", Colors.green))
 		version = version[-1:]
 		if version not in ("4","6"):
 			print("Please use 4 or 6 only")
@@ -426,7 +426,7 @@ for option in iter(ask(options), str(len(options))):
 					print(formats[result_type].format(**result))
 					for line in results[result]:
 						print(" -", formats[object].format(**line))
-			key = input(color("Primay key (id,asn,ip) => ", Colors.orange))
+			key = input(color("Primay key (id,asn,ip) => ", Colors.green))
 			if object == "ASNs":
 				cursor.execute(f"SELECT * FROM {object.lower()} WHERE asn=%s", (int(key),))
 			elif object == "IPs":
@@ -465,7 +465,7 @@ for option in iter(ask(options), str(len(options))):
 					print(formats[result_type].format(**result))
 					for line in results[result]:
 						print(" -", formats[object].format(**line))
-			key = input(color("Primay key (id,asn,ip) => ", Colors.orange))
+			key = input(color("Primay key (id,asn,ip) => ", Colors.green))
 			print(color("Are you sure that you want to delete this object?", Colors.green))
 			if ask_one(("Yes","No")) == "Yes":
 				try:
