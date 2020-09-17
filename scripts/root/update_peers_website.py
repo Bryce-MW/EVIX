@@ -104,7 +104,7 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
             else:
                 if not multiple:
                     table += '\n\t<tbody class="hide2">'
-                elif total == 1:
+                elif total == 2:
                     table += '\n\t<tbody class="hide2" style="display: none;">'
                 table += """
     <tr>
