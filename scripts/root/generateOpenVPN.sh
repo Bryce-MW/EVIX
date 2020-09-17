@@ -35,3 +35,6 @@ if [ $res -eq 0 ];then
     cat /evix/run/openvpn-ca/pki/private/as_$1.key
   fi
 fi
+
+cd /evix
+git add --all
