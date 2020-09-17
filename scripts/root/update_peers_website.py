@@ -117,7 +117,7 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         <td class="peer-table-policy"><font color="grey">{type}</font></td>
     </tr>""".format(website=website, name=name, asn=asn,
                     ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
-            if i == n:
+            if total == n:
                 table += '</tbody>'
             first_ip = False
             first = False
