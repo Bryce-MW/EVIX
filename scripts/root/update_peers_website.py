@@ -71,7 +71,12 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
             connections_counter += 1
         server = connection['server']
         type = connection['type']
-        website = client['website'] if client['website'] else "javascript:alert('User has not set a website.')"
+        is_website = bool(client["website"])
+        website = client['website']
+        if not (website.startswith("https://") or website.startswith("http://")):
+            website = "http://" + website
+        if not is_website:
+            website = "javascript:alert('User has not set a website.')"
 
         n_ips = max(len(ipv4), len(ipv6))
 
