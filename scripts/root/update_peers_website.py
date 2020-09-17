@@ -102,9 +102,9 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         </tr></tbody>""".format(website=website, name=name, asn=asn,
                                 ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
             else:
-                if i == 0 and not multiple:
+                if not multiple:
                     table += '\n\t<tbody class="hide2">'
-                elif i == 1 or multiple:
+                elif total == 1:
                     table += '\n\t<tbody class="hide2" style="display: none;">'
                 table += """
     <tr>
