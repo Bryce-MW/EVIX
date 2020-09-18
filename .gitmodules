@@ -4,3 +4,6 @@
 [submodule "run/arouteserver"]
 	path = run/arouteserver
 	url = https://github.com/pierky/arouteserver.git
+[submodule "run/bgpq4"]
+	path = run/bgpq4
+	url = git@github.com:bgp/bgpq4.git
