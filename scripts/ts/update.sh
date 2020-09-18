@@ -13,3 +13,5 @@ for update in $updates; do
 done
 
 git -C /evix submodule sync --recursive
+git -C /evix submodule update --remote
+

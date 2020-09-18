@@ -13,3 +13,6 @@
 [submodule "config/peers"]
 	path = config/peers
 	url = git@git.discovr.us:EVIX/peers.git
+[submodule "config/ccd"]
+	path = config/ccd
+	url = git@git.discovr.us:EVIX/ccd.git

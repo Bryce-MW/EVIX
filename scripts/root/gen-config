@@ -2,7 +2,7 @@
 
 /evix/scripts/root/gen-config.py
 
-cd /evix
+cd /evix/config/peers
 
-#git commit -a -m "Updated peers (script)"
-#git push
+git commit -a -m "Updated peers (script)"
+git push
