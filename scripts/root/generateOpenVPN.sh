@@ -36,5 +36,5 @@ if [ $res -eq 0 ];then
   fi
 fi
 
-cd /evix
+cd /evix/config/peers
 git add --all
