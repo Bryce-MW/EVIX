@@ -19,5 +19,5 @@ else
 #    git commit -a -m "Updated website (script)"
 #    git push
 #    /usr/local/bin/staticjinja build --srcpath=templates --static=static --outpath=/var/www/evix/ --globals=globals.yaml
-  fi
+#  fi
 fi

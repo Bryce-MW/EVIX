@@ -72,7 +72,7 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         server = connection['server']
         type = connection['type']
         is_website = bool(client["website"])
-        website = client['website']
+        website = client['website'] or ""
         if not (website.startswith("https://") or website.startswith("http://")):
             website = "http://" + website
         if not is_website:

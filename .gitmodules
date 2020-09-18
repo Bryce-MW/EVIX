@@ -7,3 +7,6 @@
 [submodule "run/bgpq4"]
 	path = run/bgpq4
 	url = git@github.com:bgp/bgpq4.git
+[submodule "run/IX-Website"]
+	path = run/IX-Website
+	url = git@git.discovr.us:EVIX/EVIXWebsite.git

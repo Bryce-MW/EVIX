@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JSON=`/usr/bin/php /evix/scripts/peers-json.php`
+JSON=`/usr/bin/php /evix/scripts/root/peers-json.php`
 
 if [ $? -eq 0 ];then
   echo Exit Code OK, updating website
