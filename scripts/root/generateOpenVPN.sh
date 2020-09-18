@@ -36,5 +36,6 @@ if [ $res -eq 0 ];then
   fi
 fi
 
-cd /evix/config/peers
+cd /evix/config/ccd
 git add --all
+git commit -a -m "Updated OpenVPN peers (script)"
