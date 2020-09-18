@@ -2,7 +2,6 @@
 
 JSON=`/usr/bin/php /evix/scripts/peers-json.php`
 
-#if config is valid, reload bird
 if [ $? -eq 0 ];then
   echo Exit Code OK, updating website
   echo '' >  /var/www/evix/participants.json
