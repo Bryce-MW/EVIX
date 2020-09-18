@@ -1,8 +1,7 @@
 logs/*
 
-*/__pycache__/*
+__pycache__/
 
 backups/*
 config/bird/bird.conf
 config/bird/bird6.conf
-/evix/run/IX-Website/templates/static/graphs/*
