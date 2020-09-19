@@ -35,7 +35,3 @@ if [ $res -eq 0 ];then
     cat /evix/run/openvpn-ca/pki/private/as_$1.key
   fi
 fi
-
-cd /evix/config/ccd
-git add --all
-git commit -a -m "Updated OpenVPN peers (script)"
