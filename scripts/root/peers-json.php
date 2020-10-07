@@ -22,16 +22,22 @@
         	                        ),
                 	                1 => array (
                         	        "id" => 1,
-                                	"name" => "Dronten POP",
+                                	"name" => "Amsterdam POP",
 	                                "pdb_facility_id" => 857,
         	                        "city" => "Dronten",
                 	                "country" => "NL"
                         	        ),
                                 	2 => array (
 	                                "id" => 2,
-        	                        "name" => "NZ POP",
+        	                        "name" => "Auckland POP",
                 	                "city" => "Auckland",
                         	        "country" => "NZ"
+                                	),
+                                	3 => array (
+	                                "id" => 3,
+        	                        "name" => "Zurich POP",
+                	                "city" => "Zurich",
+                        	        "country" => "CZ"
                                 	)
 				),
 				"vlan" => array (
@@ -55,7 +61,7 @@
 	);
 
 	$conn=mysqli_connect('127.0.0.1','evix','***REMOVED***','evix');
-	$query="SELECT * FROM clients INNER JOIN asns ON client_id=id WHERE EXISTS (SELECT 1 FROM ips WHERE ips.asn=asns.asn)";
+	$query="SELECT * FROM clients INNER JOIN asns ON client_id=id WHERE EXISTS (SELECT 1 FROM ips WHERE ips.asn=asns.asn and ips.provisioned=true)";
 	$res=mysqli_query($conn,$query);
 	if($res)
 	{
@@ -69,7 +75,7 @@
 			$peers["member_list"][$i]["url"]=$row['website'];
 
 			//get additional IPs (if any)
-                        $additionalquery="SELECT * FROM ips WHERE asn=". $row['asn'];
+                        $additionalquery="SELECT * FROM ips WHERE asn=". $row['asn']. " and provisioned=true";
                         $additionalres=mysqli_query($conn,$additionalquery);
 			$additionalrows=mysqli_num_rows($additionalres);
 			$additionalips=array();
@@ -103,8 +109,7 @@
 					"if_speed" => 1000
 					)
 				),
-				"vlan_list" => array (
-				),$additionalips
+				"vlan_list" => $additionalips
 				)
 			);
 			$i++;
