@@ -2,7 +2,7 @@ host=`/evix/scripts/hostname.sh`
 
 git -C /evix pull --recurse-submodules
 
-for $script in /evix/scripts/ts/tunnels/*; do
+for script in /evix/scripts/ts/tunnels/*; do
   $script
 done
 
