@@ -16,3 +16,6 @@
 [submodule "config/ccd"]
 	path = config/ccd
 	url = git@git.discovr.us:EVIX/ccd.git
+[submodule "run/eoip-single"]
+	path = run/eoip-single
+	url = git@github.com:amphineko/eoip.git

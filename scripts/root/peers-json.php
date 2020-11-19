@@ -145,6 +145,7 @@
                                 )
                         )
                 ));
+		$i++;
 		$peers["member_list"][$i]["asnum"]=137933;
                         $peers["member_list"][$i]["member_type"]="peering";
                         $peers["member_list"][$i]["name"]="Route Server";
