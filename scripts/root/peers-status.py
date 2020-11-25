@@ -30,10 +30,6 @@ IPv{version}: {ip}
 Route Server: {server}
 
 If you belive this to be in error, please email support@evix.org.
-
-P.S. We just upgraded to a new database so you will now recive these
-messages for IPv6 and for both FMT and AMS route server so be sure to
-check which one this email is being sent about!
 """
 
 try:
