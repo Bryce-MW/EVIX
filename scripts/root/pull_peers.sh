@@ -1,5 +1,7 @@
 #!/bin/bash
 
+alias bgpq4=/usr/local/bin/bgpq4
+
 if [ "$EUID" -eq 0 ]
   then echo "ERROR.  You are root.  Please run as the EVIX user"
   exit
