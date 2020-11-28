@@ -1,4 +1,4 @@
-host=`/evix/scripts/hostname.sh`
+#! /bin/bash
 
 git -C /evix pull --recurse-submodules
 

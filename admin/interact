@@ -8,6 +8,7 @@ from click import secho, style
 from frozendict import frozendict
 
 database = None
+cursor = None
 
 try:
     database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
@@ -263,7 +264,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
         if ips:
             connection["additional_args"] = " ".join(ips)
         else:
-            connection["additional_args"] = input(style("Assigned IPs (space seperated) => ", fg='green'))
+            connection["additional_args"] = input(style("Assigned IPs (space separated) => ", fg='green'))
     elif connection["type"] == "openvpn":
         if not asn:
             asn = input(style("ASN => ", fg='green'))
@@ -434,7 +435,7 @@ for option in iter(ask(options), str(len(options))):
                     print(formats[result_type].format(**result))
                     for line in results[result]:
                         print(" -", formats[object].format(**line))
-            key = input(style("Primay key (id,asn,ip) => ", fg='green'))
+            key = input(style("Primary key (id,asn,ip) => ", fg='green'))
             if object == "ASNs":
                 cursor.execute(f"SELECT * FROM {object.lower()} WHERE asn=%s", (int(key),))
             elif object == "IPs":
@@ -473,7 +474,7 @@ for option in iter(ask(options), str(len(options))):
                     print(formats[result_type].format(**result))
                     for line in results[result]:
                         print(" -", formats[object].format(**line))
-            key = input(style("Primay key (id,asn,ip) => ", fg='green'))
+            key = input(style("Primary key (id,asn,ip) => ", fg='green'))
             secho("Are you sure that you want to delete this object?", fg='green')
             if ask_one(("Yes", "No")) == "Yes":
                 try:

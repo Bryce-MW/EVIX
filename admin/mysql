@@ -1,5 +1,3 @@
 #! /bin/zsh
 
-#echo "SELECT address FROM additionalips WHERE address IS NOT NULL ORDER BY address;" |
 mysql --user evix --password=***REMOVED*** --pager='less --quit-if-one-screen' evix
-# --pager='less -F'

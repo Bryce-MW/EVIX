@@ -16,5 +16,5 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 fi
 
 if [ -f "/evix/config/reboot/$host.sh" ]; then
-  /evix/config/reboot/$host.sh
+  /evix/config/reboot/"$host".sh
 fi
