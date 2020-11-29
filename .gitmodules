@@ -6,7 +6,7 @@
 	url = https://github.com/pierky/arouteserver.git
 [submodule "run/bgpq4"]
 	path = run/bgpq4
-	url = git@github.com:bgp/bgpq4.git
+	url = https://github.com/bgp/bgpq4.git
 [submodule "run/IX-Website"]
 	path = run/IX-Website
 	url = git@git.discovr.us:EVIX/EVIXWebsite.git
@@ -18,4 +18,4 @@
 	url = git@git.discovr.us:EVIX/ccd.git
 [submodule "run/eoip-single"]
 	path = run/eoip-single
-	url = git@github.com:amphineko/eoip.git
+	url = https://github.com/amphineko/eoip.git
