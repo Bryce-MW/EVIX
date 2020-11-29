@@ -24,6 +24,8 @@ export PYTHONPATH
 /evix/run/arouteserver/scripts/arouteserver bird --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird.conf
 /evix/run/arouteserver/scripts/arouteserver bird --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6.conf
 
+SUCCESS=1
+
 new=$(md5sum /tmp/bird.conf)
 old=$(md5sum /evix/config/bird/bird.conf)
 
@@ -37,7 +39,6 @@ if [ "$new" != "$old" ]; then
     mv /tmp/bird.conf /evix/config/bird/
     sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/config/bird/bird.conf
     sed -i -e 's/local as 137933/local as {{ rs_asn }}/g' /evix/config/bird/bird.conf
-    SUCCESS=1
   else
     echo Bird configuration is invalid
     SUCCESS=0
@@ -56,15 +57,14 @@ if [ "$new" != "$old" ]; then
     mv /tmp/bird6.conf /evix/config/bird/
     sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/config/bird/bird6.conf
     sed -i -e 's/local as 137933/local as {{ rs_asn }}/g' /evix/config/bird/bird6.conf
-    SUCCESS=1
   else
     echo Bird 6 configuration is invalid
     SUCCESS=0
   fi
 fi
 
-if [ $SUCCESS ]; then
+if [ "$SUCCESS" == "0" ]; then
   echo "Config failed"
+else
+  /usr/bin/ansible-playbook /evix/config/playbooks/push_bird.yml
 fi
-
-/usr/bin/ansible-playbook /evix/config/playbooks/push_bird.yml
