@@ -32,7 +32,7 @@ if [ "$new" != "$old" ]; then
   echo md5 has changed... updating bird
 
   #if config is valid, reload bird
-  if ! /usr/sbin/bird -p -c /tmp/bird.conf; then
+  if /usr/sbin/bird -p -c /tmp/bird.conf; then
     echo bird configuration is valid
     mv /tmp/bird.conf /evix/config/bird/
     sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/config/bird/bird.conf
@@ -44,14 +44,14 @@ if [ "$new" != "$old" ]; then
   fi
 fi
 
-new=$(md5sum /tmp/bird6.conf)
-old=$(md5sum /evix/config/bird/bird6.conf)
+new=$(md5sum /tmp/bird6.conf | cut -f1 -d' ')
+old=$(md5sum /evix/config/bird/bird6.conf | cut -f1 -d' ')
 
 #if file is new
 if [ "$new" != "$old" ]; then
 
   #if config is valid, reload bird
-  if ! /usr/sbin/bird6 -p -c /tmp/bird6.conf; then
+  if /usr/sbin/bird6 -p -c /tmp/bird6.conf; then
     echo bird 6 configuration is valid
     mv /tmp/bird6.conf /evix/config/bird/
     sed -i -e 's/rs_as = 137933/rs_as = {{ rs_asn }}/g' /evix/config/bird/bird6.conf
@@ -63,7 +63,7 @@ if [ "$new" != "$old" ]; then
   fi
 fi
 
-if [ ! $SUCCESS ]; then
+if [ $SUCCESS ]; then
   echo "Config failed"
 fi
 
