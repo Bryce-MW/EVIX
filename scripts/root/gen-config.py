@@ -1,7 +1,8 @@
 #! /usr/bin/env python3
 
 import mysql.connector
-from mysql.connector import errorcode
+
+database = None
 
 try:
 	database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
@@ -12,11 +13,11 @@ except mysql.connector.Error as err:
 
 cursor = database.cursor(buffered=True)
 
-config={}
+config = {}
 cursor.execute("SELECT server,type,tunnel_id,ip,additional_args,client_id FROM connections")
 
 for i in cursor:
-	server,type,id,ip,additional_args,client_id = i
+	server, type, id, ip, additional_args, client_id = i
 	if type == "zerotier":
 		config[f"zerotier.peers"] = config.get(f"zerotier.peers", "") + f"{ip} {additional_args}\n"
 	elif type == "openvpn":

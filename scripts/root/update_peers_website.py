@@ -2,6 +2,9 @@ import ipaddress
 
 import mysql.connector
 
+# NOTE(bryce): This is where all of the strings inserted into the table are kept
+from website_peers_table_strings import *
+
 database = None
 try:
     database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1',
@@ -12,17 +15,6 @@ except mysql.connector.Error as err:
     exit(1)
 
 table = ""
-header = """<table class="sortable" border="0" cellpadding="5" cellspacing=10" width="100%">
-    <thead><tr class="peers">
-        <th algin=left></th>
-        <th align=left>User</th>
-        <th align=left>AS</th>
-        <th align=left class="wide">IPv4 /24</th>
-        <th align=left class="wide">IPv6 /64</th>
-        <th align=left>Location</th>
-        <th align=left>Tunnel Type</th>
-     </tr></thead>
-<tbody><tr></tr>"""
 
 clients_cursor = database.cursor(dictionary=True, buffered=True)
 asns_cursor = database.cursor(dictionary=True, buffered=True)
@@ -93,87 +85,20 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
             asn = asn['asn'] if first_ip else ""
 
             if multiple and first:
-                table += """
-    <tbody class="labels"><tr>
-        <td>
-            <label for="{name}">▶ </label>
-            <input type="checkbox" name="{name}" id="{name}" data-toggle="toggle" style="display: none;"></td>
-                <td class="peer-table-company"><a href="{website}">{name}</a></td>
-                <td class="peer-table-as">{asn}</td>
-                <td class="peer-table-ipv4">{ipv4}</td>
-                <td class="peer-table-ipv6">{ipv6}</td>
-                <td class="peer-table-loc">{server}</td>
-                <td class="peer-table-policy"><font color="grey">{type}</font></td>
-        </tr></tbody>""".format(website=website, name=name, asn=asn,
-                                ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
+                table += multi_asn_entry.format(website=website, name=name, asn=asn, ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
             else:
                 if not multiple:
-                    table += '\n\t<tbody class="hide2">'
+                    table += single_asn_footer
                 elif total == 2:
-                    table += '\n\t<tbody class="hide2" style="display: none;">'
-                table += """
-    <tr>
-        <td></td>
-        <td class="peer-table-company"><a href="{website}">{name}</a></td>
-        <td class="peer-table-as">{asn}</td>
-        <td class="peer-table-ipv4">{ipv4}</td>
-        <td class="peer-table-ipv6">{ipv6}</td>
-        <td class="peer-table-loc">{server}</td>
-        <td class="peer-table-policy"><font color="grey">{type}</font></td>
-    </tr>""".format(website=website, name=name, asn=asn,
-                    ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
+                    table += multi_asn_footer
+                table += single_asn_entry.format(website=website, name=name, asn=asn, ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
             if total == n:
                 table += '</tbody>'
             first_ip = False
             first = False
 
 print(header)
-print("""
-    <tbody class="hide2">
-    <tr>
-            <td></td>
-            <td class="peer-table-company"><a href="None">EVIX Primary Route Server</a></td>
-            <td class="peer-table-as">137933</td>
-            <td class="peer-table-ipv4">206.81.104.1</td>
-            <td class="peer-table-ipv6">2602:fed2:fff:ffff::1</td>
-            <td class="peer-table-loc">-----</td>
-            <td class="peer-table-policy"><font color="grey">-----</font></td>
-    </tr></tbody>
-
-    <tbody class="hide2">
-    <tr>
-            <td></td>
-            <td class="peer-table-company"><a href="None">EVIX Backup Route Server</a></td>
-            <td class="peer-table-as">209762</td>
-            <td class="peer-table-ipv4">206.81.104.253</td>
-            <td class="peer-table-ipv6">2602:fed2:fff:ffff::253</td>
-            <td class="peer-table-loc">-----</td>
-            <td class="peer-table-policy"><font color="grey">-----</font></td>
-    </tr></tbody>
-
-    <tbody class="hide2">
-    <tr>
-            <td></td>
-            <td class="peer-table-company">-----</td>
-            <td class="peer-table-as">-----</td>
-            <td class="peer-table-ipv4">-----</td>
-            <td class="peer-table-ipv6">-----</td>
-            <td class="peer-table-loc">-----</td>
-            <td class="peer-table-policy"><font color="grey">-----</font></td>
-    </tr></tbody>
-""")
 print(table)
-print("""
-    <tbody class="hide2">
-    <tr>
-            <td></td>
-            <td class="peer-table-company"><a href="None"></a></td>
-            <td class="peer-table-as"></td>
-            <td class="peer-table-ipv4"></td>
-            <td class="peer-table-ipv6"></td>
-            <td class="peer-table-loc"></td>
-            <td class="peer-table-policy"><font color="grey"></font></td>
-    </tr></tbody>
-""" * 5)
+print(invisible_asn * 5)
 
 database.close()

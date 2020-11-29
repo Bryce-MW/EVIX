@@ -1,11 +1,11 @@
 #! /bin/python3
 
-import sys
-import mysql.connector
-import ipaddress
-from mysql.connector import errorcode
 import datetime
-import smtplib, ssl
+import smtplib
+import ssl
+import sys
+
+import mysql.connector
 
 email = """From: "EVIX Support" <support@evix.org>
 To: "{name}" <{contact}>
@@ -29,8 +29,10 @@ ASN: {asn}
 IPv{version}: {ip}
 Route Server: {server}
 
-If you belive this to be in error, please email support@evix.org.
+If you believe this to be in error, please email reply to this email.
 """
+
+database = None
 
 try:
 	database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
@@ -49,9 +51,8 @@ print(now)
 
 cursor = database.cursor(buffered=True)
 
-
 with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
-	#server.set_debuglevel(2)
+	# server.set_debuglevel(2)
 	server.login("scripts", "***REMOVED***")
 	for i in sys.stdin:
 		line = i.split()
@@ -76,8 +77,8 @@ with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
 				if cursor.rowcount == 0:
 					print(f"- Could not deprovision {ip}?")
 				results = tuple(cursor)
-				server.sendmail("support@evix.org", (contact,"peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact))
-				print(f"Sent deprovison for {asn} over {ip} to {contact}")
+				server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact))
+				print(f"Sent deprovision for {asn} over {ip} to {contact}")
 			elif difference == 3 and provisioned:
-				server.sendmail("support@evix.org", (contact,"peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact))
+				server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact))
 				print(f"Sent warning for {asn} over {ip} to {contact}")
