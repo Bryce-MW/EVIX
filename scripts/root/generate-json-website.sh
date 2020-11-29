@@ -5,6 +5,6 @@ if ! JSON=$(/usr/bin/php /evix/scripts/root/peers-json.php); then
   echo '' >/var/www/evix/participants.json
   echo "$JSON" >/var/www/evix/participants.json
 else
-  echo "$JSON"
+  echo "$JSON" | jq -C '.'
   echo Exit code NOT ok, NOT updating website
 fi
