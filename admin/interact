@@ -148,7 +148,6 @@ def get_result_for(line, type_have, type_want):
             cursor.execute("SELECT * FROM requests WHERE asn=%(asn)s", dict(line))
             return tuple(cursor)
         elif type_want == "Clients":
-            print(line)
             cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", dict(line))
             return tuple(cursor)
         elif type_want == "ASNs":
