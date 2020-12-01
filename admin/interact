@@ -106,67 +106,120 @@ def ask_one(option_list):
     return option_list[int(answer)]
 
 
-def get_result_for(line, type, other_type):
-    if type == "Requests":
-        if other_type == "Requests":
+def get_result_for(line, type_have, type_want):
+    if type_have == "Requests":
+        if type_want == "Requests":
             return (line,)
-        elif other_type == "Clients":
+        elif type_want == "Clients":
             cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", line)
             return tuple(cursor)
-        elif other_type == "ASNs":
+        elif type_want == "ASNs":
             cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", line)
             return tuple(cursor)
-    elif type == "Clients":
-        if other_type == "Requests":
+        elif type_want == "IPs":
+            asn = get_result_for(line, "Requests", "ASNs")
+            if asn:
+                return get_result_for(asn[0], "ASNs", "IPs")
+            else:
+                return tuple()
+        elif type_want == "Connections":
+            client = get_result_for(line, "Requests", "Clients")
+            if client:
+                return get_result_for(client[0], "Clients", "Connections")
+            else:
+                return tuple()
+    elif type_have == "Clients":
+        if type_want == "Requests":
             cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", line)
             return tuple(cursor)
-        elif other_type == "Clients":
+        elif type_want == "Clients":
             return (line,)
-        elif other_type == "ASNs":
+        elif type_want == "ASNs":
             cursor.execute("SELECT * FROM asns WHERE client_id=%(id)s", line)
             return tuple(cursor)
-        elif other_type == "IPs":
+        elif type_want == "IPs":
             cursor.execute("SELECT * FROM ips WHERE ips.asn in (SELECT asns.asn FROM asns WHERE client_id=%(id)s)", line)
             return tuple(cursor)
-        elif other_type == "Connections":
+        elif type_want == "Connections":
             cursor.execute("SELECT * FROM connections WHERE client_id=%(id)s", line)
             return tuple(cursor)
-    elif type == "ASNs":
-        if other_type == "Requests":
+    elif type_have == "ASNs":
+        if type_want == "Requests":
             cursor.execute("SELECT * FROM requests WHERE asn=%(asn)s", line)
             return tuple(cursor)
-        elif other_type == "Clients":
+        elif type_want == "Clients":
             cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", line)
             return tuple(cursor)
-        elif other_type == "ASNs":
+        elif type_want == "ASNs":
             return (line,)
-        elif other_type == "IPs":
+        elif type_want == "IPs":
             cursor.execute("SELECT * FROM ips WHERE asn=%(asn)s", line)
             return tuple(cursor)
-    elif type == "IPs":
-        if other_type == "Clients":
+        elif type_want == "Connections":
+            client = get_result_for(line, "ASNs", "Clients")
+            if client:
+                return get_result_for(client[0], "Clients", "Connections")
+            else:
+                return tuple()
+    elif type_have == "IPs":
+        if type_want == "Requests":
+            asn = get_result_for(line, "IPs", "ASNs")
+            if asn:
+                return get_result_for(asn[0], "ASNs", "Requests")
+            else:
+                return tuple()
+        elif type_want == "Clients":
             cursor.execute("SELECT * FROM clients WHERE EXISTS (SELECT 1 FROM asns INNER JOIN ips ON asns.asn=ips.asn WHERE ips.ip=%(ip)s AND asns.client_id=clients.id)", line)
             return tuple(cursor)
-        elif other_type == "ASNs":
+        elif type_want == "ASNs":
             cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", line)
             return tuple(cursor)
-        elif other_type == "IPs":
+        elif type_want == "IPs":
             return (line,)
-    elif type == "Connections":
-        if other_type == "Clients":
+        elif type_want == "Connections":
+            client = get_result_for(line, "IPs", "Clients")
+            if client:
+                return get_result_for(client[0], "Clients", "IPs")
+            else:
+                return tuple()
+    elif type_have == "Connections":
+        if type_want == "Requests":
+            client = get_result_for(line, "Connections", "Clients")
+            if client:
+                return get_result_for(client[0], "Clients", "Requests")
+            else:
+                return tuple()
+        elif type_want == "Clients":
             cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", line)
             return tuple(cursor)
-        elif other_type == "Connections":
+        elif type_want == "ASNs":
+            client = get_result_for(line, "Connections", "Clients")
+            if client:
+                return get_result_for(client[0], "Clients", "ASNs")
+            else:
+                return tuple()
+        elif type_want == "IPs":
+            client = get_result_for(line, "Connections", "Clients")
+            if client:
+                return get_result_for(client[0], "Clients", "IPs")
+            else:
+                return tuple()
+        elif type_want == "Connections":
             return (line,)
-    print("Not implemented yet")
+    print(f"Not implemented yet ({type_have} to {type_want})")
     return tuple()
 
 
-def search(object):
+def ask_type_field():
     print("What object do you want to search by?")
     search_type = ask_one(objects)
     print("What field do you want to search by?")
     field = ask_one(fields[search_type])
+    return search_type, field
+
+
+def search():
+    search_type, field = ask_type_field()
     value = input(style("Value: ", fg='green'))
     if value.isdigit():
         value = int(value)
@@ -174,10 +227,10 @@ def search(object):
         cursor.execute(f"SELECT * FROM {search_type.lower()} WHERE {field}=%s", (value,))
     except mysql.connector.Error as err:
         print("Error executing mysql query:", str(err))
-        return search(object)
+        return search()
     result = {}
     for i in tuple(cursor):
-        result[frozendict(i)] = get_result_for(i, search_type, object)
+        result[frozendict(i)] = get_result_for(i, search_type, search_type)
     return result, search_type
 
 
@@ -408,33 +461,38 @@ for option in iter(ask(options), str(len(options))):
     if not (option.isdigit() and int(option) < len(options)):
         continue
     option = options[int(option)]
-    object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
     if option == "View":
-        results, result_type = search(object)
-        if len(results) == 1 and len(results[tuple(results.keys())[0]]) >= 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
-            for result in results:
-                for line in results[result]:
-                    print(formats[object].format(**line))
-        else:
-            for result in results:
-                print(formats[result_type].format(**result))
-                for line in results[result]:
-                    print(" -", formats[object].format(**line))
+        object = None
+        initial_result, search_type = search()
+        for database_entry in initial_result:
+
+            connections = get_result_for(database_entry, search_type, "Connections")
+
+            secho("Requests:", fg="blue")
+            requests = get_result_for(database_entry, search_type, "Requests")
+            for request in requests:
+                secho(" -", formats["Requests"].format(**request), fg="green")
+
+            secho("Trees:", fg="blue")
+            clients = get_result_for(database_entry, search_type, "Clients")
+            for client in clients:
+                secho(" -", formats["Clients"].format(**client), fg="green")
+                asns = get_result_for(client, "Clients", "ASNs")
+                for asn in asns:
+                    secho("  -", formats["ASNs"].format(**asn), fg="green")
+                    ips = get_result_for(asn, "ASNs", "IPs")
+                    for ip in ips:
+                        secho("   -", formats["IPs"].format(**ip), fg="green")
+                connections = get_result_for(client, "Clients", "Connections")
+                for connection in connections:
+                    secho("  -", formats["Connections"].format(**connection), fg="green")
     elif option == "Create":
+        object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
         create(object)
     elif option == "Modify":
-        results, result_type = search(object)
+        object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
         cont = True
         while cont:
-            if len(results) == 1 and len(results[tuple(results.keys())[0]]) >= 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
-                for result in results:
-                    for line in results[result]:
-                        print(formats[object].format(**line))
-            else:
-                for result in results:
-                    print(formats[result_type].format(**result))
-                    for line in results[result]:
-                        print(" -", formats[object].format(**line))
             key = input(style("Primary key (id,asn,ip) => ", fg='green'))
             if object == "ASNs":
                 cursor.execute(f"SELECT * FROM {object.lower()} WHERE asn=%s", (int(key),))
@@ -461,19 +519,10 @@ for option in iter(ask(options), str(len(options))):
             else:
                 cont = False
     elif option == "Delete":
-        secho("Caution, be sure to remove in the order: IP, ASN, Connection, Client to ensure that you do not leave orphan objects!", fg='green')
-        results, result_type = search(object)
+        object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
+        secho("Caution, be sure to remove in the order: IP, ASN, Connection, Client or you will get errors!", fg='green')
         cont = True
         while cont:
-            if len(results) == 1 and tuple(results.keys())[0] == frozendict(results[tuple(results.keys())[0]][0]):
-                for result in results:
-                    for line in results[result]:
-                        print(formats[object].format(**line))
-            else:
-                for result in results:
-                    print(formats[result_type].format(**result))
-                    for line in results[result]:
-                        print(" -", formats[object].format(**line))
             key = input(style("Primary key (id,asn,ip) => ", fg='green'))
             secho("Are you sure that you want to delete this object?", fg='green')
             if ask_one(("Yes", "No")) == "Yes":
