@@ -111,7 +111,10 @@ def get_result_for(line, type_have, type_want):
         if type_want == "Requests":
             return (line,)
         elif type_want == "Clients":
-            cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", dict(line))
+            if line["website"]:
+                cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", dict(line))
+            else:
+                cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR contact=%(contact)s", dict(line))
             return tuple(cursor)
         elif type_want == "ASNs":
             cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", dict(line))
@@ -470,12 +473,16 @@ for option in iter(ask(options), str(len(options))):
         object = None
         if asn:
             try:
-                cursor.execute(f"SELECT * FROM asns WHERE asn=%s", (asn,))
+                cursor.execute("SELECT * FROM asns WHERE asn=%s", (asn,))
+                result = tuple(cursor)
+                if not result:
+                    cursor.execute("SELECT * FROM requests WHERE asn=%s", (asn,))
+                    result = tuple(cursor)
             except mysql.connector.Error as err:
                 print("Error executing mysql query:", str(err))
                 continue
             initial_result = {}
-            for i in tuple(cursor):
+            for i in result:
                 initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
             search_type = "ASNs"
         else:
