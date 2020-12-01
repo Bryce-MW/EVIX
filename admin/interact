@@ -71,7 +71,7 @@ fields = {
     "Requests":    ("id", "asn", "name", "contact", "website", "tunnel_location", "tunnel_type", "ipv4"),
     "Clients":     ("id", "name", "website", "contact"),
     "ASNs":        ("asn", "client_id"),
-    "IPs":         ("ip", "version", "asn", "monitor", "provisioned"),
+    "IPs":         ("ip", "version", "asn", "monitor", "provisioned", "pingable", "birdable"),
     "Connections": ("id", "client_id", "type", "server", "tunnel_id", "ip", "additional_args"),
 }
 
@@ -79,7 +79,7 @@ formats = {
     "Requests":    "ID: {id}, ASN: {asn}, Name: {name}, Email: {contact}, Website: {website}, Location:{tunnel_location}, Type: {tunnel_type}, Needs v4: {ipv4}",
     "Clients":     "ID: {id}, Name: {name}, Website: {website}, Email: {contact}",
     "ASNs":        "ASN: {asn}, Client ID: {client_id}",
-    "IPs":         "IP: {ip}, IPv{version}, ASN: {asn}, Monitor: {monitor}, Provisioned: {provisioned}",
+    "IPs":         "IP: {ip}, IPv{version}, ASN: {asn}, Monitor: {monitor}, Provisioned: {provisioned}, Pingable: {pingable}, RS Session: {birdable}",
     "Connections": "ID: {id}, Client ID: {client_id}, Type: {type}, POP: {server}, Tunnel ID: {tunnel_id}, Remote IP: {ip}, Port: {additional_args}",
 }
 
