@@ -472,21 +472,21 @@ for option in iter(ask(options), str(len(options))):
             secho("Requests:", fg="blue")
             requests = get_result_for(database_entry, search_type, "Requests")
             for request in requests:
-                secho(" -", formats["Requests"].format(**request), fg="green")
+                secho(" - " + formats["Requests"].format(**request), fg="green")
 
             secho("Trees:", fg="blue")
             clients = get_result_for(database_entry, search_type, "Clients")
             for client in clients:
-                secho(" -", formats["Clients"].format(**client), fg="green")
+                secho(" - " + formats["Clients"].format(**client), fg="green")
                 asns = get_result_for(client, "Clients", "ASNs")
                 for asn in asns:
-                    secho("  -", formats["ASNs"].format(**asn), fg="green")
+                    secho("  - " + formats["ASNs"].format(**asn), fg="green")
                     ips = get_result_for(asn, "ASNs", "IPs")
                     for ip in ips:
-                        secho("   -", formats["IPs"].format(**ip), fg="green")
+                        secho("   - " + formats["IPs"].format(**ip), fg="green")
                 connections = get_result_for(client, "Clients", "Connections")
                 for connection in connections:
-                    secho("  -", formats["Connections"].format(**connection), fg="green")
+                    secho("  - " + formats["Connections"].format(**connection), fg="green")
     elif option == "Create":
         object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
         create(object)
