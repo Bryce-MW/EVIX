@@ -111,10 +111,10 @@ def get_result_for(line, type_have, type_want):
         if type_want == "Requests":
             return (line,)
         elif type_want == "Clients":
-            cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", line)
+            cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", dict(line))
             return tuple(cursor)
         elif type_want == "ASNs":
-            cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", line)
+            cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", dict(line))
             return tuple(cursor)
         elif type_want == "IPs":
             asn = get_result_for(line, "Requests", "ASNs")
@@ -130,31 +130,31 @@ def get_result_for(line, type_have, type_want):
                 return tuple()
     elif type_have == "Clients":
         if type_want == "Requests":
-            cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", line)
+            cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", dict(line))
             return tuple(cursor)
         elif type_want == "Clients":
             return (line,)
         elif type_want == "ASNs":
-            cursor.execute("SELECT * FROM asns WHERE client_id=%(id)s", line)
+            cursor.execute("SELECT * FROM asns WHERE client_id=%(id)s", dict(line))
             return tuple(cursor)
         elif type_want == "IPs":
-            cursor.execute("SELECT * FROM ips WHERE ips.asn in (SELECT asns.asn FROM asns WHERE client_id=%(id)s)", line)
+            cursor.execute("SELECT * FROM ips WHERE ips.asn in (SELECT asns.asn FROM asns WHERE client_id=%(id)s)", dict(line))
             return tuple(cursor)
         elif type_want == "Connections":
-            cursor.execute("SELECT * FROM connections WHERE client_id=%(id)s", line)
+            cursor.execute("SELECT * FROM connections WHERE client_id=%(id)s", dict(line))
             return tuple(cursor)
     elif type_have == "ASNs":
         if type_want == "Requests":
-            cursor.execute("SELECT * FROM requests WHERE asn=%(asn)s", line)
+            cursor.execute("SELECT * FROM requests WHERE asn=%(asn)s", dict(line))
             return tuple(cursor)
         elif type_want == "Clients":
             print(line)
-            cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", line)
+            cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", dict(line))
             return tuple(cursor)
         elif type_want == "ASNs":
             return (line,)
         elif type_want == "IPs":
-            cursor.execute("SELECT * FROM ips WHERE asn=%(asn)s", line)
+            cursor.execute("SELECT * FROM ips WHERE asn=%(asn)s", dict(line))
             return tuple(cursor)
         elif type_want == "Connections":
             client = get_result_for(line, "ASNs", "Clients")
@@ -170,10 +170,10 @@ def get_result_for(line, type_have, type_want):
             else:
                 return tuple()
         elif type_want == "Clients":
-            cursor.execute("SELECT * FROM clients WHERE EXISTS (SELECT 1 FROM asns INNER JOIN ips ON asns.asn=ips.asn WHERE ips.ip=%(ip)s AND asns.client_id=clients.id)", line)
+            cursor.execute("SELECT * FROM clients WHERE EXISTS (SELECT 1 FROM asns INNER JOIN ips ON asns.asn=ips.asn WHERE ips.ip=%(ip)s AND asns.client_id=clients.id)", dict(line))
             return tuple(cursor)
         elif type_want == "ASNs":
-            cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", line)
+            cursor.execute("SELECT * FROM asns WHERE asn=%(asn)s", dict(line))
             return tuple(cursor)
         elif type_want == "IPs":
             return (line,)
@@ -191,7 +191,7 @@ def get_result_for(line, type_have, type_want):
             else:
                 return tuple()
         elif type_want == "Clients":
-            cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", line)
+            cursor.execute("SELECT * FROM clients WHERE id=%(client_id)s", dict(line))
             return tuple(cursor)
         elif type_want == "ASNs":
             client = get_result_for(line, "Connections", "Clients")
