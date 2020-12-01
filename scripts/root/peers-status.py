@@ -54,14 +54,18 @@ cursor = database.cursor(buffered=True)
 with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
     # server.set_debuglevel(2)
     server.login("scripts", "***REMOVED***")
+    # NOTE(bryce): This is because we WANT to set them all to false and then set to true when we find it
+    # noinspection SqlWithoutWhere
+    cursor.execute("UPDATE ips SET birdable=false")
     for i in sys.stdin:
         line = i.split()
         asn = line[4].replace("AS", '').split("_")[0]
         ip = line[3]
         if line[0] == "up":
-            cursor.execute("UPDATE ips SET provisioned=true, monitor=true WHERE ip=%s", (ip,))
+            cursor.execute("UPDATE ips SET birdable=true WHERE ip=%s", (ip,))
             cursor.execute("SELECT 1 FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s AND monitor=true AND provisioned=true", (ip,))
             if len(tuple(cursor)) == 0:
+                cursor.execute("UPDATE ips SET provisioned=true, monitor=true WHERE ip=%s", (ip,))
                 print(f"+ Found up session for {asn} over {ip}. Set provisioned and monitored")
             continue
         since = datetime.datetime.strptime(" ".join(line[1:3]), "%Y-%m-%d %H:%M:%S")
