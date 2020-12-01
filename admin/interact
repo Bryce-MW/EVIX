@@ -76,11 +76,11 @@ fields = {
 }
 
 formats = {
-    "Requests":    "ID: {id}, ASN: {asn}, Name: {name}, Email: {contact}, Website: {website}, Location:{tunnel_location}, Type: {tunnel_type}, Needs v4: {ipv4}",
-    "Clients":     "ID: {id}, Name: {name}, Website: {website}, Email: {contact}",
+    "Requests":    "Request: {id}, ASN: {asn}, Name: {name}, Email: {contact}, Website: {website}, Location:{tunnel_location}, Type: {tunnel_type}, Needs v4: {ipv4}",
+    "Clients":     "Client: {id}, Name: {name}, Website: {website}, Email: {contact}",
     "ASNs":        "ASN: {asn}, Client ID: {client_id}",
     "IPs":         "IP: {ip}, IPv{version}, ASN: {asn}, Monitor: {monitor}, Provisioned: {provisioned}, Pingable: {pingable}, RS Session: {birdable}",
-    "Connections": "ID: {id}, Client ID: {client_id}, Type: {type}, POP: {server}, Tunnel ID: {tunnel_id}, Remote IP: {ip}, Port: {additional_args}",
+    "Connections": "Connection: {id}, Client ID: {client_id}, Type: {type}, POP: {server}, Tunnel ID: {tunnel_id}, Remote IP: {ip}, Port: {additional_args}",
 }
 
 
@@ -468,24 +468,26 @@ for option in iter(ask(options), str(len(options))):
 
             connections = get_result_for(database_entry, search_type, "Connections")
 
-            secho("Requests:", fg="blue")
             requests = get_result_for(database_entry, search_type, "Requests")
-            for request in requests:
-                secho(" - " + formats["Requests"].format(**request), fg="green")
+            if requests:
+                secho("Requests:", fg="blue")
+                for request in requests:
+                    secho(" - " + formats["Requests"].format(**request), fg="green")
 
-            secho("Trees:", fg="blue")
             clients = get_result_for(database_entry, search_type, "Clients")
-            for client in clients:
-                secho(" - " + formats["Clients"].format(**client), fg="green")
-                asns = get_result_for(client, "Clients", "ASNs")
-                for asn in asns:
-                    secho("  - " + formats["ASNs"].format(**asn), fg="green")
-                    ips = get_result_for(asn, "ASNs", "IPs")
-                    for ip in ips:
-                        secho("   - " + formats["IPs"].format(**ip), fg="green")
-                connections = get_result_for(client, "Clients", "Connections")
-                for connection in connections:
-                    secho("  - " + formats["Connections"].format(**connection), fg="green")
+            if clients:
+                secho("Trees:", fg="blue")
+                for client in clients:
+                    secho(" - " + formats["Clients"].format(**client), fg="green")
+                    asns = get_result_for(client, "Clients", "ASNs")
+                    for asn in asns:
+                        secho("  - " + formats["ASNs"].format(**asn), fg="green")
+                        ips = get_result_for(asn, "ASNs", "IPs")
+                        for ip in ips:
+                            secho("   - " + formats["IPs"].format(**ip), fg="green")
+                    connections = get_result_for(client, "Clients", "Connections")
+                    for connection in connections:
+                        secho("  - " + formats["Connections"].format(**connection), fg="green")
     elif option == "Create":
         object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
         create(object)
