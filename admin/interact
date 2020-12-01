@@ -458,12 +458,28 @@ def create(type):
 
 
 for option in iter(ask(options), str(len(options))):
-    if not (option.isdigit() and int(option) < len(options)):
+    if not (option.isdigit() and int(option) >= 0):
         continue
-    option = options[int(option)]
+    asn = None
+    if int(option) > len(options):
+        asn = int(option)
+        option = "View"
+    else:
+        option = options[int(option)]
     if option == "View":
         object = None
-        initial_result, search_type = search()
+        if asn:
+            try:
+                cursor.execute(f"SELECT * FROM asns WHERE asn=%s", (asn,))
+            except mysql.connector.Error as err:
+                print("Error executing mysql query:", str(err))
+                continue
+            initial_result = {}
+            for i in tuple(cursor):
+                initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
+            search_type = "ASNs"
+        else:
+            initial_result, search_type = search()
         for database_entry in initial_result:
 
             connections = get_result_for(database_entry, search_type, "Connections")
