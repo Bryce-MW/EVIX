@@ -474,15 +474,11 @@ for option in iter(ask(options), str(len(options))):
         if asn:
             try:
                 cursor.execute("SELECT * FROM asns WHERE asn=%s", (asn,))
-                result = tuple(cursor)
-                if not result:
-                    cursor.execute("SELECT * FROM requests WHERE asn=%s", (asn,))
-                    result = tuple(cursor)
             except mysql.connector.Error as err:
                 print("Error executing mysql query:", str(err))
                 continue
             initial_result = {}
-            for i in result:
+            for i in tuple(cursor):
                 initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
             search_type = "ASNs"
         else:
