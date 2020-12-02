@@ -23,25 +23,23 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   ip link set up EVIX
   brctl addif br10 EVIX
 
-  if [ "$host" == "fmt" ]; then
-    hosts=("/evix/config/hosts"/*)
-    for hoststring in "${hosts[@]}"; do
-      host_short=$(basename "$hoststring")
-      exec 6<"$hoststring"
-      read -r name <&6
-      read -r hostname <&6
-      read -r port <&6
+  hosts=("/evix/config/hosts"/*)
+  for hoststring in "${hosts[@]}"; do
+    host_short=$(basename "$hoststring")
+    exec 6<"$hoststring"
+    read -r name <&6
+    read -r hostname <&6
+    read -r port <&6
 
-      if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
-        if [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          ip="$hostname"
-        else
-          ip=$(dig "$hostname" +short)
-        fi
-        bridge fdb append 00:00:00:00:00:00 dev EVIX dst "$ip"
+    if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
+      if [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        ip="$hostname"
+      else
+        ip=$(dig "$hostname" +short)
       fi
-    done
-  fi
+      bridge fdb append 00:00:00:00:00:00 dev EVIX dst "$ip"
+    fi
+  done
 
   ip link set up br10
 fi
