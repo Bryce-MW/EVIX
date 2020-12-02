@@ -5,6 +5,10 @@ local_ip=$(/evix/scripts/ip.sh "$host")
 
 git -C /evix submodule update --init --recursive
 
+if [ -f "/evix/config/reboot/$host.sh" ]; then
+  /evix/config/reboot/"$host".sh
+fi
+
 if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 
   brctl addbr br10
@@ -42,10 +46,6 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   done
 
   ip link set up br10
-fi
-
-if [ -f "/evix/config/reboot/$host.sh" ]; then
-  /evix/config/reboot/"$host".sh
 fi
 
 # brctl
