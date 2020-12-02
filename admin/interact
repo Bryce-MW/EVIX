@@ -88,7 +88,7 @@ def ask(option_list):
     def get_line():
         print("Select option by number")
         for i, option in enumerate(option_list + ("Quit",)):
-            secho(f"  {i}: {option}", fg='purple')
+            secho(f"  {i}: {option}", fg='cyan')
         result = input(style("-> ", fg='red'))
         if result == str(len(option_list)):
             database.commit()
