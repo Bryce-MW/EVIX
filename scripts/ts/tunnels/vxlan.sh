@@ -14,7 +14,7 @@ function single() {
     ip link add vtep"$1" type vxlan id "$1" local "$ipv6" remote "$2" dstport "$port"
   fi
   ip link set up vtep"$1"
-  ovs-vsctl add-port vmbr0 vtep"$1"
+  brctl addif br10 vtep"$1"
 }
 
 export -f single

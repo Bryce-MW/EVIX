@@ -1,23 +1,25 @@
 #! /bin/bash
 
 host=$(/evix/scripts/hostname.sh)
+local_ip=$(/evix/scripts/ip.sh)
 
 git -C /evix submodule update --init --recursive
 
 if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 
+  brctl addbr br10
+  brctl stp br10 off
+
   /evix/scripts/ts/tunnels/vxlan.sh
   /evix/scripts/ts/eoip-new.sh
 
-  xargs -n 1 ovs-vsctl add-port vmbr0 </evix/config/ports/"$host".ports
+  xargs -n 1 brctl addif br10 vmbr0 </evix/config/ports/"$host".ports
 
-  ip link set up vmbr0
+  ip link add EVIX type vxlan id 10 local "$local_ip" dstport 5000 learning rsc
+  ip link set up EVIX
+  brctl addif br10 EVIX
 
   if [ "$host" != "fmt" ]; then
-    ip link add EVIX-FMT type vxlan id 10 local any remote 72.52.82.6 dstport 5000 learning rsc
-    ip link set up EVIX-FMT
-    ovs-vsctl add-port vmbr0 EVIX-FMT
-  else
     hosts=("/evix/config/hosts"/*)
     for hoststring in "${hosts[@]}"; do
       host_short=$(basename "$hoststring")
@@ -28,15 +30,26 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 
       if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
         ip=$(dig "$hostname" +short)
-        echo "Setting EVIX-$host_short interface!"
-        echo "ip link add EVIX-$host_short type vxlan id 10 local any remote $ip dstport 5000 learning rsc"
-        ip link add EVIX-"$host_short" type vxlan id 10 local any remote "$ip" dstport 5000 learning rsc
-        ip link set up EVIX-"$host_short"
+        bridge fdb append 00:00:00:00:00:00 dev EVIX dst "$ip"
       fi
     done
   fi
+
+  ip link set up br10
 fi
 
 if [ -f "/evix/config/reboot/$host.sh" ]; then
   /evix/config/reboot/"$host".sh
 fi
+
+# brctl
+# apt install bridge-utils
+# brctl addbr br10
+# brctl addif br10 vxlan100
+# brctl addif br10 vnet22
+# brctl addif br10 vnet25
+# brctl stp br10 off
+# ip link set up dev br10
+# ip link set up dev vxlan10
+# bridge fdb append 00:00:00:00:00:00 dev vxlan10 dst 2001:db8:2::1
+# bridge fdb append 00:00:00:00:00:00 dev vxlan10 dst 2001:db8:3::1
