@@ -33,7 +33,7 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
       read -r port <&6
 
       if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
-        if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        if [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           ip="$hostname"
         else
           ip=$(dig "$hostname" +short)
