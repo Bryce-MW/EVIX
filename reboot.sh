@@ -1,7 +1,7 @@
 #! /bin/bash
 
 host=$(/evix/scripts/hostname.sh)
-local_ip=$(/evix/scripts/ip.sh)
+local_ip=$(/evix/scripts/ip.sh "$host")
 
 git -C /evix submodule update --init --recursive
 
