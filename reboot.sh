@@ -13,7 +13,7 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   /evix/scripts/ts/tunnels/vxlan.sh
   /evix/scripts/ts/eoip-new.sh
 
-  xargs -n 1 brctl addif br10 vmbr0 </evix/config/ports/"$host".ports
+  xargs -n 1 brctl addif br10 </evix/config/ports/"$host".ports
 
   ip link add EVIX type vxlan id 10 local "$local_ip" dstport 5000 learning rsc
   ip link set up EVIX
