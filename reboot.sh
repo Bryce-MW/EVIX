@@ -34,9 +34,9 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 
       if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
         if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          ip=$(dig "$hostname" +short)
-        else
           ip="$hostname"
+        else
+          ip=$(dig "$hostname" +short)
         fi
         bridge fdb append 00:00:00:00:00:00 dev EVIX dst "$ip"
       fi
