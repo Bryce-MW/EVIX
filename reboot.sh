@@ -15,11 +15,15 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 
   xargs -n 1 brctl addif br10 </evix/config/ports/"$host".ports
 
-  ip link add EVIX type vxlan id 10 local "$local_ip" dstport 5000 learning rsc
+  if [ "$host" != "fmt" ]; then
+    ip link add EVIX type vxlan id 10 local "$local_ip" remote 72.52.82.6 dstport 5000 learning rsc
+  else
+    ip link add EVIX type vxlan id 10 local "$local_ip" dstport 5000 learning rsc
+  fi
   ip link set up EVIX
   brctl addif br10 EVIX
 
-  if [ "$host" != "fmt" ]; then
+  if [ "$host" == "fmt" ]; then
     hosts=("/evix/config/hosts"/*)
     for hoststring in "${hosts[@]}"; do
       host_short=$(basename "$hoststring")
@@ -29,7 +33,11 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
       read -r port <&6
 
       if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
-        ip=$(dig "$hostname" +short)
+        if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          ip=$(dig "$hostname" +short)
+        else
+          ip="$hostname"
+        fi
         bridge fdb append 00:00:00:00:00:00 dev EVIX dst "$ip"
       fi
     done
