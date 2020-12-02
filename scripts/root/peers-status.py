@@ -29,7 +29,7 @@ ASN: {asn}
 IPv{version}: {ip}
 Route Server: {server}
 
-If you believe this to be in error, please email reply to this email.
+If you believe this to be in error, please reply to this email.
 """
 
 database = None
