@@ -1,5 +1,6 @@
 ip -4 route delete 206.81.104.0/24
-ip -4 route add 206.81.104.0/24 dev br10 src 206.81.104.1 pref high
+ip -4 address add 206.81.104.1/24 dev br10
+ip -6 address add 2602:fed2:fff:ffff::1/64 dev br10
 ip addr add 2602:fed2:fc0:c8::1/44 dev ens18
 ip -6 route add ::/0 via 2602:fed2:fc0::1
 
