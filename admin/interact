@@ -289,11 +289,13 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
         connection["server"] = server
     else:
         connection["server"] = location_names[ask_one(locations)]
+
     if type:
         connection["type"] = type
     else:
         connection["type"] = type_names[ask_one(types)]
-    if connection["type"] in ("eoip", "vxlan", "local", "zerotier"):
+
+    if connection["type"] in ("eoip", "vxlan", "local", "zerotier", "openvpn"):
         cursor.execute("SELECT tunnel_id FROM connections WHERE server=%(server)s AND type=%(type)s", connection)
         results = tuple(cursor)
         if results:
@@ -302,18 +304,16 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
             connection["tunnel_id"] = str(min(ids) + 1)
         else:
             connection["tunnel_id"] = input(style("Tunnel ID (use 100 if no prefrence) => ", fg='green'))
-    elif connection["type"] == "openvpn":
-        if asn:
-            connection["tunnel_id"] = str(asn)
-        else:
-            connection["tunnel_id"] = input(style("ASN => ", fg='green'))
     else:
         connection["tunnel_id"] = input(style("Tunnel ID (Just put 100 if you don't know) => ", fg='green'))
+
     if connection not in ("local", "openvpn"):
         connection["ip"] = input(style("Remote IP (ZT ID, none for local or openvpn) => ", fg='green'))
     else:
         connection["ip"] = ""
+
     connection["additional_args"] = ""
+
     if connection["type"] == "vxlan":
         connection["additional_args"] = input(style("Custom Port (blank for default) => ", fg='green'))
     elif connection["type"] == "zerotier":
@@ -326,20 +326,38 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
             asn = input(style("ASN => ", fg='green'))
         ipv4 = []
         ipv6 = []
+        if not ips:
+            try:
+                cursor.execute("SELECT * FROM asns WHERE asn=%s", (asn,))
+            except mysql.connector.Error as err:
+                print("Error executing mysql query:", str(err))
+            initial_result = {}
+            for i in tuple(cursor):
+                initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
+            search_type = "ASNs"
+            ips = []
+            for i in initial_result:
+                additional_ips = get_result_for(i, "ASNs", "IPs")
+                for j in additional_ips:
+                    ips.append(j["ip"])
         for ip in ips:
             if ipaddress.ip_address(ip).version == 4:
                 ipv4.append(ip)
             else:
                 ipv6.append(ip)
+
         if len(ipv4) > 0:
             print("IPv4 Found:")
             for ip in ipv4:
                 print(" -", ip)
+
         ipv4 = input(style("IPv4 (blank for none)=> ", fg='green'))
+
         if len(ipv6) > 0:
             print("IPv6 Found:")
             for ip in ipv6:
                 print(" -", ip)
+
         ipv6 = input(style("IPv6 (blank for none)=> ", fg='green'))
         connection["additional_args"] = ipv4 + " " + ipv6
         subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", str(asn), ipv4 if ipv4 else "noipv4", ipv6])
