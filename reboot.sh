@@ -8,7 +8,7 @@ git -C /evix submodule update --init --recursive
 if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
 
   brctl addbr br10
-  brctl stp br10 off
+  brctl stp br10 on
 
   /evix/scripts/ts/tunnels/vxlan.sh
   /evix/scripts/ts/eoip-new.sh
