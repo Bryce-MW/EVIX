@@ -29,6 +29,7 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
       if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
         ip=$(dig "$hostname" +short)
         echo "Setting EVIX-$host_short interface!"
+        echo "ip link add EVIX-$host_short type vxlan id 10 local any remote $ip dstport 5000 learning rsc"
         ip link add EVIX-"$host_short" type vxlan id 10 local any remote "$ip" dstport 5000 learning rsc
         ip link set up EVIX-"$host_short"
       fi
