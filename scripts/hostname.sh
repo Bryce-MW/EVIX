@@ -2,7 +2,7 @@
 
 hosts=("/evix/config/hosts"/*)
 
-mapfile -t ips , <(ip -br addr | grep -E -o -e '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' -e '([a-f0-9:]+:+)+[a-f0-9]+')
+mapfile -t ips < <(ip -br addr | grep -E -o -e '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' -e '([a-f0-9:]+:+)+[a-f0-9]+')
 
 host=""
 
