@@ -88,8 +88,8 @@ def ask(option_list):
     def get_line():
         print("Select option by number")
         for i, option in enumerate(option_list + ("Quit",)):
-            secho(f"  {i}: {option}", fg='blue')
-        result = input(style("-> ", fg='green'))
+            secho(f"  {i}: {option}", fg='purple')
+        result = input(style("-> ", fg='red'))
         if result == str(len(option_list)):
             database.commit()
             exit(0)
@@ -354,9 +354,9 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
                 ipv6.append(ip)
 
         if len(ipv4) > 0:
-            print("IPv4 Found:")
+            secho("IPv4 Found:", fg="blue")
             for ip in ipv4:
-                print(" -", ip)
+                secho(" - " + ip, fg="green")
 
         ipv4 = input(style("IPv4 (blank for none)=> ", fg='green'))
 
