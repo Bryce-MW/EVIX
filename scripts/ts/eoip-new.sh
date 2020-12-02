@@ -6,6 +6,7 @@ interface=$(/evix/scripts/get-val.sh "$host" eoip-interface)
 
 screen -S eoip -X stuff ^C
 screen -dmS eoip /evix/run/eoip/eoip -s /evix/logs/eoip.log "$interface" "$ip"
+sleep 2
 ip link set "$interface" up
 
 # screen -S eoip -X stuff ^C
