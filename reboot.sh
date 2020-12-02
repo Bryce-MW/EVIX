@@ -20,14 +20,15 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   else
     hosts=("/evix/config/hosts"/*)
     for hoststring in "${hosts[@]}"; do
+      host_short=$(basename "$hoststring")
       exec 6<"$hoststring"
       read -r name <&6
       read -r hostname <&6
       read -r port <&6
 
-      if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$hostname" != "fmt" ]; then
+      if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "fmt" ]; then
         ip=$(dig "$hostname" +short)
-        ip link add EVIX-"$hostname" type vxlan id 10 local any remote "$ip" dstport 5000 learning rsc
+        ip link add EVIX-"$host_short" type vxlan id 10 local any remote "$ip" dstport 5000 learning rsc
       fi
     done
   fi
