@@ -303,14 +303,14 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
             ids = tuple(i for i in ids if (i + 1) not in ids)
             connection["tunnel_id"] = str(min(ids) + 1)
         else:
-            connection["tunnel_id"] = input(style("Tunnel ID (use 100 if no prefrence) => ", fg='green'))
+            connection["tunnel_id"] = input(style("Tunnel ID (use 100 if no preference) => ", fg='green'))
     elif connection["type"] == "openvpn":
         pass
     else:
         connection["tunnel_id"] = input(style("Tunnel ID (Just put 100 if you don't know) => ", fg='green'))
 
-    if connection not in ("local", "openvpn"):
-        connection["ip"] = input(style("Remote IP (ZT ID, none for local or openvpn) => ", fg='green'))
+    if connection["type"] not in ("local", "openvpn"):
+        connection["ip"] = input(style("Remote IP or ZT ID => ", fg='green'))
     else:
         connection["ip"] = ""
 
@@ -325,6 +325,10 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
             connection["additional_args"] = input(style("Assigned IPs (space separated) => ", fg='green'))
     elif connection["type"] == "openvpn":
         if not asn:
+            cursor.execute("SELECT * FROM asns WHERE client_id=%s", (client_id,))
+            secho("ASNs Found:", fg="blue")
+            for i in tuple(cursor):
+                secho(" - " + formats["ASNs"].format(**i), fg="green")
             asn = input(style("ASN => ", fg='green'))
         connection["tunnel_id"] = asn
         ipv4 = []
