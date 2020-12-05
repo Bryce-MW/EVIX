@@ -9,7 +9,7 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   exit
 fi
 
-if cd /evix/run/openvpn-ca/; then
+if ! cd /evix/run/openvpn-ca/; then
   echo "Could not change to /evix/run/openvpn-ca/"
   echo "Are you sure that you are running on the server?"
 fi
