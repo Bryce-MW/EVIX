@@ -6,7 +6,7 @@ seconds_in_day=86400
 seconds_in_week=604800
 day_ago_seconds=$((now - seconds_in_day))
 week_ago_seconds=$((now - seconds_in_week))
-out_dir='/evix/run/IX-Website/templates/static/graphs'
+out_dir='/var/www/evix/static/graphs'
 token='***REMOVED***'
 
 api_device_id="$1"

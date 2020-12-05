@@ -12,4 +12,4 @@ if ! cd /evix/run/IX-Website/; then
   echo "Are you running this script from the server?"
 fi
 
-/usr/local/bin/staticjinja build --srcpath=templates --static=static --outpath=/var/www/evix/ --globals=globals.yaml
+#/usr/local/bin/staticjinja build --srcpath=templates --static=static --outpath=/var/www/evix/ --globals=globals.yaml
