@@ -12,7 +12,7 @@ token='***REMOVED***'
 api_device_id="$1"
 server_name="$2"
 api_url="http://librenms.evix.org/api/v0/devices"
-api_image_path="ports/vmbr0/port_bits"
+api_image_path="ports/br10/port_bits"
 
 # TODO(bryce): I am not sure if this is true anymore since we removed the title:
 # For the website the image should be 853×225 pixels.
