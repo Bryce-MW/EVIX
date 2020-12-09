@@ -54,9 +54,7 @@ cursor = database.cursor(buffered=True)
 with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
     # server.set_debuglevel(2)
     server.login("scripts", "***REMOVED***")
-    # NOTE(bryce): This is because we WANT to set them all to false and then set to true when we find it
-    # noinspection SqlWithoutWhere
-    cursor.execute("UPDATE ips SET birdable=false")
+    cursor.execute("UPDATE ips SET birdable=false WHERE versin=%s", (version,))
     for i in sys.stdin:
         line = i.split()
         asn = line[4].replace("AS", '').split("_")[0]
