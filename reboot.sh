@@ -15,6 +15,8 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   brctl stp br10 on
 
   /evix/scripts/ts/tunnels/vxlan.sh
+
+  screen -Sdm eoip
   /evix/scripts/ts/eoip-new.sh
 
   xargs -n 1 brctl addif br10 </evix/config/ports/"$host".ports
