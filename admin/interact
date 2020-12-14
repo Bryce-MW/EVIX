@@ -295,7 +295,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
     else:
         connection["type"] = type_names[ask_one(types)]
 
-    if connection["type"] in ("eoip", "vxlan", "local", "zerotier"):
+    if connection["type"] in ("eoip", "vxlan", "custom", "zerotier"):
         cursor.execute("SELECT tunnel_id FROM connections WHERE server=%(server)s AND type=%(type)s", connection)
         results = tuple(cursor)
         if results:
@@ -309,7 +309,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
     else:
         connection["tunnel_id"] = input(style("Tunnel ID (Just put 100 if you don't know) => ", fg='green'))
 
-    if connection["type"] not in ("local", "openvpn"):
+    if connection["type"] not in ("custom", "openvpn"):
         connection["ip"] = input(style("Remote IP or ZT ID => ", fg='green'))
     else:
         connection["ip"] = ""
