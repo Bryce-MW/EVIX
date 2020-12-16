@@ -3,7 +3,7 @@
 #  current git repo)
 #  * 2020-11-28|>Bryce|>Removed unused code (see git history)
 
-peers=$(/usr/bin/python3 /evix/scripts/root/update_peers_website.py)
+peers=$(/usr/bin/python3 /evix/scripts/root/peers_table_webpage_generate.py)
 rm /tmp/ix_peers.html
 echo "$peers" >/tmp/ix_peers.html
 

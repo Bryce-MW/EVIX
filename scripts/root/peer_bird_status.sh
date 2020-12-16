@@ -17,11 +17,11 @@ for host in "${hosts[@]}"; do
     paste -d " " - - - |
     grep -E -o -w "(up|start|down|[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}|[0-9]+\'|[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})" |
     paste -d " " - - - - |
-    python3 /evix/scripts/root/peers-status.py 4 "$name"
+    python3 /evix/scripts/root/warn_disconnection.py 4 "$name"
   ssh -p "$port" "$hostname" birdc6 show protocols all |
     grep -E -e 'BGP.*?master' -e "Neighbor address" -e "Neighbor AS" |
     paste -d " " - - - |
     grep -E -o -w "(up|start|down|([a-f0-9:]+:+)+[a-f0-9]+|[0-9]+\'|[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2})" |
     paste -d " " - - - - |
-    python3 /evix/scripts/root/peers-status.py 6 "$name"
+    python3 /evix/scripts/root/warn_disconnection.py 6 "$name"
 done
