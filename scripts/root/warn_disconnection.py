@@ -59,7 +59,7 @@ cursor = database.cursor(buffered=True)
 with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
     # server.set_debuglevel(2)
     server.login("scripts", "***REMOVED***")
-    cursor.execute("UPDATE ips SET birdable=false WHERE versin=%s", (version,))
+    cursor.execute("UPDATE ips SET birdable=false WHERE version=%s", (version,))
     for i in sys.stdin:
         line = i.split()
         asn = line[4].replace("AS", '').split("_")[0]
