@@ -1,9 +1,14 @@
+# NOTE(bryce): Written by Bryce Wilson on 2020-09-11
+#  * 2020-09-16|>Bryce|>Fixed many issues that cause the table to not always be created correctly
+#  * 2020-09-16|>Bryce|>Attempt to ensure that improperly formatted links do not link to ourselves
+#  * 2020-11-29|>Bryce|>Move strings to peers_table_webpage_strings.py so that this file is easier to read
+
 import ipaddress
 
 import mysql.connector
 
 # NOTE(bryce): This is where all of the strings inserted into the table are kept
-from website_peers_table_strings import *
+from peers_table_webpage_strings import *
 
 database = None
 try:

@@ -1,4 +1,9 @@
 #! /bin/python3
+# NOTE(bryce): Written by Bryce Wilson 2020-09-11
+#  * 2020-11-24|>Bryce|>Removed P.S. from message
+#  * 2020-11-29|>Bryce|>Opportunistically reprovision sessions
+#  * 2020-11-30|>Bryce|>Add tracking of up sessions directly
+#  * 2020-12-15|>Bryce|>Change script name from peers-status to warn_disconnection
 
 import datetime
 import smtplib

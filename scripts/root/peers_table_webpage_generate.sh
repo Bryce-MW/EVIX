@@ -1,4 +1,7 @@
 #!/bin/bash
+# NOTE(bryce): Written by Bryce Wilson on 2020-11-09 (likely originally written by Chris before it was ported to the
+#  current git repo)
+#  * 2020-11-28|>Bryce|>Removed unused code (see git history)
 
 peers=$(/usr/bin/python3 /evix/scripts/root/update_peers_website.py)
 rm /tmp/ix_peers.html

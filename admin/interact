@@ -367,7 +367,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
 
         ipv6 = input(style("IPv6 (blank for none)=> ", fg='green'))
         connection["additional_args"] = ipv4 + " " + ipv6
-        subprocess.run(["/evix/scripts/root/generateOpenVPN.sh", str(asn), ipv4 if ipv4 else "noipv4", ipv6])
+        subprocess.run(["/evix/scripts/root/openvpn_configure.sh", str(asn), ipv4 if ipv4 else "noipv4", ipv6])
     return connection
 
 

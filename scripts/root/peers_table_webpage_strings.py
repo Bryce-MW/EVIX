@@ -1,3 +1,6 @@
+# NOTE(bryce): This should not be run by itself as it has no effect
+#  Written by Bryce Wilson on 2020-11-28 by extracting strings from peers_table_website_generate.sh
+
 header = """<table class="sortable" border="0" cellpadding="5" cellspacing=10" width="100%">
     <thead><tr class="peers">
         <th algin=left></th>

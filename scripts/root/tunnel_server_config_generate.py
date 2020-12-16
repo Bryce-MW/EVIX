@@ -1,4 +1,8 @@
 #! /usr/bin/env python3
+# NOTE(bryce): Written by Bryce Wilson on 2020-09-13, migrated from tunnel_server_config_generate.sh (prior known as
+#  gen-config
+#  * 2020-09-14|>Bryce|>Migrated from old file
+#  * 2020-12-15|>Bryce|>Renamed from gen-config.py to tunnel_server_config_generate.py
 
 import mysql.connector
 

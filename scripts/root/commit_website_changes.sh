@@ -1,4 +1,5 @@
 #! /bin/bash
+# NOTE(bryce): Written by Bryce Wilson on 2020-12-09
 
 if ! cd /evix/run/IX-Website/; then
   echo "Could not change to /evix/run/IX-Website/"

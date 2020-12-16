@@ -1,4 +1,7 @@
 #!/bin/bash
+# NOTE(bryce): Originally written by Chris, added to git by Bryce Wilson on 2020-09-13.
+#  * 2020-11-28|>Bryce|>Cleaned up a bit
+#  * 2020-11-29|>Bryce|>Added printing of result for debugging
 
 if ! JSON=$(/usr/bin/php /evix/scripts/root/peers-json.php); then
   echo Exit Code OK, updating website

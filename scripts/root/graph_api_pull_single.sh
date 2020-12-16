@@ -1,4 +1,8 @@
 #!/bin/bash
+# NOTE(bryce): Originally written by another IX and "borrowed" by Bryce Wilson on 2020-09-11. I can't find the original
+#  source.
+#  * 2020-11-28|>Bryce|>Remove unused code
+#  * 2020-12-09|>Bryce|>Fix some issues causing graphs to not be downloaded
 
 export TZ="UTC"
 now=$(date +%s)
@@ -14,7 +18,8 @@ server_name="$2"
 api_url="http://librenms.evix.org/api/v0/devices"
 api_image_path="ports/br10/port_bits"
 
-# TODO(bryce): I am not sure if this is true anymore since we removed the title:
+# TODO(bryce): I am not sure if this is true anymore since we removed the title. We also get SVGs so I don't think that
+#  the size even matters at all.
 # For the website the image should be 853×225 pixels.
 # If you ask for 853×225, you will get 934x264 as there is a
 # fixed pad for height and width.  You need to ask for 772x186.

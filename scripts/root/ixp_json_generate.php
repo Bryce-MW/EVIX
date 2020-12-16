@@ -1,4 +1,8 @@
 <?php
+/*
+ * NOTE(bryce): Originally written by Chris and added to git by Bryce Wilson on 2020-09-11.
+ *  * 2020-11-28|>Bryce|>Reformatted the file to be easier to read
+ */
 
 $peers=array(
     "version" => "0.7",

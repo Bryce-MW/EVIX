@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * NOTE(bryce): Originally written by Chris, added to git by Bryce Wilson on 2020-09-11.
+ *  * 2020-11-28|>Bryce|>Reformatted file
+ *  * 2020-11-29|>Bryce|>Ensured that BGP sessions were only made when needed
+ */
+
 $conn = mysqli_connect('127.0.0.1', 'evix', '***REMOVED***', 'evix');
 
 if (!$conn) {

@@ -1,4 +1,6 @@
 #! /bin/bash
+# NOTE(bryce): Witten by Bryce Wilson on 2020-09-11
+#  * 2020-11-28|>Bryce|>Improve readability of long pipelines
 
 #bird_servers=(fmt ams)
 bird_servers=(fmt)

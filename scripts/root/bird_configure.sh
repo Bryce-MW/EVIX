@@ -1,4 +1,6 @@
 #!/bin/bash
+# NOTE(bryce): Originally written by Chris, added to git by Bryce Wilson on 2020-09-11.
+#  * 2020-11-28|>Bryce|>Fix some of the logic
 
 alias bgpq4=/usr/local/bin/bgpq4
 
