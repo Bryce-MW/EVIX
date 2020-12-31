@@ -133,7 +133,7 @@ def get_result_for(line, type_have, type_want):
                 return tuple()
     elif type_have == "Clients":
         if type_want == "Requests":
-            cursor.execute("SELECT * FROM clients WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", dict(line))
+            cursor.execute("SELECT * FROM requests WHERE name=%(name)s OR website=%(website)s OR contact=%(contact)s", dict(line))
             return tuple(cursor)
         elif type_want == "Clients":
             return (line,)

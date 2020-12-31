@@ -3,7 +3,7 @@
 #  * 2020-11-28|>Bryce|>Cleaned up a bit
 #  * 2020-11-29|>Bryce|>Added printing of result for debugging
 
-if ! JSON=$(/usr/bin/php /evix/scripts/root/peers-json.php); then
+if JSON=$(/usr/bin/php /evix/scripts/root/ixp_json_generate.php); then
   echo Exit Code OK, updating website
   echo '' >/var/www/evix/participants.json
   echo "$JSON" >/var/www/evix/participants.json
