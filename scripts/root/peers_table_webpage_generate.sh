@@ -10,7 +10,6 @@ echo "$peers" >/tmp/ix_peers.html
 if grep -Fxq "Failed to connect to database" "/tmp/ix_peers.html"; then
   echo "ERROR in connecting to database"
 else
-  new=$(md5sum /tmp/ix_peers.html)
-  echo "$new"
+  cat /tmp/ix_peers.html
   cp /tmp/ix_peers.html /evix/run/IX-Website/templates/page/ix_peers.html
 fi

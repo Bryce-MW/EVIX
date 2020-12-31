@@ -11,7 +11,7 @@ fi
 
 SUCCESS=1
 #generate yaml from database
-PEERS=$(/usr/bin/php /evix/scripts/root/pull_peers.php)
+PEERS=$(/usr/bin/php /evix/scripts/root/bird_configure.php)
 mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
 echo "$PEERS" >/etc/arouteserver/clients.yml
 

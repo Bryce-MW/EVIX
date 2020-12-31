@@ -7,6 +7,7 @@ if JSON=$(/usr/bin/php /evix/scripts/root/ixp_json_generate.php); then
   echo Exit Code OK, updating website
   echo '' >/var/www/evix/participants.json
   echo "$JSON" >/var/www/evix/participants.json
+  echo "$JSON" | jq -C '.'
 else
   echo "$JSON" | jq -C '.'
   echo Exit code NOT ok, NOT updating website
