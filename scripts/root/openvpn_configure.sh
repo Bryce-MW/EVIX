@@ -15,7 +15,7 @@ if ! cd /evix/run/openvpn-ca/; then
   echo "Are you sure that you are running on the server?"
 fi
 
-if ! ./easyrsa build-client-full as_"$1" nopass <<<"password"; then
+if ./easyrsa build-client-full as_"$1" nopass <<<"password"; then
   if [ "$2" != "noipv4" ]; then
     echo "ifconfig-push $2 255.255.255.0
     ifconfig-ipv6-push $3/64 ::" >/evix/config/ccd/as_"$1"
@@ -25,7 +25,7 @@ if ! ./easyrsa build-client-full as_"$1" nopass <<<"password"; then
     echo "Certificate Generated... pushing to tunnel servers."
   fi
 
-  if ! /usr/bin/ansible-playbook /evix/config/playbooks/push_ccd.yml; then
+  if /usr/bin/ansible-playbook /evix/config/playbooks/push_ccd.yml; then
     echo "CCD file pushed.  Credentials are:"
     echo "Server CA:"
     cat /evix/run/openvpn-ca/pki/ca.crt

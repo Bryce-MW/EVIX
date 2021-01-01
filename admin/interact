@@ -361,9 +361,9 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
         ipv4 = input(style("IPv4 (blank for none)=> ", fg='green'))
 
         if len(ipv6) > 0:
-            print("IPv6 Found:")
+            secho("IPv6 Found:", fg="blue")
             for ip in ipv6:
-                print(" -", ip)
+                secho(" - " + ip, fg="green")
 
         ipv6 = input(style("IPv6 (blank for none)=> ", fg='green'))
         connection["additional_args"] = ipv4 + " " + ipv6
