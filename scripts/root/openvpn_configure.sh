@@ -27,13 +27,13 @@ if ./easyrsa build-client-full as_"$1" nopass <<<"password"; then
 
   if /usr/bin/ansible-playbook /evix/config/playbooks/push_ccd.yml; then
     echo "CCD file pushed.  Credentials are:"
-    echo "Server CA:"
-    cat /evix/run/openvpn-ca/pki/ca.crt
-    echo
-    echo "User cert:"
-    cat /evix/run/openvpn-ca/pki/issued/as_"$1".crt
-    echo
-    echo "User key:"
-    cat /evix/run/openvpn-ca/pki/private/as_"$1".key
   fi
+  echo "Server CA:"
+  cat /evix/run/openvpn-ca/pki/ca.crt
+  echo
+  echo "User cert:"
+  cat /evix/run/openvpn-ca/pki/issued/as_"$1".crt
+  echo
+  echo "User key:"
+  cat /evix/run/openvpn-ca/pki/private/as_"$1".key
 fi
