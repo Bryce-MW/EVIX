@@ -39,5 +39,5 @@ for i in sys.stdin:
     else:
         cursor.execute("UPDATE ips SET pingable=false WHERE ip=%s", (ip,))
 
-if Found:
+if found:
     print()
