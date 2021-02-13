@@ -63,11 +63,6 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         ipv4 = tuple(i for i in ips if i['version'] == 4)
         ipv6 = tuple(i for i in ips if i['version'] == 6)
 
-        connection = connections[connections_counter]
-        if connections_counter < len(connections) - 1:
-            connections_counter += 1
-        server = connection['server']
-        type = connection['type']
         is_website = bool(client["website"])
         website = client['website'] or ""
         if not (website.startswith("https://") or website.startswith("http://")):
@@ -82,6 +77,12 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
 
         first_ip = True
         for i in range(n_ips):
+            connection = connections[connections_counter]
+            if connections_counter < len(connections) - 1:
+            connections_counter += 1
+            server = connection['server']
+            type = connection['type']
+
             total += 1
             ipv4_str = ipv4[i]['ip'] if i < len(ipv4) else "-----"
             ipv6_str = ipv6[i]['ip'] if i < len(ipv6) else "-----"

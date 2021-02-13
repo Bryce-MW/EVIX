@@ -19,11 +19,12 @@ except mysql.connector.Error as err:
     exit(1)
 
 now = datetime.datetime.now()
-print("\n\n")
-print(now)
+#print("\n\n")
+#print(now)
 
 cursor = database.cursor(buffered=True)
 
+found = False
 for i in sys.stdin:
     line = i.split()
     can_ping = line[0] == "yes"
@@ -31,8 +32,12 @@ for i in sys.stdin:
     cursor.execute("SELECT pingable FROM ips WHERE ip=%s", (ip,))
     pingable_before = bool(tuple(cursor)[0][0])
     if pingable_before != can_ping:
-        print(f"{ip} changed from {'up' if pingable_before else 'down'} to {'up' if can_ping else 'down'}")
+        found = True
+        print(f"{now} => {ip} changed from {'up' if pingable_before else 'down'} to {'up' if can_ping else 'down'}")
     if can_ping:
         cursor.execute("UPDATE ips SET pingable=true WHERE ip=%s", (ip,))
     else:
         cursor.execute("UPDATE ips SET pingable=false WHERE ip=%s", (ip,))
+
+if Found:
+    print()
