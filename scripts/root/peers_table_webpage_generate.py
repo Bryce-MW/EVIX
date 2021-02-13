@@ -79,7 +79,7 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
         for i in range(n_ips):
             connection = connections[connections_counter]
             if connections_counter < len(connections) - 1:
-            connections_counter += 1
+                connections_counter += 1
             server = connection['server']
             type = connection['type']
 
