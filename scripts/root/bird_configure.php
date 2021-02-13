@@ -34,7 +34,7 @@ while ($peer = mysqli_fetch_array($row)) {
     $peers['clients'][$i]['description'] = $client['name'];
 
     $j = 0;
-    $query = "SELECT * FROM ips WHERE asn=" . $peer['asn'];
+    $query = "SELECT * FROM ips WHERE (provisioned=true OR monitor=false) AND asn=" . $peer['asn'];
     $res = mysqli_query($conn, $query);
     while ($additional = mysqli_fetch_array($res)) {
         if ($additional['ip'] != '') {

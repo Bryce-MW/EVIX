@@ -14,6 +14,7 @@ SUCCESS=1
 PEERS=$(/usr/bin/php /evix/scripts/root/bird_configure.php)
 mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
 echo "$PEERS" >/etc/arouteserver/clients.yml
+echo "$PEERS" >/evix/run/arouteserver/clients.yml
 
 #generate config
 if ! cd /evix/run/arouteserver/; then
