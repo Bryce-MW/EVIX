@@ -15,5 +15,5 @@ for host in "${hosts[@]}"; do
   mysql --user evix --password=***REMOVED*** --batch evix <<<"select ip from ips" 2>/dev/null |
     tail -n+2 |
     ssh -p "$port" "$hostname" "xargs -n 1 -P 0 bash -c 'ping -c 5 -i 0.2 -n -w 5 \$0 >/dev/null && echo yes \$0 || echo no \$0'" |
-    ./ping_status.py
+    /evix/scripts/root/ping_status.py
 done

@@ -1,0 +1,58 @@
+#! /bin/bash
+
+token="***REMOVED***"
+root_ip="23.129.32.56"
+network="***REMOVED***"
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 all # Get all users"
+  echo "       $0 get <ZT Address> # Get a specific user"
+  echo "       $0 delete <ZT Address> # Delete a user"
+  echo "       $0 add <ZT Address> [IPs to add] # Approve a ZT user"
+  echo "       $0 <zerotier-cli command> # Use zerotier-cli on the root server"
+  exit 1
+fi
+
+if [ "$1" == "all" ]; then
+  curl -X GET --header "X-ZT1-Auth: $token" "http://$root_ip:9993/controller/network/$network/member" 2>/dev/null |
+  jq 'keys' |
+  head -n -1 |
+  tail -n +2 |
+  cut -d ',' -f1 |
+  tr -d ' ' |
+  xargs -n 1 $0 get
+elif [ "$1" == "get" ]; then
+  if [ -z "$2" ]; then
+    echo "Usage: $0 get <ZT Address> # Get info on a ZT user"
+  fi
+  shift
+  curl -X GET --header "X-ZT1-Auth: $token" "http://$root_ip:9993/controller/network/$network/member/$1" 2>/dev/null |
+  jq --compact-output --raw-output '.address, .authorized, .activeBridge, .vMajor, .vMinor, .vRev, .ipAssignments' |
+  xargs -L 7 printf '%s: Authorized: %s, Bridge: %s, V%s.%s.%s IPs: "%s"\n' |
+  xargs -L 1 printf '%s %s %6s %s %6s %-9s, %s %s\n'
+elif [ "$1" == "delete" ]; then
+  if [ -z "$2" ]; then
+    echo "Usage: $0 delete <ZT Address> # Remove a ZT user"
+  fi
+  shift
+  jq -n --compact-output '{"authorized": false, "activeBridge": false}' |
+  curl -X POST --header "X-ZT1-Auth: $token" -d @- "http://$root_ip:9993/controller/network/$network/member/$1" >/dev/null 2>&1
+  curl -X DELETE --header "X-ZT1-Auth: $token" "http://$root_ip:9993/controller/network/$network/member/$1"
+elif [ "$1" == "add" ]; then
+  if [ -z "$2" ]; then
+    echo "Usage: $0 add <ZT Address> [IPs to add] # Approve a ZT user"
+  fi
+  shift
+  id=$1
+  shift
+  echo $@ |
+  xargs -n1 |
+  jq --compact-output --raw-input '[.]' |
+  tr "\n" "," |
+  head -c -1 |
+  xargs -d "\n" -I json echo "[" json "]"|
+  jq --compact-output '{"authorized": true, "activeBridge": true, "ipAssignments": map(.[0])}' |
+  curl -X POST --header "X-ZT1-Auth: token" -d @- "http://$root_ip:9993/controller/network/$network/member/$id" 2>/dev/null
+else
+  zerotier-cli -T***REMOVED*** -H23.129.32.56 $@
+fi
