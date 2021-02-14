@@ -323,6 +323,7 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
             connection["additional_args"] = " ".join(ips)
         else:
             connection["additional_args"] = input(style("Assigned IPs (space separated) => ", fg='green'))
+        subprocess.run(["/evix/admin/zt", "add", connection["ip"], connection["additional_args"]])
     elif connection["type"] == "openvpn":
         if not asn:
             cursor.execute("SELECT * FROM asns WHERE client_id=%s", (client_id,))
@@ -429,6 +430,7 @@ def create(type):
             client["id"] = cursor.lastrowid
         connection = create_connection(client_id=client["id"])
         insert(connection, "connections")
+
     elif type == "Build from request":
         request = build("Requests", check=True)
         if "id" not in request:
