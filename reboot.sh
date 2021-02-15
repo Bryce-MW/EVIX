@@ -3,7 +3,7 @@
 host=$(/evix/scripts/hostname.sh)
 local_ip=$(/evix/scripts/ip.sh "$host")
 
-git -C /evix submodule update --init --recursive
+#git -C /evix submodule update --init --recursive
 
 if [ -f "/evix/config/reboot/$host.sh" ]; then
   /evix/config/reboot/"$host".sh
