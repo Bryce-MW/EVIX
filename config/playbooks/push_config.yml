@@ -1,0 +1,14 @@
+- hosts: tunnelservers
+  tasks:
+    - name: Push config to tunnel servers
+      synchronize:
+        src: /evix/
+        dest: /evix/
+        checksum: yes
+        delete: yes
+        group: no
+        owner: no
+        rsync_opts:
+          - "--exclude-from=/evix/.gitignore"
+    - name: Reconfigure tunnels
+      command: /evix/scripts/ts/update.sh
