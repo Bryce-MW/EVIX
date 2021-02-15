@@ -1,0 +1,39 @@
+Host web.evix.org
+    User evix
+    Hostname evix.org
+Host van.evix.org
+    User evix
+    Hostname evix.org
+Host evix.org
+    User evix
+    Hostname evix.org
+
+Host ams.evix.org
+    User root
+    Hostname ams-ts01.evix.org
+    Port 5738
+Host ams-ts01.evix.org
+    User root
+    Hostname ams-ts01.evix.org
+    Port 5738
+
+Host nz.evix.org
+    User root
+    Hostname nz-ts01.evix.org
+Host nz-ts01.evix.org
+    User root
+    Hostname nz-ts01.evix.org
+
+Host zur.evix.org
+    User root
+    Hostname zur-ts01.evix.org
+Host zur-ts01.evix.org
+    User root
+    Hostname zur-ts01.evix.org
+
+Host fmt.evix.org
+    User root
+    Hostname fmt-ts01.evix.org
+Host fmt-ts01.evix.org
+    User root
+    Hostname fmt-ts01.evix.org

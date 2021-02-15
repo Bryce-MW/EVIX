@@ -1,0 +1,1 @@
+{"data": [{"comment": null, "le": 32, "prefix": "94.177.122.0", "ge": null, "max_length": 32, "length": 24, "exact": false}, {"comment": null, "le": 32, "prefix": "185.238.188.0", "ge": null, "max_length": 32, "length": 22, "exact": false}], "ts": 1554566494}
