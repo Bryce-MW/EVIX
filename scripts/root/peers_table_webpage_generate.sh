@@ -1,6 +1,6 @@
 #!/bin/bash
-# NOTE(bryce): Written by Bryce Wilson on 2020-11-09 (likely originally written by Chris before it was ported to the
-#  current git repo)
+# NOTE(bryce): Written by Chris a long time ago and added to git by Bryce Wilson on 2020-11-09
+#  * Before 2020-11-09|>Bryce|>Switched to using the python script rather than the PHP script Chris wrote
 #  * 2020-11-28|>Bryce|>Removed unused code (see git history)
 
 peers=$(/usr/bin/python3 /evix/scripts/root/peers_table_webpage_generate.py)
