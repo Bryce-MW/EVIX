@@ -3,8 +3,6 @@
 host=$(/evix/scripts/hostname.sh)
 local_ip=$(/evix/scripts/ip.sh "$host")
 
-#git -C /evix submodule update --init --recursive
-
 if [ -f "/evix/config/reboot/$host.sh" ]; then
   /evix/config/reboot/"$host".sh
 fi
@@ -15,8 +13,7 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   brctl stp br10 on
 
   /evix/scripts/ts/tunnels/vxlan.sh
-  mkdir -p /evix/logs
-  /evix/scripts/ts/eoip-new.sh
+  /evix/scripts/ts/tunnels/eoip.sh
 
   xargs -n 1 brctl addif br10 </evix/config/ports/"$host".ports
 
