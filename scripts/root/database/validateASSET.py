@@ -1,4 +1,9 @@
 #! /usr/bin/python3
+# NOTE(bryce): Written by Bryce Wilson a long time ago and added to git on 2020-09-16.
+#  * 2020-11-28|>Bryce|>Refactor
+
+# TODO(bryce):
+#  <-> 2021-02-18 ==> This needs to be entirely re-written
 
 import datetime
 import json
