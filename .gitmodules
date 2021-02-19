@@ -1,6 +1,3 @@
-[submodule "bgpq3"]
-	path = run/bgpq3
-	url = https://github.com/snar/bgpq3.git
 [submodule "run/arouteserver"]
 	path = run/arouteserver
 	url = https://github.com/pierky/arouteserver.git
@@ -16,6 +13,3 @@
 [submodule "config/ccd"]
 	path = config/ccd
 	url = git@git.discovr.us:EVIX/ccd.git
-[submodule "run/eoip-single"]
-	path = run/eoip-single
-	url = https://github.com/Nat-Lab/eoip.git
