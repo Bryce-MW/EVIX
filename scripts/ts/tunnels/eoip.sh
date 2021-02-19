@@ -1,4 +1,5 @@
 #! /bin/bash
+# NOTE(bryce): Written by Bryce Wilson a long time ago and fixed on 2021-02-18
 
 host=$(/evix/scripts/hostname.sh)
 ip=$(/evix/scripts/ip.sh "$host")

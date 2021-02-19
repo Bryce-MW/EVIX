@@ -1,4 +1,10 @@
 #! /bin/bash
+# NOTE(bryce): Written by Bryce Wilson a while ago and added to git on 2020-08-30
+#  * 2020-09-01|>Bryce|>Allow different ports
+#  * 2020-10-07|>Bryce|>Fixed some issues with spacing and added print
+#  * 2020-11-28|>Bryce|>Fixed some bash errors
+#  * 2020-12-01|>Bryce|>Switched to brctl
+#  * 2021-02-18|>Bryce|>Almost complete re-write to use json to add and removed exactly the required tunnels
 
 host=$(/evix/scripts/hostname.sh)
 ip=$(/evix/scripts/ip.sh "$host")
