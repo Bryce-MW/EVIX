@@ -1,4 +1,8 @@
 #! /bin/bash
+# NOTE(bryce): Written by Bryce Wilson on 2020-08-30
+#  * 2020-08-31|>Bryce|>Fixed bugs
+#  * 2020-11-28|>Bryce|>Made some changes that I don't fully understand
+#  * 2020-12-01|>Bryce|>Fixed an issue caused by not understanding what I did
 
 hosts=("/evix/config/hosts"/*)
 
