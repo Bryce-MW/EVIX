@@ -5,3 +5,5 @@ else
 fi
 
 export EDITOR=nano
+
+alias ip="ip -c"

@@ -7,6 +7,8 @@ fmt-ts01.evix.org ansible_user=root
 ams-ts01.evix.org ansible_port=5738 ansible_user=root
 nz-ts01.evix.org ansible_user=root
 zur-ts01.evix.org ansible_user=root
+
+
 # This is the default ansible 'hosts' file.
 #
 # It should live in /etc/ansible/hosts

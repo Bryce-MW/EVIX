@@ -9,4 +9,4 @@ done
 #git -C /evix submodule sync --recursive
 #git -C /evix submodule update --remote --init --recursive
 
-return 0
+exit 0
