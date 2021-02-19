@@ -1,4 +1,6 @@
 #! /bin/bash
+# NOTE(bryce): Originally written by Nate (I think?), added to git by Bryce Wilson on 2020-09-11.
+#  * 2020-11-28|>Bryce|>Fix missed fi
 
 if [ -z "$1" ]; then
   echo "Usage: $0 <asn>"

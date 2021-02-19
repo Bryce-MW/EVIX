@@ -1,4 +1,12 @@
 #! /usr/bin/env python3
+# NOTE(bryce): Written Bryce Wilson on 2020-09-13.
+#  * 2020-09-14|>Bryce|>Fixed many typos and mistakes left in
+#  * 2020-09-15|>Bryce|>Fixed many other mistakes and added OpenVPN script support
+#  * 2020-11-28|>Bryce|>Use click instead of colorit because colorit is very broken and change formatting significantly
+#  * 2020-11-30|>Bryce|>Add pingable and birdable
+#  * 2020-12-01|>Bryce|>Add tree feature and refactor to allow that to be possible
+#  * 2021-02-12|>Bryce|>Call ZT script when adding a ZT peer
+#  * 2021-02-18|>Bryce|>Minor refactoring (major rewrite is needed)
 
 import ipaddress
 import subprocess
@@ -228,8 +236,8 @@ def search():
         value = int(value)
     try:
         cursor.execute(f"SELECT * FROM {search_type.lower()} WHERE {field}=%s", (value,))
-    except mysql.connector.Error as err:
-        print("Error executing mysql query:", str(err))
+    except mysql.connector.Error as sql_error:
+        print("Error executing mysql query:", str(sql_error))
         return search()
     result = {}
     for i in tuple(cursor):
@@ -237,10 +245,12 @@ def search():
     return result, search_type
 
 
-def build(type, defaults=dict(), check=False, ignore="id"):
+def build(obj_type, defaults=None, check=False, ignore="id"):
+    if defaults is None:
+        defaults = dict()
     values = {}
-    print(f"Enter value(s) for {type.lower()[:-1]}")
-    for field in fields[type]:
+    print(f"Enter value(s) for {obj_type.lower()[:-1]}")
+    for field in fields[obj_type]:
         if ignore and field == ignore:
             continue
         if field in defaults:
@@ -252,11 +262,11 @@ def build(type, defaults=dict(), check=False, ignore="id"):
         if values[field].isdigit():
             values[field] = int(values[field])
         if check and values[field]:
-            cursor.execute(f"SELECT * FROM {type.lower()} WHERE {field}=%({field})s", values)
+            cursor.execute(f"SELECT * FROM {obj_type.lower()} WHERE {field}=%({field})s", values)
             results = tuple(cursor)
             if results:
                 print("Existing object(s) exist. Would you like to choose one of them?")
-                strings = {formats[type].format(**i): i for i in results}
+                strings = {formats[obj_type].format(**i): i for i in results}
                 result = ask_one(("None",) + tuple(strings.keys()))
                 if result != "None":
                     values = strings[result]
@@ -264,34 +274,34 @@ def build(type, defaults=dict(), check=False, ignore="id"):
     return values
 
 
-def insert(object, table):
-    values = ", ".join(f"{i}=%({i})s" for i in object)
+def insert(obj, table):
+    values = ", ".join(f"{i}=%({i})s" for i in obj)
     try:
-        cursor.execute(f"INSERT INTO {table} SET {values}", object)
+        cursor.execute(f"INSERT INTO {table} SET {values}", obj)
         tuple(cursor)
-    except mysql.connector.Error as err:
-        print("Could not insert object", str(err))
+    except mysql.connector.Error as sql_error:
+        print("Could not insert object", str(sql_error))
 
 
-def edit(object, table, id_o, id="id"):
-    values = ", ".join(f"{i}=%({i})s" for i in object)
+def edit(obj, table, id_o, id_column="id"):
+    values = ", ".join(f"{i}=%({i})s" for i in obj)
     try:
-        object["id_o"] = id_o
-        cursor.execute(f"UPDATE {table} SET {values} WHERE {id}=%(id_o)s", object)
+        obj["id_o"] = id_o
+        cursor.execute(f"UPDATE {table} SET {values} WHERE {id_column}=%(id_o)s", obj)
         tuple(cursor)
-    except mysql.connector.Error as err:
-        print("Could not edit object", str(err))
+    except mysql.connector.Error as sql_error:
+        print("Could not edit object", str(sql_error))
 
 
-def create_connection(client_id, server=None, type=None, ips=None, asn=None):
+def create_connection(client_id, server=None, obj_type=None, ips=None, asn=None):
     connection = dict(client_id=client_id)
     if server:
         connection["server"] = server
     else:
         connection["server"] = location_names[ask_one(locations)]
 
-    if type:
-        connection["type"] = type
+    if obj_type:
+        connection["type"] = obj_type
     else:
         connection["type"] = type_names[ask_one(types)]
 
@@ -337,12 +347,11 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
         if not ips:
             try:
                 cursor.execute("SELECT * FROM asns WHERE asn=%s", (asn,))
-            except mysql.connector.Error as err:
-                print("Error executing mysql query:", str(err))
+            except mysql.connector.Error as sql_error:
+                print("Error executing mysql query:", str(sql_error))
             initial_result = {}
             for i in tuple(cursor):
                 initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
-            search_type = "ASNs"
             ips = []
             for i in initial_result:
                 additional_ips = get_result_for(i, "ASNs", "IPs")
@@ -372,13 +381,14 @@ def create_connection(client_id, server=None, type=None, ips=None, asn=None):
     return connection
 
 
-def create(type):
-    if type == "Requests":
+def create(obj_type):
+    if obj_type == "Requests":
         result = build("Requests")
         insert(result, "requests")
-    elif type == "Clients":
+    elif obj_type == "Clients":
         result = build("Clients")
-    elif type == "ASNs":
+        insert(result, "clients")
+    elif obj_type == "ASNs":
         client = build("Clients", check=True)
         if "id" not in client:
             print(client)
@@ -386,16 +396,16 @@ def create(type):
             client["id"] = cursor.lastrowid
         asn = build("ASNs", {"client_id": client["id"]})
         insert(asn, "asns")
-    elif type == "IPs":
+    elif obj_type == "IPs":
         asn = build("ASNs", ignore="client_id", check=True)
         if "client_id" not in asn:
             print("Please use existing asn")
-            create(type)
+            create(obj_type)
         version = input(style("IP version => ", fg='green'))
         version = version[-1:]
         if version not in ("4", "6"):
             print("Please use 4 or 6 only")
-            create(type)
+            create(obj_type)
         version = int(version)
         cursor.execute("SELECT * FROM ips WHERE version=%s", (version,))
         all_ips = sorted(tuple(int(i["ip"].split(":")[-1].split(".")[-1], 16 if version == 6 else 10) for i in cursor if (version == 4 and ":6:" not in i["ip"]) or (version == 6 and ":6:" in i["ip"])))
@@ -423,7 +433,7 @@ def create(type):
         cursor.execute("SELECT * FROM ips WHERE asn=%s", (asn["asn"],))
         for ip in cursor:
             print(formats["IPs"].format(**ip))
-    elif type == "Connections":
+    elif obj_type == "Connections":
         client = build("Clients", check=True)
         if "id" not in client:
             insert(client, "clients")
@@ -431,7 +441,7 @@ def create(type):
         connection = create_connection(client_id=client["id"])
         insert(connection, "connections")
 
-    elif type == "Build from request":
+    elif obj_type == "Build from request":
         request = build("Requests", check=True)
         if "id" not in request:
             insert(request, "requests")
@@ -471,7 +481,7 @@ def create(type):
             ips.append(f"206.81.104.{ip}")
             ips.append(f"2602:fed2:fff:ffff::{ip}")
 
-        connection = create_connection(server=request["tunnel_location"], type=request["tunnel_type"], client_id=client["id"], ips=ips, asn=asn["asn"])
+        connection = create_connection(server=request["tunnel_location"], obj_type=request["tunnel_type"], client_id=client["id"], ips=ips, asn=asn["asn"])
         insert(connection, "connections")
         connection["id"] = cursor.lastrowid
 
@@ -487,108 +497,110 @@ def create(type):
         cursor.reset()
 
 
-for option in iter(ask(options), str(len(options))):
-    if not (option.isdigit() and int(option) >= 0):
-        continue
-    asn = None
-    if int(option) > len(options):
-        asn = int(option)
-        option = "View"
-    else:
-        option = options[int(option)]
-    if option == "View":
-        object = None
-        if asn:
-            try:
-                cursor.execute("SELECT * FROM asns WHERE asn=%s", (asn,))
-            except mysql.connector.Error as err:
-                print("Error executing mysql query:", str(err))
-                continue
-            initial_result = {}
-            for i in tuple(cursor):
-                initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
-            search_type = "ASNs"
+def main():
+    for option in iter(ask(options), str(len(options))):
+        if not (option.isdigit() and int(option) >= 0):
+            continue
+        asn = None
+        if int(option) > len(options):
+            asn = int(option)
+            option = "View"
         else:
-            initial_result, search_type = search()
-        for database_entry in initial_result:
-
-            connections = get_result_for(database_entry, search_type, "Connections")
-
-            requests = get_result_for(database_entry, search_type, "Requests")
-            if requests:
-                secho("Requests:", fg="blue")
-                for request in requests:
-                    secho(" - " + formats["Requests"].format(**request), fg="green")
-
-            clients = get_result_for(database_entry, search_type, "Clients")
-            if clients:
-                secho("Trees:", fg="blue")
-                for client in clients:
-                    secho(" - " + formats["Clients"].format(**client), fg="green")
-                    asns = get_result_for(client, "Clients", "ASNs")
-                    for asn in asns:
-                        secho("  - " + formats["ASNs"].format(**asn), fg="green")
-                        ips = get_result_for(asn, "ASNs", "IPs")
-                        for ip in ips:
-                            secho("   - " + formats["IPs"].format(**ip), fg="green")
-                    connections = get_result_for(client, "Clients", "Connections")
-                    for connection in connections:
-                        secho("  - " + formats["Connections"].format(**connection), fg="green")
-    elif option == "Create":
-        object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
-        create(object)
-    elif option == "Modify":
-        object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
-        cont = True
-        while cont:
-            key = input(style("Primary key (id,asn,ip) => ", fg='green'))
-            if object == "ASNs":
-                cursor.execute(f"SELECT * FROM {object.lower()} WHERE asn=%s", (int(key),))
-            elif object == "IPs":
-                cursor.execute(f"SELECT * FROM {object.lower()} WHERE ip=%s", (key,))
-            else:
-                cursor.execute(f"SELECT * FROM {object.lower()} WHERE id=%s", (int(key),))
-            if not cursor.with_rows:
-                print("Object not found")
-                continue
-            value = tuple(cursor)[0]
-            if object == "ASNs":
-                result = build(object, defaults=value)
-                edit(result, object.lower(), id="asn", id_o=value["asn"])
-            elif object == "IPs":
-                result = build(object, defaults=value)
-                edit(result, object.lower(), id="ip", id_o=value["ip"])
-            else:
-                result = build(object, defaults=value)
-                edit(result, object.lower(), id_o=value["id"])
-            print("Modify another?")
-            if ask_one(("Yes", "No")) == "Yes":
-                cont = True
-            else:
-                cont = False
-    elif option == "Delete":
-        object = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
-        secho("Caution, be sure to remove in the order: IP, ASN, Connection, Client or you will get errors!", fg='green')
-        cont = True
-        while cont:
-            key = input(style("Primary key (id,asn,ip) => ", fg='green'))
-            secho("Are you sure that you want to delete this object?", fg='green')
-            if ask_one(("Yes", "No")) == "Yes":
+            option = options[int(option)]
+        if option == "View":
+            if asn:
                 try:
-                    if object == "ASNs":
-                        cursor.execute(f"DELETE FROM {object.lower()} WHERE asn=%s", (int(key),))
-                    elif object == "IPs":
-                        cursor.execute(f"DELETE FROM {object.lower()} WHERE ip=%s", (key,))
-                    else:
-                        cursor.execute(f"DELETE FROM {object.lower()} WHERE id=%s", (int(key),))
-                except mysql.connector.Error as err:
-                    print("Could not delete object:", err)
-                tuple(cursor)
-            print("Delete another?")
-            if ask_one(("Yes", "No")) == "Yes":
-                cont = True
+                    cursor.execute("SELECT * FROM asns WHERE asn=%s", (asn,))
+                except mysql.connector.Error as sql_error:
+                    print("Error executing mysql query:", str(sql_error))
+                    continue
+                initial_result = {}
+                for i in tuple(cursor):
+                    initial_result[frozendict(i)] = get_result_for(i, "ASNs", "ASNs")
+                search_type = "ASNs"
             else:
-                cont = False
-    else:
-        print("Option not supported yet")
+                initial_result, search_type = search()
+            for database_entry in initial_result:
+                requests = get_result_for(database_entry, search_type, "Requests")
+                if requests:
+                    secho("Requests:", fg="blue")
+                    for request in requests:
+                        secho(" - " + formats["Requests"].format(**request), fg="green")
+
+                clients = get_result_for(database_entry, search_type, "Clients")
+                if clients:
+                    secho("Trees:", fg="blue")
+                    for client in clients:
+                        secho(" - " + formats["Clients"].format(**client), fg="green")
+                        asns = get_result_for(client, "Clients", "ASNs")
+                        for asn in asns:
+                            secho("  - " + formats["ASNs"].format(**asn), fg="green")
+                            ips = get_result_for(asn, "ASNs", "IPs")
+                            for ip in ips:
+                                secho("   - " + formats["IPs"].format(**ip), fg="green")
+                        connections = get_result_for(client, "Clients", "Connections")
+                        for connection in connections:
+                            secho("  - " + formats["Connections"].format(**connection), fg="green")
+        elif option == "Create":
+            obj = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
+            create(obj)
+        elif option == "Modify":
+            obj = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
+            cont = True
+            while cont:
+                key = input(style("Primary key (id,asn,ip) => ", fg='green'))
+                if obj == "ASNs":
+                    cursor.execute(f"SELECT * FROM {obj.lower()} WHERE asn=%s", (int(key),))
+                elif obj == "IPs":
+                    cursor.execute(f"SELECT * FROM {obj.lower()} WHERE ip=%s", (key,))
+                else:
+                    cursor.execute(f"SELECT * FROM {obj.lower()} WHERE id=%s", (int(key),))
+                if not cursor.with_rows:
+                    print("Object not found")
+                    continue
+                value = tuple(cursor)[0]
+                if obj == "ASNs":
+                    result = build(obj, defaults=value)
+                    edit(result, obj.lower(), id_column="asn", id_o=value["asn"])
+                elif obj == "IPs":
+                    result = build(obj, defaults=value)
+                    edit(result, obj.lower(), id_column="ip", id_o=value["ip"])
+                else:
+                    result = build(obj, defaults=value)
+                    edit(result, obj.lower(), id_o=value["id"])
+                print("Modify another?")
+                if ask_one(("Yes", "No")) == "Yes":
+                    cont = True
+                else:
+                    cont = False
+        elif option == "Delete":
+            obj = ask_one(objects + (("Build from request",) if option == "Create" else tuple()))
+            secho("Caution, be sure to remove in the order: IP, ASN, Connection, Client or you will get errors!", fg='green')
+            cont = True
+            while cont:
+                key = input(style("Primary key (id,asn,ip) => ", fg='green'))
+                secho("Are you sure that you want to delete this object?", fg='green')
+                if ask_one(("Yes", "No")) == "Yes":
+                    try:
+                        if obj == "ASNs":
+                            cursor.execute(f"DELETE FROM {obj.lower()} WHERE asn=%s", (int(key),))
+                        elif obj == "IPs":
+                            cursor.execute(f"DELETE FROM {obj.lower()} WHERE ip=%s", (key,))
+                        else:
+                            cursor.execute(f"DELETE FROM {obj.lower()} WHERE id=%s", (int(key),))
+                    except mysql.connector.Error as sql_error:
+                        print("Could not delete object:", sql_error)
+                    tuple(cursor)
+                print("Delete another?")
+                if ask_one(("Yes", "No")) == "Yes":
+                    cont = True
+                else:
+                    cont = False
+        else:
+            print("Option not supported yet")
+
+
+if __name__ == "__main__":
+    main()
+
 database.commit()
