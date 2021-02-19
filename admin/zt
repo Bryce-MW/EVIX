@@ -28,8 +28,8 @@ elif [ "$1" == "get" ]; then
         echo "Usage: $0 get <ZT Address> # Get info on a ZT user"
     fi
     shift
-    curl -X GET --header "$auth" "$member/$1" 2>/dev/null #|
-#    jq --raw-output '.address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
+    curl -X GET --header "$auth" "$member/$1" 2>/dev/null |
+    jq --raw-output '.address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
 elif [ "$1" == "delete" ]; then
     if [ -z "$2" ]; then
         echo "Usage: $0 delete <ZT Address> # Remove a ZT user"
@@ -43,7 +43,7 @@ elif [ "$1" == "add" ]; then
         echo "Usage: $0 add <ZT Address> [IPs to add] # Approve a ZT user"
     fi
     id="$2"
-    echo $@ |
+    echo "$@" |
     jq --compact-output --raw-input 'split(" ") | {"authorized": true, "activeBridge": true, "ipAssignments": .[2:]?}' |
     curl -X POST --header "$auth" -d @- "$member/$id" 2>/dev/null | jq '.'
 elif [ "$1" == "time" ]; then
@@ -52,5 +52,5 @@ elif [ "$1" == "time" ]; then
     fi
     zerotier-cli "-T$token" "-H$root_ip" -j listpeers | jq --raw-output --arg member "$2" 'map(if .address == $member then . else empty end) | .[0]? | .paths | map(if .preferred == true then (.lastReceive / 1000 | gmtime | (.[0] | tostring) + "-" + (["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"][.[1]]) + "-" + (.[2] | tostring)) else empty end) | .[0]'
 else
-    zerotier-cli "-T$token" "-H$root_ip" $@
+    zerotier-cli "-T$token" "-H$root_ip" "$@"
 fi

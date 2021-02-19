@@ -1,3 +1,5 @@
 #! /bin/zsh
+# NOTE(bryce): Written by Bryce Wilson long ago and added to git on 2020-09-11
+#  * 2020-02-12|>Bryce|>Add reconnect flag
 
 mysql --user evix --password=***REMOVED*** --pager='less --quit-if-one-screen' --reconnect evix
