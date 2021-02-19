@@ -10,5 +10,12 @@
         owner: no
         rsync_opts:
           - "--exclude-from=/evix/.gitignore"
+      synchronize:
+        src: /evix/config/peers
+        dest: /evix/config/peers
+        checksum: yes
+        delete: yes
+        group: no
+        owner: no
     - name: Reconfigure tunnels
       command: /evix/scripts/ts/update.sh

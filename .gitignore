@@ -5,3 +5,4 @@ __pycache__/
 backups/*
 config/bird/bird.conf
 config/bird/bird6.conf
+config/peers
