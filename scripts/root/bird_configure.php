@@ -9,7 +9,7 @@
 $conn = mysqli_connect('127.0.0.1', 'evix', '***REMOVED***', 'evix');
 
 if (!$conn) {
-    die("Failed to connect to database" . mysqli_error());
+    die("Failed to connect to database" . mysqli_error($conn));
 }
 
 $query = "SELECT * FROM asns WHERE EXISTS (SELECT 1 FROM ips WHERE ips.asn=asns.asn AND (ips.provisioned=true OR ips.monitor=false))";
