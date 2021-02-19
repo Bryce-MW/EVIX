@@ -1,3 +1,10 @@
+#!/bin/bash
+# NOTE(bryce): Written by Bryce Wilson long ago and added to git on 2020-09-03
+#  * 2020-09-19|>Bryce|>Add static tunnel to other servers
+#  * 2020-12-01|>Bryce|>Add VXLAN mesh
+#  * 2020-12-05|>Bryce|>Add static tunnel to VAN
+#  * 2021-02-15|>Bryce|>Fix issue with unneeded routes being added
+
 ip -4 route delete 206.81.104.0/24
 ip -4 address add 206.81.104.1/24 dev br10
 ip -6 address add 2602:fed2:fff:ffff::1/64 dev br10
@@ -10,10 +17,3 @@ ip link set up EVIX-VAN
 
 ip route delete 2602:fed2:fff:ffff::/64 dev ens19
 ip route delete 2602:fed2:fff:ffff::/64 dev EVIX-VAN
-
-#ip link add vtep123 vxlan id 123 remote 104.218.61.207 local 72.52.82.6
-#ip link add vtep1234 vxlan id 1234 remote 93.158.213.143 local 72.52.82.6 srcport 0 0 dstport 500 ageing 300
-#ip link set vtep123 up
-#ip link set vtep1234 up
-#ovs-vsctl add-port vmbr0 vtep123
-#ovs-vsctl add-port vmbr0 vtep1234
