@@ -3,8 +3,6 @@
 #  * 2021-01-01|>Bryce|>Copied from warn_disconnection.py
 
 import datetime
-import smtplib
-import ssl
 import sys
 
 import mysql.connector
@@ -19,8 +17,6 @@ except mysql.connector.Error as err:
     exit(1)
 
 now = datetime.datetime.now()
-#print("\n\n")
-#print(now)
 
 cursor = database.cursor(buffered=True)
 
