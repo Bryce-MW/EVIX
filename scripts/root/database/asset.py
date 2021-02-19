@@ -1,4 +1,9 @@
 #! /usr/bin/python3
+# NOTE(bryce): Written by Bryce Wilson a while ago and added to git on 2020-09-10.
+#  * 2020-11-28|>Bryce|>Did some refactoring
+
+# TODO(bryce):
+#  <-> 2020-11-28 ==> This needs to be re-written and likely done very differently
 
 import datetime
 from os.path import expanduser
