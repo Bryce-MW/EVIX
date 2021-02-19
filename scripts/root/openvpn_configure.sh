@@ -5,7 +5,7 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
   echo "To use this script run $0 <asn> <ipv4/noipv4> <ipv6>"
   echo "Where <asn> is the ASN Number of the pending peer in the database"
   echo
-  echo "On a sucessful run, the peer's status in the database should be updated and an IP/IPv6 assigned"
+  echo "On a successful run, the peer's status in the database should be updated and an IP/IPv6 assigned"
   echo "The changed database will prompt a reconfiguration of BIRD and a re-generation of the website"
   exit
 fi

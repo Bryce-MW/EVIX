@@ -4,8 +4,9 @@
 #  * 2020-11-29|>Bryce|>Opportunistically reprovision sessions
 #  * 2020-11-30|>Bryce|>Add tracking of up sessions directly
 #  * 2020-12-15|>Bryce|>Change script name from peers-status to warn_disconnection
+#  * 2021-02-18|>Bryce|>Add error and use new date format
 
-import datetime
+from datetime import datetime
 import smtplib
 import ssl
 import sys
@@ -22,17 +23,25 @@ Hi {name}!
 Your IPv{version} session with EVIX has been down for {difference} days.
 
 If your session has been down for 14 days or more, it will be deprovisioned.
-If you wish to have your IP reprovisioned, please *do not* send a new
-request. Please just reply to this email. If you are still setting up your
-session, let us know on your original ticket and we will reprovision it for
-you. This email was sent by a robot who does not know that you are still
-setting up your tunnel!
+Please reply to this email with as many details as you can to help us fix
+the problem. We are volunteers with very limited time so please respect that
+we may not reply quickly and help us as much as possible. Be sure to check
+if this email is about your IPv4 or IPv6 session and which route server this
+disconnection was seen at. This email was sent by a robot so it may not know
+if you are in a specific situation that you have already discussed with us.
+If you already have a ticket, reply to that rather than replying to this
+email.
+
+Sincerely,
+Your EVIX Admins (and the script that sent this email)
 
 
 Here are your connection details:
 ASN: {asn}
 IPv{version}: {ip}
 Route Server: {server}
+Last seen connected: {since}
+Last error: {error}
 
 If you believe this to be in error, please reply to this email.
 """
@@ -50,7 +59,7 @@ context = ssl.create_default_context()
 
 version = sys.argv[1]
 rt = sys.argv[2]
-now = datetime.datetime.now()
+now = datetime.now()
 print("\n\n")
 print(now)
 
@@ -62,16 +71,19 @@ with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
     cursor.execute("UPDATE ips SET birdable=false WHERE version=%s", (version,))
     for i in sys.stdin:
         line = i.split()
-        asn = line[4].replace("AS", '').split("_")[0]
-        ip = line[3]
-        if line[0] == "up":
+        status = line[0]
+        date = int(line[1])
+        ip = line[2]
+        asn = line[3]
+        error = line[4] if line[4] != "null" else "No error found"
+        if status == "up":
             cursor.execute("UPDATE ips SET birdable=true WHERE ip=%s", (ip,))
             cursor.execute("SELECT 1 FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s AND monitor=true AND provisioned=true", (ip,))
             if len(tuple(cursor)) == 0:
                 cursor.execute("UPDATE ips SET provisioned=true, monitor=true WHERE ip=%s", (ip,))
                 print(f"+ Found up session for {asn} over {ip}. Set provisioned and monitored")
             continue
-        since = datetime.datetime.strptime(" ".join(line[1:3]), "%Y-%m-%d %H:%M:%S")
+        since = datetime.fromtimestamp(date)
         difference = (now - since).days
         if difference == 3 or difference >= 14:
             cursor.execute("SELECT name,contact,provisioned FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s AND monitor=true AND provisioned=true", (ip,))
@@ -88,8 +100,8 @@ with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
                 if cursor.rowcount == 0:
                     print(f"- Could not deprovision {ip}?")
                 results = tuple(cursor)
-                server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact))
+                server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact, error=error, since=since))
                 print(f"Sent deprovision for {asn} over {ip} to {contact}")
             elif difference == 3 and provisioned:
-                server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact))
+                server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact, error=error, since=since))
                 print(f"Sent warning for {asn} over {ip} to {contact}")
