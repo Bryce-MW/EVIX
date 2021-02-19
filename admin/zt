@@ -9,48 +9,48 @@ auth="X-ZT1-Auth: $token"
 member="http://$root_ip:9993/controller/network/$network/member"
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 all # Get all users"
-    echo "       $0 get <ZT Address> # Get a specific user"
-    echo "       $0 delete <ZT Address> # Delete a user"
-    echo "       $0 add <ZT Address> [IPs to add] # Approve a ZT user"
-    echo "       $0 time <ZT Address> # Get the last time that a user was seen"
-    echo "       $0 <zerotier-cli command> # Use zerotier-cli on the root server"
-    exit 1
+  echo "Usage: $0 all # Get all users"
+  echo "       $0 get <ZT Address> # Get a specific user"
+  echo "       $0 delete <ZT Address> # Delete a user"
+  echo "       $0 add <ZT Address> [IPs to add] # Approve a ZT user"
+  echo "       $0 time <ZT Address> # Get the last time that a user was seen"
+  echo "       $0 <zerotier-cli command> # Use zerotier-cli on the root server"
+  exit 1
 fi
 
 if [ "$1" == "all" ]; then
-    curl -X GET --header "X-ZT1-Auth: $token" "$member" 2>/dev/null |
+  curl -X GET --header "X-ZT1-Auth: $token" "$member" 2>/dev/null |
     jq --raw-output 'keys | .[]' |
     xargs -P 0 -I {} curl -X GET --header "$auth" "$member/{}" 2>/dev/null |
     jq --slurp --raw-output 'sort_by([.authorized, .bridge, (.vMajor > -1), .address]) | .[] | .address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
 elif [ "$1" == "get" ]; then
-    if [ -z "$2" ]; then
-        echo "Usage: $0 get <ZT Address> # Get info on a ZT user"
-    fi
-    shift
-    curl -X GET --header "$auth" "$member/$1" 2>/dev/null |
+  if [ -z "$2" ]; then
+    echo "Usage: $0 get <ZT Address> # Get info on a ZT user"
+  fi
+  shift
+  curl -X GET --header "$auth" "$member/$1" 2>/dev/null |
     jq --raw-output '.address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
 elif [ "$1" == "delete" ]; then
-    if [ -z "$2" ]; then
-        echo "Usage: $0 delete <ZT Address> # Remove a ZT user"
-    fi
-    shift
-    jq -n --compact-output '{"authorized": false, "activeBridge": false, "ipAssignments": []}' |
+  if [ -z "$2" ]; then
+    echo "Usage: $0 delete <ZT Address> # Remove a ZT user"
+  fi
+  shift
+  jq -n --compact-output '{"authorized": false, "activeBridge": false, "ipAssignments": []}' |
     curl -X POST --header "$auth" -d @- "$member/$1" >/dev/null 2>&1
-    curl -X DELETE --header "$auth" "$member/$1" 2>/dev/null | jq '.'
+  curl -X DELETE --header "$auth" "$member/$1" 2>/dev/null | jq '.'
 elif [ "$1" == "add" ]; then
-    if [ -z "$2" ]; then
-        echo "Usage: $0 add <ZT Address> [IPs to add] # Approve a ZT user"
-    fi
-    id="$2"
-    echo "$@" |
+  if [ -z "$2" ]; then
+    echo "Usage: $0 add <ZT Address> [IPs to add] # Approve a ZT user"
+  fi
+  id="$2"
+  echo "$@" |
     jq --compact-output --raw-input 'split(" ") | {"authorized": true, "activeBridge": true, "ipAssignments": .[2:]?}' |
     curl -X POST --header "$auth" -d @- "$member/$id" 2>/dev/null | jq '.'
 elif [ "$1" == "time" ]; then
-    if [ -z "$2" ]; then
-        echo "Usage: $0 time <ZT Address> # Get the last time that a user was seen"
-    fi
-    zerotier-cli "-T$token" "-H$root_ip" -j listpeers | jq --raw-output --arg member "$2" 'map(if .address == $member then . else empty end) | .[0]? | .paths | map(if .preferred == true then (.lastReceive / 1000 | gmtime | (.[0] | tostring) + "-" + (["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"][.[1]]) + "-" + (.[2] | tostring)) else empty end) | .[0]'
+  if [ -z "$2" ]; then
+    echo "Usage: $0 time <ZT Address> # Get the last time that a user was seen"
+  fi
+  zerotier-cli "-T$token" "-H$root_ip" -j listpeers | jq --raw-output --arg member "$2" 'map(if .address == $member then . else empty end) | .[0]? | .paths | map(if .preferred == true then (.lastReceive / 1000 | gmtime | (.[0] | tostring) + "-" + (["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"][.[1]]) + "-" + (.[2] | tostring)) else empty end) | .[0]'
 else
-    zerotier-cli "-T$token" "-H$root_ip" "$@"
+  zerotier-cli "-T$token" "-H$root_ip" "$@"
 fi
