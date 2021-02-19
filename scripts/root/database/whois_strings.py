@@ -1,3 +1,5 @@
+# NOTE(bryce): Written by Bryce Wilson on 2020-11-28. Just moved some strings out to a separate file.
+
 multi_as_set_header = """as-set:          {name}\ndescr:           Combo AS-SET
 remarks:         This object has been created automatically
 remarks:         by a python script. Email
