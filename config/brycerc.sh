@@ -12,3 +12,4 @@ export EDITOR=nano
 
 alias ip="ip -c"
 alias commit="git add --all; git commit -m"
+alias push="git push"
