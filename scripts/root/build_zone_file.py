@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# 12/14/2020 Nate Sales
+# NOTE(bryce): Written Nate Sales on 2020-12-14.
 
 import mysql.connector
 from jinja2 import Template
