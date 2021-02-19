@@ -81,7 +81,7 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
             if connections_counter < len(connections) - 1:
                 connections_counter += 1
             server = connection['server']
-            type = connection['type']
+            obj_type = connection['type']
 
             total += 1
             ipv4_str = ipv4[i]['ip'] if i < len(ipv4) else "-----"
@@ -91,13 +91,13 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
             asn = asn['asn'] if first_ip else ""
 
             if multiple and first:
-                table += multi_asn_entry.format(website=website, name=name, asn=asn, ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
+                table += multi_asn_entry.format(website=website, name=name, asn=asn, ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=obj_type)
             else:
                 if not multiple:
                     table += single_asn_footer
                 elif total == 2:
                     table += multi_asn_footer
-                table += single_asn_entry.format(website=website, name=name, asn=asn, ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=type)
+                table += single_asn_entry.format(website=website, name=name, asn=asn, ipv4=ipv4_str, ipv6=ipv6_str, server=server, type=obj_type)
             if total == n:
                 table += '</tbody>'
             first_ip = False
