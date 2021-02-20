@@ -10,6 +10,7 @@
         owner: no
         rsync_opts:
           - "--exclude-from=/evix/.gitignore"
+    - name: Push peers config to tunnel servers
       synchronize:
         src: /evix/config/peers
         dest: /evix/config/peers
