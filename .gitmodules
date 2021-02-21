@@ -7,3 +7,6 @@
 [submodule "run/IX-Website"]
 	path = run/IX-Website
 	url = git@git.discovr.us:EVIX/EVIXWebsite.git
+[submodule "run/racl"]
+	path = run/racl
+	url = https://github.com/init-js/racl.git
