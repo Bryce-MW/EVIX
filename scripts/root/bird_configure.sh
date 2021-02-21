@@ -24,7 +24,7 @@ export PYTHONPATH
 #PEERS=$(/usr/bin/php /evix/scripts/root/bird_configure.php)
 mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
 #echo "$PEERS" >/etc/arouteserver/clients.yml
-/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/run/arouteserver/clients.yml
+/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/config/arouteserver/clients.yml
 
 /evix/run/arouteserver/scripts/arouteserver bird --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird.conf
 /evix/run/arouteserver/scripts/arouteserver bird --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6.conf
