@@ -10,7 +10,7 @@ eoip_ps=$(pgrep -x eoip)
 if [ "$eoip_ps" == "" ]; then
   mkdir -p /evix/logs
   jq --raw-input --raw-output 'split(" ") | "\(.[1]):\(.[0])"' "/evix/config/peers/$host.eoip" |
-  xargs -0 -d "\n" screen -dmS eoip /evix/run/eoip/eoip -s /evix/logs/eoip.log "$interface" "$ip"
+    xargs -0 -d "\n" screen -dmS eoip /evix/run/eoip/eoip -s /evix/logs/eoip.log "$interface" "$ip"
 
   sleep 2
   ip link set "$interface" up
@@ -22,13 +22,18 @@ length=$({
   jq --raw-input 'split("\u0000") | .[5:] | reduce .[] as $item ([]; if (.[-1] | length) == 1 then .[:-1] + [[.[-1][0], $item]] else . + [[$item]] end) | map({id: .[1], ip: .[0]})' "/proc/$eoip_ps/cmdline"
   jq --slurp --raw-input 'split("\n") | map(select(length > 0)) | map(split(" ")) | map({id: .[0], ip: .[1]})' "/evix/config/peers/$host.eoip"
 } |
-jq --slurp '{existing: .[0], new: .[1]} | (.existing - .new) + (.new - .existing) | length')
+  jq --slurp '{existing: .[0], new: .[1]} | (.existing - .new) + (.new - .existing) | length')
 
-if (( length > 0 )); then
+if ((length > 0)); then
   screen -S eoip -X stuff ^C
 
   jq --raw-input --raw-output 'split(" ") | "\(.[1]):\(.[0])"' "/evix/config/peers/$host.eoip" |
-  xargs -0 -d "\n" screen -dmS eoip /evix/run/eoip/eoip -s /evix/logs/eoip.log "$interface" "$ip"
+    xargs -0 -d "\n" screen -dmS eoip /evix/run/eoip/eoip -s /evix/logs/eoip.log "$interface" "$ip"
+
+  sleep 2
+  ip link set "$interface" up
+  brctl addif br10 "$interface"
+  exit 0
 fi
 
 # screen -S eoip -X stuff ^C
