@@ -8,7 +8,7 @@ from click import secho, style
 import mysql.connector
 
 database = None
-up = r"/\'
+up = r"/\"
 down = r"\/"
 
 try:
