@@ -6,7 +6,7 @@ if command -v batcat &> /dev/null; then
   alias bat="batcat"
 fi
 
-if ! command -v bat &> /dev/null; then
+if ! command -v bat &> /dev/null && ! command -v batcat &> /dev/null; then
   echo "Please install bat https://github.com/sharkdp/bat"
 else
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"

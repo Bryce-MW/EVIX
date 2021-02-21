@@ -6,5 +6,6 @@ backups/*
 config/bird/bird.conf
 config/bird/bird6.conf
 config/peers/*
+config/peers
 config/playbooks/*.retry
 config/arouteserver/cache/*
