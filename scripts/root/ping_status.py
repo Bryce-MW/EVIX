@@ -4,7 +4,7 @@
 
 import datetime
 import sys
-
+from click import secho, style
 import mysql.connector
 
 database = None
@@ -29,7 +29,7 @@ for i in sys.stdin:
     pingable_before = bool(tuple(cursor)[0][0])
     if pingable_before != can_ping:
         found = True
-        print(f"{now} => {ip} changed from {'up' if pingable_before else 'down'} to {'up' if can_ping else 'down'}")
+        secho(f"{now}{' /\ ' if can_ping else ' \/ '}{ip}", fg=('green' if can_ping else 'red'))
     if can_ping:
         cursor.execute("UPDATE ips SET pingable=true WHERE ip=%s", (ip,))
     else:
