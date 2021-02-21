@@ -8,8 +8,8 @@ from click import secho, style
 import mysql.connector
 
 database = None
-up = r"/\"
-down = r"\/"
+up = "/\\"
+down = "\\/"
 
 try:
     database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
