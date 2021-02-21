@@ -872,6 +872,18 @@ clients:
   ip:
   - 206.81.104.238
   - 2602:fed2:fff:ffff::238
+- asn: "134993"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: iLemonrain Networks
+  ip:
+  - 2602:fed2:fff:ffff:6::36
 - asn: "207299"
   cfg:
     filtering:
@@ -975,19 +987,6 @@ clients:
   ip:
   - 206.81.104.75
   - 2602:fed2:fff:ffff::75
-- asn: "209557"
-  cfg:
-    filtering:
-      max_prefix:
-        action: shutdown
-        peering_db:
-          enabled: false
-        limit_ipv4: 200
-        limit_ipv6: 100
-  description: Yi Network
-  ip:
-  - 206.81.104.84
-  - 2602:fed2:fff:ffff::84
 - asn: "207722"
   cfg:
     filtering:
@@ -1271,7 +1270,7 @@ clients:
   description: Azsopro
   ip:
   - 2602:fed2:fff:ffff:6::20
-- asn: "44258"
+- asn: "24322"
   cfg:
     filtering:
       max_prefix:
@@ -1280,9 +1279,24 @@ clients:
           enabled: false
         limit_ipv4: 200
         limit_ipv6: 100
-  description: Trevor Janssen
+  description: HostLink
   ip:
-  - 206.81.104.190
+  - 206.81.104.115
+  - 206.81.104.43
+  - 2602:fed2:fff:ffff::115
+  - 2602:fed2:fff:ffff::43
+- asn: "213105"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: Marcel Witschel
+  ip:
+  - 2602:fed2:fff:ffff:6::28
 - asn: "213252"
   cfg:
     filtering:
@@ -1507,31 +1521,6 @@ clients:
   ip:
   - 206.81.104.24
   - 2602:fed2:fff:ffff::24
-- asn: "43377"
-  cfg:
-    filtering:
-      max_prefix:
-        action: shutdown
-        peering_db:
-          enabled: false
-        limit_ipv4: 200
-        limit_ipv6: 100
-  description: WhiteHat
-  ip:
-  - 206.81.104.204
-  - 2602:fed2:fff:ffff::204
-- asn: "51999"
-  cfg:
-    filtering:
-      max_prefix:
-        action: shutdown
-        peering_db:
-          enabled: false
-        limit_ipv4: 200
-        limit_ipv6: 100
-  description: WhiteHat
-  ip:
-  - 2602:fed2:fff:ffff:6::23
 - asn: "140936"
   cfg:
     filtering:
@@ -1642,6 +1631,18 @@ clients:
   ip:
   - 206.81.104.10
   - 2602:fed2:fff:ffff::10
+- asn: "270014"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: GrupoCG
+  ip:
+  - 206.81.104.13
 - asn: "212568"
   cfg:
     filtering:
@@ -1894,7 +1895,7 @@ clients:
   description: C1V Hosting
   ip:
   - 206.81.104.52
-  - 2602:fed2:fff:ffff::52
+  - 2602:fed2:fff:ffff::84
 - asn: "212196"
   cfg:
     filtering:
@@ -2155,3 +2156,54 @@ clients:
   ip:
   - 206.81.104.69
   - 2602:fed2:fff:ffff::69
+- asn: "212966"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: Eliott Trouillet
+  ip:
+  - 2602:fed2:fff:ffff:6::66
+- asn: "211819"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: FxTransit Networks LTD
+  ip:
+  - 206.81.104.77
+  - 2602:fed2:fff:ffff::77
+- asn: "212635"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: AS212635
+  ip:
+  - 206.81.104.78
+  - 2602:fed2:fff:ffff::78
+- asn: "51999"
+  cfg:
+    filtering:
+      max_prefix:
+        action: shutdown
+        peering_db:
+          enabled: false
+        limit_ipv4: 200
+        limit_ipv6: 100
+  description: WhiteHat Inc.
+  ip:
+  - 206.81.104.90
+  - 2602:fed2:fff:ffff::90
