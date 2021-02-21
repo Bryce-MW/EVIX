@@ -134,20 +134,27 @@ cfg:
       ext: rt:65282:peer_as
       lrg: rs_as:65282:peer_as
   custom_communities:
-    source_fremont:
-      std: '65517:01'
-      ext: rt:65517:01
-      lrg: rs_as:65517:01
-    source_amsterdam:
-      std: '65517:02'
-      ext: rt:65517:02
-      lrg: rs_as:65517:02
-    source_auckland:
-      std: '65517:03'
-      ext: rt:65517:03
-      lrg: rs_as:65517:03
-    source_vancouver:
+    switch_name_frankfurt_germany:
+      std: '65517:06'
+      ext: rt:65517:06
+      lrg: rs_as:65517:06
+    switch_name_vancouver_bc_canada:
       std: '65517:04'
       ext: rt:65517:04
       lrg: rs_as:65517:04
-
+    switch_name_auckland_new_zealand:
+      std: '65517:03'
+      ext: rt:65517:03
+      lrg: rs_as:65517:03
+    switch_name_zurich_switzerland:
+      std: '65517:05'
+      ext: rt:65517:05
+      lrg: rs_as:65517:05
+    switch_name_amsterdam_the_netherlands:
+      std: '65517:02'
+      ext: rt:65517:02
+      lrg: rs_as:65517:02
+    switch_name_fremont_ca_united_states:
+      std: '65517:01'
+      ext: rt:65517:01
+      lrg: rs_as:65517:01
