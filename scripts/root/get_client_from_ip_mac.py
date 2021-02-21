@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Fetch client info for a given IP or MAC address
 #  * 2021-02-21|>Alex|>Initial Version
 
@@ -73,37 +74,38 @@ def get_mac_address_for_ip(ip):
     return mac
 
 
-if socket.gethostname() != ADMIN_SERVER_HOSTNAME:
-    print("Error: This script needs to be run from the admin server!")
-    exit(1)
+if __name__ == "__main__":
+    if socket.gethostname() != ADMIN_SERVER_HOSTNAME:
+        print("Error: This script needs to be run from the admin server!")
+        exit(1)
 
-if len(sys.argv) != 2 or "-h" in sys.argv[1]:
-    print_usage()
-    exit(0)
-else:
-    parameter = sys.argv[1].lower()
+    if len(sys.argv) != 2 or "-h" in sys.argv[1]:
+        print_usage()
+        exit(0)
+    else:
+        parameter = sys.argv[1].lower()
 
-ip = ipaddress.ip_address('127.0.0.1')
-clients = mac = ""
+    ip = ipaddress.ip_address('127.0.0.1')
+    clients = mac = ""
 
-try:
-    ip = ipaddress.ip_address(parameter)
-except ValueError:
-    if MAC_REGEX.match(parameter):
-        mac = parameter
+    try:
+        ip = ipaddress.ip_address(parameter)
+    except ValueError:
+        if MAC_REGEX.match(parameter):
+            mac = parameter
 
-if ip.is_link_local:
-    mac = get_mac_address_for_ip(ip)
+    if ip.is_link_local:
+        mac = get_mac_address_for_ip(ip)
 
-if mac:
-    ip_list = get_ips_for_mac(mac)
-    if len(ip_list) > 0:
-        clients = get_client_info_for_ip(ip_list)
+    if mac:
+        ip_list = get_ips_for_mac(mac)
+        if len(ip_list) > 0:
+            clients = get_client_info_for_ip(ip_list)
 
-if ip.is_global:
-    clients = get_client_info_for_ip([str(ip)])
+    if ip.is_global:
+        clients = get_client_info_for_ip([str(ip)])
 
-if clients:
-    print(clients)
-else:
-    print(f'No results found for IP or MAC address "{parameter}".')
+    if clients:
+        print(clients)
+    else:
+        print(f'No results found for IP or MAC address "{parameter}".')
