@@ -7,6 +7,3 @@
 [submodule "run/IX-Website"]
 	path = run/IX-Website
 	url = git@git.discovr.us:EVIX/EVIXWebsite.git
-[submodule "config/ccd"]
-	path = config/ccd
-	url = git@git.discovr.us:EVIX/ccd.git
