@@ -10,11 +10,6 @@ if [ "$EUID" -eq 0 ]; then
 fi
 
 SUCCESS=1
-#generate yaml from database
-PEERS=$(/usr/bin/php /evix/scripts/root/bird_configure.php)
-mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
-echo "$PEERS" >/etc/arouteserver/clients.yml
-echo "$PEERS" >/evix/run/arouteserver/clients.yml
 
 #generate config
 if ! cd /evix/run/arouteserver/; then
@@ -24,6 +19,13 @@ fi
 
 PYTHONPATH="$(pwd)"
 export PYTHONPATH
+
+#generate yaml from database
+#PEERS=$(/usr/bin/php /evix/scripts/root/bird_configure.php)
+mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
+#echo "$PEERS" >/etc/arouteserver/clients.yml
+/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/run/arouteserver/clients.yml
+
 /evix/run/arouteserver/scripts/arouteserver bird --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird.conf
 /evix/run/arouteserver/scripts/arouteserver bird --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6.conf
 
