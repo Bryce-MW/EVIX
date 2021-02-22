@@ -1,7 +1,7 @@
 router id {{ cfg.router_id }};
 define rs_as = {{ cfg.rs_as }};
 
-log "/var/log/bird.log" all;
+log "{{ log_file }}" all;
 log syslog all;
 debug protocols { states, routes, filters, interfaces, events };
 
