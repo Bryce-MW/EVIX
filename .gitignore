@@ -6,8 +6,7 @@ __pycache__/
 backups/*
 config/arouteserver/clients.yml*
 config/arouteserver/cache/*
-config/bird/bird.conf
-config/bird/bird6.conf
+config/bird/bird*.conf
 config/ccd
 config/peers
 config/playbooks/*.retry
