@@ -1,6 +1,6 @@
 cfg:
-  rs_as: 137933
-  router_id: 206.81.104.1
+  rs_as: "{{ rs_asn }}"
+  router_id: "{{ rs_ip }}"
   filtering:
     next_hop:
       policy: strict

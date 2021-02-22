@@ -11,3 +11,4 @@ config/bird/bird6.conf
 config/ccd
 config/peers
 config/playbooks/*.retry
+.DS_Store
