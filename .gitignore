@@ -5,7 +5,8 @@ __pycache__/
 
 backups/*
 config/arouteserver/clients.yml*
-config/arouteserver/cache/*
+config/arouteserver/cache/**
+config/arouteserver/cache
 config/bird/bird*.conf
 config/ccd
 config/peers
