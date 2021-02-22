@@ -1,0 +1,11 @@
+router id {{ cfg.router_id }};
+define rs_as = {{ cfg.rs_as }};
+
+log syslog all;
+debug protocols { states, routes, filters, interfaces, events };
+
+protocol device {};
+
+{% if cfg.path_hiding -%}
+table master sorted;
+{%- endif %}
