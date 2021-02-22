@@ -2,19 +2,17 @@
   tasks:
     - name: Update bird config file
       template:
-        src: /evix/config/bird/bird.conf
+        src: /evix/config/bird/bird_fmt.conf
         dest: /etc/bird/bird.conf
       notify: reconfigure bird
     - name: Update bird6 config file
       template:
-        src: /evix/config/bird/bird6.conf
+        src: /evix/config/bird/bird6_fmt.conf
         dest: /etc/bird/bird6.conf
       notify: reconfigure bird6
     - template:
         src: /etc/bird/header.local
         dest: /etc/bird/header.local
-  vars:
-    - rs_asn: 137933
   handlers:
     - name: reconfigure bird
       command: /usr/sbin/birdc configure
@@ -25,21 +23,19 @@
   tasks:
     - name: Update bird config file
       template:
-        src: /evix/config/bird/bird.conf
+        src: /evix/config/bird/bird_ams.conf
         dest: /etc/bird/bird.conf
         mode: 0644
       notify: reconfigure bird
     - name: Update bird6 config file
       template:
-        src: /evix/config/bird/bird6.conf
+        src: /evix/config/bird/bird6_ams.conf
         dest: /etc/bird/bird6.conf
         mode: 0644
       notify: reconfigure bird6
     - template:
         src: /etc/bird/header.local
         dest: /etc/bird/header.local
-  vars:
-    - rs_asn: 209762
   handlers: 
     - name: reconfigure bird
       command: /usr/sbin/birdc configure

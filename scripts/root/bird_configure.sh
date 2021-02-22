@@ -26,18 +26,20 @@ mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
 new=$(md5sum /etc/arouteserver/clients.yml | cut -f1 -d' ') # I don't understand why cut needs to be required. Someone should put in a pull request to allow --quiet to remove names
 old=$(md5sum /etc/arouteserver/clients.yml.bak | cut -f1 -d' ')
 if [ "$new" != "$old" ]; then
-  /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird.conf
-  /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6.conf
+  ROUTER_IP="206.81.104.1" ROUTER_AS="137933" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_fmt.conf
+  ROUTER_IP="206.81.104.1" ROUTER_AS="137933" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_fmt.conf
+  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_ams.conf
+  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_ams.conf
 else
   exit 0
 fi
 
 SUCCESS=1
 
-new=$(md5sum /tmp/bird.conf | cut -f1 -d' ')
-old=$(md5sum /evix/config/bird/bird.conf | cut -f1 -d' ')
-new6=$(md5sum /tmp/bird6.conf | cut -f1 -d' ')
-old6=$(md5sum /evix/config/bird/bird6.conf | cut -f1 -d' ')
+new=$(md5sum /tmp/bird_fmt.conf | cut -f1 -d' ')
+old=$(md5sum /evix/config/bird/bird_fmt.conf | cut -f1 -d' ')
+new6=$(md5sum /tmp/bird6_fmt.conf | cut -f1 -d' ')
+old6=$(md5sum /evix/config/bird/bird6_fmt.conf | cut -f1 -d' ')
 
 #if file is new
 if [ "$new" != "$old" ] || [ "$new6" != "$old6" ]; then
@@ -45,18 +47,18 @@ if [ "$new" != "$old" ] || [ "$new6" != "$old6" ]; then
   ansible-playbook /evix/config/playbooks/local_bird.yml
 
   #if config is valid, reload bird
-  if /usr/sbin/bird -p -c /tmp/bird_local.conf; then
+  if /usr/sbin/bird -p -c /tmp/bird_fmt.conf; then
     echo "Bird configuration is valid"
-    mv /tmp/bird.conf /evix/config/bird/
+    mv /tmp/bird_fmt.conf /tmp/bird_ams.conf /evix/config/bird/
   else
     echo "Bird configuration is invalid"
     SUCCESS=0
   fi
 
   #if config is valid, reload bird
-  if /usr/sbin/bird6 -p -c /tmp/bird6_local.conf; then
+  if /usr/sbin/bird6 -p -c /tmp/bird6_fmt.conf; then
     echo "Bird6 configuration is valid"
-    mv /tmp/bird6.conf /evix/config/bird/
+    mv /tmp/bird6_fmt.conf /tmp/bird6_ams.conf /evix/config/bird/
   else
     echo "Bird6 configuration is invalid"
     SUCCESS=0

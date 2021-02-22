@@ -1,6 +1,6 @@
 cfg:
-  rs_as: "{{ rs_asn }}"
-  router_id: "{{ rs_ip }}"
+  rs_as: "${ROUTER_AS}"
+  router_id: "${ROUTER_IP}"
   filtering:
     next_hop:
       policy: strict
