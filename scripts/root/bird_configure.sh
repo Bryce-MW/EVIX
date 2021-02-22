@@ -44,7 +44,6 @@ old6=$(md5sum /evix/config/bird/bird6_fmt.conf | cut -f1 -d' ')
 #if file is new
 if [ "$new" != "$old" ] || [ "$new6" != "$old6" ]; then
   echo "MD5 has changed... updating bird"
-  ansible-playbook /evix/config/playbooks/local_bird.yml
 
   #if config is valid, reload bird
   if /usr/sbin/bird -p -c /tmp/bird_fmt.conf; then
