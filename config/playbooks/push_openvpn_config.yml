@@ -3,7 +3,7 @@
     - name: Push openvpn config to tunnel servers
       synchronize:
         src: /evix/config/openvpn/
-        dest: /evix/config/openvpn/
+        dest: /etc/openvpn/
         checksum: yes
         delete: no
         group: no
