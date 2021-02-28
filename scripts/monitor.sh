@@ -34,6 +34,7 @@ mkdir -p "$STATE_FILE_DIR"
 #
 # Are all our services running?
 #
+services=$(/evix/scripts/get-val.sh "$host" services)
 for service in $services; do
   state_file="$STATE_FILE_DIR/$service.not.running"
   systemctl is-active --quiet "$service"
@@ -61,12 +62,12 @@ fi
 # Are all required interfaces bridged? (tunnel servers only)
 #
 if [ "$is_ts" = "true" ]; then
-  vxlan-interfaces=$(basename -a /sys/class/net/vtep*)
-  backbone-interfaces=$(basename -a /sys/class/net/EVIX*)
-  eoip-interface=$(/evix/scripts/get-val.sh "$host" eoip-interface)
-  ovpn-interface=$(/evix/scripts/get-val.sh "$host" ovpn-interface)
-  zt-interface=$(/evix/scripts/get-val.sh "$host" zt-interface)
-  for i in $vxlan-interfaces $backbone-interfaces $eoip-interface $ovpn-interface $zt-interface; do
+  vxlan_interfaces=$(basename -a /sys/class/net/vtep*)
+  backbone_interfaces=$(basename -a /sys/class/net/EVIX*)
+  eoip_interface=$(/evix/scripts/get-val.sh "$host" eoip-interface)
+  ovpn_interface=$(/evix/scripts/get-val.sh "$host" ovpn-interface)
+  zt_interface=$(/evix/scripts/get-val.sh "$host" zt-interface)
+  for i in $vxlan_interfaces $backbone_interfaces $eoip_interface $ovpn_interface $zt_interface; do
     state_file="$STATE_FILE_DIR/$i.not.on.bridge"
     if [[ "$(readlink /sys/class/net/$i/brport/bridge)" != *br10 ]] && [ ! -f "$state_file" ]; then
       send_alert "$i is not added to $bridge."
