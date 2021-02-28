@@ -1,7 +1,11 @@
 - hosts: tunnelservers
   tasks:
-    - name: Push CCD folder
+    - name: Push openvpn CCD folder
       synchronize:
         src: /evix/config/ccd/
         dest: /etc/openvpn/ccd/
-
+        recursive: yes
+        checksum: yes
+        delete: yes
+        group: no
+        owner: no
