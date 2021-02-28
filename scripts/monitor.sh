@@ -9,9 +9,9 @@ WEBHOOK_URL="***REMOVED***"
 host=$(/evix/scripts/hostname.sh)
 bridge="br10"
 
-is-ts=$(/evix/scripts/get-val.sh "$host" is-ts)
-is-rs=$(/evix/scripts/get-val.sh "$host" is-rs)
-is-admin=$(/evix/scripts/get-val.sh "$host" is-admin)
+is_ts=$(/evix/scripts/get-val.sh "$host" is-ts)
+is_rs=$(/evix/scripts/get-val.sh "$host" is-rs)
+is_admin=$(/evix/scripts/get-val.sh "$host" is-admin)
 
 # Let's be careful
 alias rm='rm -I'
@@ -46,7 +46,7 @@ for service in $services; do
 done
 
 # eoip is not (yet) running as a service
-if [ "$is-ts" = "true" ]; then
+if [ "$is_ts" = "true" ]; then
   state_file="$STATE_FILE_DIR/eoip.not.running"
   eoip_ps=$(pgrep -x eoip)
   if [ "$eoip_ps" == "" -a ! -f "$state_file" ]; then
@@ -60,7 +60,7 @@ fi
 #
 # Are all required interfaces bridged? (tunnel servers only)
 #
-if [ "$is-ts" = "true" ]; then
+if [ "$is_ts" = "true" ]; then
   vxlan-interfaces=$(basename -a /sys/class/net/vtep*)
   backbone-interfaces=$(basename -a /sys/class/net/EVIX*)
   eoip-interface=$(/evix/scripts/get-val.sh "$host" eoip-interface)
