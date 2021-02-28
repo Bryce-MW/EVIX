@@ -1,0 +1,22 @@
+- hosts: tunnelservers
+  tasks:
+    - name: Push openvpn config to tunnel servers
+      synchronize:
+        src: /evix/config/openvpn/
+        dest: /evix/config/openvpn/
+        checksum: yes
+        delete: no
+        group: no
+        owner: no
+        recursive: no
+      register: ovpn_config
+    - name: Restart openvpn
+      systemd:
+        name: openvpn.service
+        state: restarted
+      when: ovpn_config.changed
+    - name: Enable openvpn and ensure it is not masked
+      systemd:
+        name: openvpn.service
+        enabled: yes
+        masked: no
