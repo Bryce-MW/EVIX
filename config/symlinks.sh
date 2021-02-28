@@ -2,6 +2,9 @@
 # Don't actually run this as a script, it does not do any backups
 # or differentiate between the tunnel servers and main server
 
+echo "Don't actually run this as a script."
+exit 0
+
 alias ln='ln -b -f -s --suffix=.bak'
 
 # evix version
