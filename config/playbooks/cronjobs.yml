@@ -1,14 +1,14 @@
 - hosts: tunnelservers
   tasks:
-    - name: Enable openvpn and ensure it is not masked
+    - name: Enable cron and ensure it is not masked
       systemd:
         name: cron.service
         enabled: yes
         masked: no
     - name: Create monitoring cronjob
-      ansible.builtin.cron:
+      cron:
         name: EVIX monitoring
-        minute: */5
+        minute: "*/5"
         user: root
         job: "/evix/scripts/monitor.sh"
         cron_file: evix_monitoring
