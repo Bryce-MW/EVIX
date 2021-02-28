@@ -8,15 +8,16 @@
         delete: no
         group: no
         owner: no
+        dirs: yes
         recursive: no
       register: ovpn_config
     - name: Restart openvpn
       systemd:
-        name: openvpn.service
+        name: openvpn@server.service
         state: restarted
       when: ovpn_config.changed
     - name: Enable openvpn and ensure it is not masked
       systemd:
-        name: openvpn.service
+        name: openvpn@server.service
         enabled: yes
         masked: no
