@@ -38,10 +38,13 @@ services=$(/evix/scripts/get-val.sh "$host" services)
 for service in $services; do
   state_file="$STATE_FILE_DIR/$service.not.running"
   systemctl is-active --quiet "$service"
-  if [ $? -ne 0 -a ! -f "$state_file" ]; then
-    send_alert "Service $service is not running."
-    touch "$state_file" 
+  if [ $? -ne 0 ]; then
+    if [! -f "$state_file" ]; then
+      send_alert ":exclamation: Service $service is not running."
+      touch "$state_file"
+    fi 
   elif [ -f "$state_file" ]; then
+    send_alert ":white_check_mark: Service $service is running again."
     rm "$state_file"
   fi
 done
@@ -50,10 +53,13 @@ done
 if [ "$is_ts" = "true" ]; then
   state_file="$STATE_FILE_DIR/eoip.not.running"
   eoip_ps=$(pgrep -x eoip)
-  if [ "$eoip_ps" == "" -a ! -f "$state_file" ]; then
-    send_alert "eoip is not running."
-    touch "$state_file" 
+  if [ "$eoip_ps" == "" ]; then 
+    if [ ! -f "$state_file" ]; then
+      send_alert ":exclamation: eoip is not running."
+      touch "$state_file"
+    fi 
   elif [ -f "$state_file" ]; then
+    send_alert ":white_check_mark: eoip running again."
     rm "$state_file"
   fi
 fi
@@ -69,10 +75,13 @@ if [ "$is_ts" = "true" ]; then
   zt_interface=$(/evix/scripts/get-val.sh "$host" zt-interface)
   for i in $vxlan_interfaces $backbone_interfaces $eoip_interface $ovpn_interface $zt_interface; do
     state_file="$STATE_FILE_DIR/$i.not.on.bridge"
-    if [[ "$(readlink /sys/class/net/$i/brport/bridge)" != *br10 ]] && [ ! -f "$state_file" ]; then
-      send_alert "$i is not added to $bridge."
-      touch "$state_file" 
+    if [[ "$(readlink /sys/class/net/$i/brport/bridge)" != *br10 ]]; then
+      if [ ! -f "$state_file" ]; then
+        send_alert ":exclamation: $i is not added to $bridge."
+        touch "$state_file" 
+      fi
     elif [ -f "$state_file" ]; then
+      send_alert ":white_check_mark: $i has been added to $bridge."
       rm "$state_file"
     fi
   done
