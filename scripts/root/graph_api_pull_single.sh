@@ -20,8 +20,8 @@ api_image_path="ports/br10/port_bits"
 width=541
 height=186
 
-curl -H "X-Auth-Token: $token" "$api_url/$api_device_id/$api_image_path?from=$day_ago_seconds&to=$now&width=$width&height=$height" >daily_tmp.svg
+curl -L -H "X-Auth-Token: $token" "$api_url/$api_device_id/$api_image_path?from=$day_ago_seconds&to=$now&width=$width&height=$height" >daily_tmp.svg
 mv daily_tmp.svg $out_dir/"$server_name"-daily.svg
 
-curl -H "X-Auth-Token: $token" "$api_url/$api_device_id/$api_image_path?from=$week_ago_seconds&to=$now&width=$width&height=$height" >week_tmp.svg
+curl -L -H "X-Auth-Token: $token" "$api_url/$api_device_id/$api_image_path?from=$week_ago_seconds&to=$now&width=$width&height=$height" >week_tmp.svg
 mv week_tmp.svg $out_dir/"$server_name"-weekly.svg
