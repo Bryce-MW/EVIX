@@ -11,4 +11,5 @@ config/bird/bird*.conf
 config/ccd
 config/peers
 config/playbooks/*.retry
+run/openvpn-ca/pki/*
 .DS_Store
