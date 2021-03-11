@@ -602,5 +602,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+else:
+    print("This program can not be used as a library (for now)")
 
 database.commit()
