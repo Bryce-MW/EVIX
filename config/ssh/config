@@ -37,3 +37,10 @@ Host fmt.evix.org
 Host fmt-ts01.evix.org
     User root
     Hostname fmt-ts01.evix.org
+
+Host sjc.evix.org
+    User root
+    Hostname 107.172.217.43
+Host sjc-bck01.evix.org
+    User root
+    Hostname 107.172.217.43
