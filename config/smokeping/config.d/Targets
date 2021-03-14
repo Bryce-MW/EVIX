@@ -1,0 +1,55 @@
+*** Targets ***
+
+probe = FPing
+
+menu = Top
+title = Network Latency Grapher
+remark = Welcome to the SmokePing website of EVIX. \
+         Here you will learn all about the latency of our network.
+
+slaves = evix-fmt-ts01.evix.org evix-nl-ts01
+
++ Local
+
+menu = Local
+title = Local Network
+#parents = owner:/Test/James location:/
+
+++ LocalMachine
+
+menu = Local Machine
+title = This host
+host = localhost
+#alerts = someloss
+
++ POPs
+menu = POPs
+title = EVIX POPs
+
+++ Fremont
+menu = Fremont (RS1)
+title = EVIX POP Fremont (RS1)
+host = fmt-ts01.evix.org
+++ Dronten
+menu = Dronten (RS2)
+title = EVIX POP Dronten (RS2)
+host = ams-ts01.evix.org
+++ Auckland
+menu = Auckland
+title = EVIX POP Auckland
+host = nz-ts01.evix.org
+++ Zurich
+menu = Zurich
+title = EVIX POP Zurich
+host = fra-ts01.evix.org
+# Local connections only:
+++ Vancouver
+menu = Vancouver
+title = EVIX POP Vancouver
+host = 104.218.61.207
+slaves = evix-fmt-ts01.evix.org
+++ Frankfurt
+menu = Frankfurt
+title = EVIX POP Frankfurt
+host = 193.148.249.93
+slaves = evix-nl-ts01

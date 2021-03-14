@@ -1,0 +1,9 @@
+*** Slaves ***
+secrets=/etc/smokeping/smokeping_secrets
++evix-fmt-ts01.evix.org
+display_name=RS1 (Fremont)
+color=c15457
+
++evix-nl-ts01
+display_name=RS2 (Dronten)
+color=66d0ce
