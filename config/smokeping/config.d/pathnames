@@ -5,4 +5,3 @@ datadir  = /var/lib/smokeping
 piddir  = /var/run/smokeping
 smokemail = /etc/smokeping/smokemail
 tmail = /etc/smokeping/tmail
-dyndir = /var/lib/smokeping/__cgi
