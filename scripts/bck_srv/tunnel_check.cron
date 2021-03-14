@@ -1,0 +1,6 @@
+# Start tunnels to different tunnel servers and run connectivity checks
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+@reboot     root /opt/evix_monitoring/start_tunnels.sh > /opt/evix_monitoring/logs/start_tunnels.log 2>&1
+*/5 * * * * root /opt/evix_monitoring/check_connectivity.sh > /opt/evix_monitoring/logs/check_connectivity.log 2>&1
