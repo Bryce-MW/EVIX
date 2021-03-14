@@ -39,7 +39,7 @@ for service in $services; do
   state_file="$STATE_FILE_DIR/$service.not.running"
   systemctl is-active --quiet "$service"
   if [ $? -ne 0 ]; then
-    if [! -f "$state_file" ]; then
+    if [ ! -f "$state_file" ]; then
       send_alert ":exclamation: Service $service is not running."
       touch "$state_file"
     fi 
