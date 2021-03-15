@@ -30,10 +30,12 @@ title = EVIX POPs
 menu = Fremont (RS1)
 title = EVIX POP Fremont (RS1)
 host = fmt-ts01.evix.org
+slaves = evix-nl-ts01
 ++ Dronten
 menu = Dronten (RS2)
 title = EVIX POP Dronten (RS2)
 host = ams-ts01.evix.org
+slaves = evix-fmt-ts01.evix.org
 ++ Auckland
 menu = Auckland
 title = EVIX POP Auckland
@@ -53,5 +55,22 @@ menu = Frankfurt
 title = EVIX POP Frankfurt
 host = 193.148.249.93
 slaves = evix-nl-ts01
+
++ RouteServers
+menu = Route Servers
+title = EVIX Route Servers
+nomasterpoll = yes
+probe = FPing6
+
+++ Fremont
+menu = Fremont (RS1)
+title = EVIX RS1 Fremont via VXLAN tunnel
+host = 2602:fed2:fff:ffff::1
+slaves = evix-nl-ts01
+++ Dronten
+menu = Dronten (RS2)
+title = EVIX RS2 Dronten via VXLAN tunnel
+host = 2602:fed2:fff:ffff::253
+slaves = evix-fmt-ts01.evix.org
 
 @include /etc/smokeping/config.d/peers.conf
