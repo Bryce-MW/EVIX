@@ -1,6 +1,9 @@
 *** Probes ***
 
 + FPing
-
 binary = /usr/bin/fping
+blazemode = true
 
++ FPing6
+binary = /usr/bin/fping6
+blazemode = true

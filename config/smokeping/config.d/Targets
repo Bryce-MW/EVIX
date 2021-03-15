@@ -53,3 +53,5 @@ menu = Frankfurt
 title = EVIX POP Frankfurt
 host = 193.148.249.93
 slaves = evix-nl-ts01
+
+@include /etc/smokeping/config.d/peers.conf
