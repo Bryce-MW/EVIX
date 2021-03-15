@@ -42,7 +42,7 @@ for service in $services; do
     if [ ! -f "$state_file" ]; then
       send_alert ":exclamation: Service $service is not running."
       touch "$state_file"
-    fi 
+    fi
   elif [ -f "$state_file" ]; then
     send_alert ":white_check_mark: Service $service is running again."
     rm "$state_file"
@@ -53,11 +53,11 @@ done
 if [ "$is_ts" = "true" ]; then
   state_file="$STATE_FILE_DIR/eoip.not.running"
   eoip_ps=$(pgrep -x eoip)
-  if [ "$eoip_ps" == "" ]; then 
+  if [ "$eoip_ps" == "" ]; then
     if [ ! -f "$state_file" ]; then
       send_alert ":exclamation: eoip is not running."
       touch "$state_file"
-    fi 
+    fi
   elif [ -f "$state_file" ]; then
     send_alert ":white_check_mark: eoip running again."
     rm "$state_file"
@@ -76,9 +76,12 @@ if [ "$is_ts" = "true" ]; then
   for i in $vxlan_interfaces $backbone_interfaces $eoip_interface $ovpn_interface $zt_interface; do
     state_file="$STATE_FILE_DIR/$i.not.on.bridge"
     if [[ "$(readlink /sys/class/net/$i/brport/bridge)" != *br10 ]]; then
-      if [ ! -f "$state_file" ]; then
+      /sbin/brctl addif "$bridge" "$i"
+      if [ $? -eq 0 ]; then
+        send_alert ":yellow_square: $i was not added to $bridge. I fixed that for you."
+      elif [ ! -f "$state_file" ]; then
         send_alert ":exclamation: $i is not added to $bridge."
-        touch "$state_file" 
+        touch "$state_file"
       fi
     elif [ -f "$state_file" ]; then
       send_alert ":white_check_mark: $i has been added to $bridge."
