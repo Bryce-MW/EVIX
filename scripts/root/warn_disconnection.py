@@ -75,7 +75,7 @@ with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
         date = int(line[1])
         ip = line[2]
         asn = line[3]
-        error = line[4] if line[4] != "null" else "No error found"
+        error = ("Last error: " + " ".join(line[4:])) if line[4] != "null" else "Bird reports no errors"
         if status == "up":
             cursor.execute("UPDATE ips SET birdable=true WHERE ip=%s", (ip,))
             cursor.execute("SELECT 1 FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s AND monitor=true AND provisioned=true", (ip,))
