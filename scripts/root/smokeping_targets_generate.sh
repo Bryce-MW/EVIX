@@ -20,6 +20,7 @@ newconf="$TMPDIR/$date_$CONF_FILE_NAME"
 if ! cmp -s "$oldconf" "$newconf"; then
   mv -f "$newconf" "$oldconf"
   touch "$SMOKEPING_CONF_DIR/../config"
+  /bin/systemctl restart smokeping.service
 else
   rm "$newconf"
 fi
