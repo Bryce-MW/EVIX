@@ -13,3 +13,5 @@ config/peers
 config/playbooks/*.retry
 run/openvpn-ca/pki/*
 .DS_Store
+
+secret-config.json
