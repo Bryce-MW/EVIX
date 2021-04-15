@@ -52,4 +52,4 @@ with open("/etc/bind/db.f.f.f.f.f.f.f.0.2.d.e.f.2.0.6.2.ip6.arpa", "w") as ipv6_
 print("DONE")
 
 print("Reloading bind...", end="", flush=True)
-system("rndc reload")
+system("/usr/sbin/rndc reload")

@@ -1,2 +1,3 @@
 smokeping_secrets
 config.d/peers.conf
+slave_secret
