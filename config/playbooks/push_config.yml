@@ -19,12 +19,12 @@
         group: no
         owner: no
     - name: Push peers secret config to tunnel servers
-        synchronize:
-          src: /evix/secret-config.json
-          dest: /evix/secret-config.json
-          checksum: yes
-          delete: yes
-          group: no
-          owner: no
+      synchronize:
+        src: /evix/secret-config.json
+        dest: /evix/secret-config.json
+        checksum: yes
+        delete: yes
+        group: no
+        owner: no
     - name: Reconfigure tunnels
       command: /evix/scripts/ts/update.sh
