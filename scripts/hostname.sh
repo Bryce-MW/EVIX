@@ -3,31 +3,12 @@
 #  * 2020-08-31|>Bryce|>Fixed bugs
 #  * 2020-11-28|>Bryce|>Made some changes that I don't fully understand
 #  * 2020-12-01|>Bryce|>Fixed an issue caused by not understanding what I did
+#  * 2021-04-16|>Bryce|>Moved to a pure JQ solution for the new config
 
-hosts=("/evix/config/hosts"/*)
-
-mapfile -t ips < <(ip -br addr | grep -E -o -e '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' -e '([a-f0-9:]+:+)+[a-f0-9]+')
-
-host=""
-
-for hoststring in "${hosts[@]}"; do
-  exec 6<"$hoststring"
-  read -r name <&6
-  read -r hostname <&6
-  read -r port <&6
-
-  host_ip="$(dig "$hostname" +short)"
-
-  for ip in "${ips[@]}"; do
-    if [ "$ip" == "$host_ip" ]; then
-      host=$hoststring
-    fi
-  done
-
-done
-
-if [ "$host" == "" ]; then
-  exit 255
-fi
-
-basename "$host"
+{
+  \ip -json -br addr | jq '[.[].addr_info | .[].local]'
+  jq -L/evix/scripts -r '[.hosts | .[] | {(.primary_ipv4 // empty): .short_name}] | add' /evix/secret-config.json
+} |
+jq -s -r '.[1][.[0][]] // empty' # This is really clever!
+  # It takes the IP to host mappings, indexes it by all of the IPs, only return those that are not null which should
+  # always be the hostname. Outputs nothing if it can't be found

@@ -1,10 +1,11 @@
 #! /bin/bash
 # NOTE(bryce): Written by Bryce Wilson 2021-02-12
 #  * 2021-02-13|>Bryce|>Improved functions to use almost pure jq
+#  * 2021-04-16|>Bryce|>Added JSON config, moved long JQ commands to separate file
 
-token="***REMOVED***"
-root_ip="23.129.32.56"
-network="***REMOVED***"
+token=$(jq -L/evix/scripts -r '.zt.auth_token' /evix/secret-config.json)
+root_ip=$(jq -L/evix/scripts -r '.zt.root_ip' /evix/secret-config.json)
+network=$(jq -L/evix/scripts -r '.zt.network_id' /evix/secret-config.json)
 auth="X-ZT1-Auth: $token"
 member="http://$root_ip:9993/controller/network/$network/member"
 
@@ -19,38 +20,55 @@ if [ -z "$1" ]; then
 fi
 
 if [ "$1" == "all" ]; then
+
   curl -X GET --header "X-ZT1-Auth: $token" "$member" 2>/dev/null |
     jq --raw-output 'keys | .[]' |
     xargs -P 0 -I {} curl -X GET --header "$auth" "$member/{}" 2>/dev/null |
-    jq --slurp --raw-output 'sort_by([.authorized, .bridge, (.vMajor > -1), .address]) | .[] | .address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
+    jq -L/evix/scripts --slurp --raw-output 'zt_parse_members'
+
 elif [ "$1" == "get" ]; then
+
   if [ -z "$2" ]; then
     echo "Usage: $0 get <ZT Address> # Get info on a ZT user"
   fi
   shift
+
   curl -X GET --header "$auth" "$member/$1" 2>/dev/null |
-    jq --raw-output '.address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
+    jq -L/evix/scripts --raw-output 'zt_parse_member'
+
 elif [ "$1" == "delete" ]; then
+
   if [ -z "$2" ]; then
     echo "Usage: $0 delete <ZT Address> # Remove a ZT user"
   fi
   shift
+
   jq -n --compact-output '{"authorized": false, "activeBridge": false, "ipAssignments": []}' |
     curl -X POST --header "$auth" -d @- "$member/$1" >/dev/null 2>&1
   curl -X DELETE --header "$auth" "$member/$1" 2>/dev/null | jq '.'
+
 elif [ "$1" == "add" ]; then
+
   if [ -z "$2" ]; then
     echo "Usage: $0 add <ZT Address> [IPs to add] # Approve a ZT user"
   fi
   id="$2"
+
   echo "$@" |
     jq --compact-output --raw-input 'split(" ") | {"authorized": true, "activeBridge": true, "ipAssignments": .[2:]?}' |
     curl -X POST --header "$auth" -d @- "$member/$id" 2>/dev/null | jq '.'
+
 elif [ "$1" == "time" ]; then
+
   if [ -z "$2" ]; then
     echo "Usage: $0 time <ZT Address> # Get the last time that a user was seen"
   fi
-  zerotier-cli "-T$token" "-H$root_ip" -j listpeers | jq --raw-output --arg member "$2" 'map(if .address == $member then . else empty end) | .[0]? | .paths | map(if .preferred == true then (.lastReceive / 1000 | gmtime | (.[0] | tostring) + "-" + (["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"][.[1]]) + "-" + (.[2] | tostring)) else empty end) | .[0]'
+
+  zerotier-cli "-T$token" "-H$root_ip" -j listpeers |
+    jq -L/evix/scripts --raw-output --arg member "$2" 'zt_parse_peer_time($member)'
+
 else
+
   zerotier-cli "-T$token" "-H$root_ip" "$@"
+
 fi

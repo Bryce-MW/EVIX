@@ -1,5 +1,10 @@
 #! /bin/zsh
 # NOTE(bryce): Written by Bryce Wilson long ago and added to git on 2020-09-11
 #  * 2020-02-12|>Bryce|>Add reconnect flag
+#  * 2021-04-16|>Bryce|>Added JSON config
 
-mysql --user evix --password=***REMOVED*** --pager='less --quit-if-one-screen' --reconnect evix
+user=$(jq -L/evix/scripts -r '.database.user' /evix/secret-config.json)
+password=$(jq -L/evix/scripts -r '.database.password' /evix/secret-config.json)
+database=$(jq -L/evix/scripts -r '.database.database' /evix/secret-config.json)
+
+mysql --user "$user" --password="$password" --pager='less --quit-if-one-screen' --reconnect "$database"

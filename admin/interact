@@ -7,19 +7,23 @@
 #  * 2020-12-01|>Bryce|>Add tree feature and refactor to allow that to be possible
 #  * 2021-02-12|>Bryce|>Call ZT script when adding a ZT peer
 #  * 2021-02-18|>Bryce|>Minor refactoring (major rewrite is needed)
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 import ipaddress
 import subprocess
+import json
 
 import mysql.connector
 from click import secho, style
 from frozendict import frozendict
 
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
 database = None
 cursor = None
 
 try:
-    database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
+    database = mysql.connector.connect(user=config['database']['user'], password=config['database']['password'], host=config['database']['host'], database=config['database']['database'], autocommit=True)
     cursor = database.cursor(dictionary=True, buffered=True)
 except mysql.connector.Error as err:
     print("Something went wrong with the database connection:")

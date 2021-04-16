@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# Fetch client info for a given IP or MAC address
+# NOTE(bryce): Fetch client info for a given IP or MAC address
 #  * 2021-02-21|>Alex|>Initial Version
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 import ipaddress
 import json
@@ -9,6 +10,10 @@ import re
 import socket
 import subprocess
 import sys
+import json
+
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
 
 ADMIN_SERVER_HOSTNAME = 'evix-van01-master'
 ANSIBLE_GROUP_PRIMARY_RS = 'routeservers-primary'
@@ -29,8 +34,8 @@ def get_primary_rs_hostname():
 def get_client_info_for_ip(ip_list):
     format_strings = ','.join(['%s'] * len(ip_list))
     try:
-        database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1',
-                                           database='evix')
+        database = mysql.connector.connect(user=config['database']['user'], password=config['database']['password'],
+                                           host=config['database']['host'], database=config['database']['database'])
     except mysql.connector.Error as err:
         print("Something went wrong with the database connection:")
         print(err)

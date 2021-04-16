@@ -1,13 +1,25 @@
 #! /bin/bash
+# NOTE(bryce): Written by Chris, added to git by Bryce on 2020-08-30
+#  * 2020-09-03|>Bryce|>Add per-server reboot
+#  * 2020-12-01|>Bryce|>Added VXLAN mesh
+#  * 2020-12-01|>Bryce|>Use brctl for bridges
+#  * 2020-12-09|>Bryce|>Ensure that the logs dir exists
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
-local_ip=$(/evix/scripts/ip.sh "$host")
+local_ip=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].primary_ipv4' /evix/secret-config.json)
+is_ts=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
+fmt_ip=$(jq -L/evix/scripts -r '.hosts.fmt.primary_ipv4' /evix/secret-config.json)
 
+# This should probably go away eventually?
 if [ -f "/evix/config/reboot/$host.sh" ]; then
   /evix/config/reboot/"$host".sh
 fi
 
-if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
+jq -L/evix/scripts -r --arg host "$host" '(.hosts[$host].ports // empty)[].commands[]' /evix/secret-config.json |
+  ip -b -
+
+if [ "$is_ts" == "true" ]; then
 
   brctl addbr br10
   brctl stp br10 on
@@ -15,36 +27,25 @@ if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" == "true" ]; then
   /evix/scripts/ts/tunnels/vxlan.sh
   /evix/scripts/ts/tunnels/eoip.sh
 
-  xargs -n 1 brctl addif br10 </evix/config/ports/"$host".ports
+  jq -L/evix/scripts -r --arg host "nz" '.hosts[$host] | (.ports // empty)[].name, .eoip_interface // empty, .ovpn_interface // empty' /evix/secret-config.json
+    xargs -n 1 brctl addif br10
 
   if [ "$host" != "fmt" ]; then
-    ip link add EVIX type vxlan id 10 local "$local_ip" remote 72.52.82.6 dstport 5000 learning rsc
+    ip link add EVIX type vxlan id 10 local "$local_ip" remote "$fmt_ip" dstport 5000 learning rsc
   else
     ip link add EVIX type vxlan id 10 local "$local_ip" dstport 5000 learning rsc
   fi
   ip link set up EVIX
   brctl addif br10 EVIX
 
-  hosts=("/evix/config/hosts"/*)
-  for hoststring in "${hosts[@]}"; do
-    host_short=$(basename "$hoststring")
-    exec 6<"$hoststring"
-    read -r name <&6
-    read -r hostname <&6
-    read -r port <&6
-
-    if [ "$(/evix/scripts/get-val.sh "$host" is-ts)" ] && [ "$host_short" != "$host" ]; then
-      if [[ "$hostname" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        ip="$hostname"
-      else
-        ip=$(dig "$hostname" +short)
-      fi
-      bridge fdb append 00:00:00:00:00:00 dev EVIX dst "$ip"
-    fi
-  done
+  jq -L/evix/scripts -r --compact-output --arg host "$host" '.hosts[] | select((.roles | contains(["ts"])) and .short_name!=$host).primary_ipv4' /evix/secret-config.json |
+    xargs -n1 bridge fdb append 00:00:00:00:00:00 dev EVIX dst
 
   ip link set up br10
 fi
+
+jq -L/evix/scripts -r --arg host "$host" '(.hosts[$host].ip_setup // empty)[]' /evix/secret-config.json |
+  ip -b -
 
 # brctl
 # apt install bridge-utils

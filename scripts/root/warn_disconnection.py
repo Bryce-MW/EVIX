@@ -5,11 +5,13 @@
 #  * 2020-11-30|>Bryce|>Add tracking of up sessions directly
 #  * 2020-12-15|>Bryce|>Change script name from peers-status to warn_disconnection
 #  * 2021-02-18|>Bryce|>Add error and use new date format
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 from datetime import datetime
 import smtplib
 import ssl
 import sys
+import json
 
 import mysql.connector
 
@@ -41,15 +43,19 @@ ASN: {asn}
 IPv{version}: {ip}
 Route Server: {server}
 Last seen connected: {since}
-Last error: {error}
+{error}
 
 If you believe this to be in error, please reply to this email.
 """
 
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
 database = None
 
 try:
-    database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1', database='evix', autocommit=True)
+    database = mysql.connector.connect(user=config['database']['user'], password=config['database']['password'],
+                                       host=config['database']['host'], database=config['database']['database'],
+                                       autocommit=True)
 except mysql.connector.Error as err:
     print("Something went wrong with the database connection:")
     print(err)
@@ -65,9 +71,9 @@ print(now)
 
 cursor = database.cursor(buffered=True)
 
-with smtplib.SMTP_SSL("***REMOVED***", 465, context=context) as server:
+with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
     # server.set_debuglevel(2)
-    server.login("scripts", "***REMOVED***")
+    server.login(config['mail']['user'], config['mail']['password'])
     cursor.execute("UPDATE ips SET birdable=false WHERE version=%s", (version,))
     for i in sys.stdin:
         line = i.split()

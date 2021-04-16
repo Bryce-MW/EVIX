@@ -136,14 +136,14 @@ storage:
     # if both encryption_passcommand and encryption_passphrase are
     # set, then encryption_passphrase takes precedence. Defaults
     # to not set.
-    # encryption_passcommand: secret-tool lookup borg-repository repo-name
+    encryption_passcommand: jq -L/evix/scripts -r '.borgmatic.encryption_password' /evix/secret-config.json
 
     # Passphrase to unlock the encryption key with. Only use on
     # repositories that were initialized with passphrase/repokey
     # encryption. Quote the value if it contains punctuation, so
     # it parses correctly. And backslash any quote or backslash
     # literals as well. Defaults to not set.
-    encryption_passphrase: "***REMOVED***"
+    # encryption_passphrase: "None"
 
     # Number of seconds between each checkpoint during a
     # long-running backup. See

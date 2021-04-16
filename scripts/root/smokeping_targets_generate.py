@@ -1,14 +1,18 @@
 # NOTE(alex): Copied from peers_table_webpage_generate.py on 2021-03-14
-# Generate Smokeping config to ping peers
+# * Generate Smokeping config to ping peers
 #  * 2021-03-14|>Alex|>Initial version
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 import ipaddress
 import mysql.connector
+import json
 
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
 database = None
 try:
-    database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1',
-                                       database='evix')
+    database = mysql.connector.connect(user=config['database']['user'], password=config['database']['password'],
+                                       host=config['database']['host'], database=config['database']['database'])
 except mysql.connector.Error as err:
     print("Something went wrong with the database connection:")
     print(err)

@@ -1,20 +1,9 @@
 #! /bin/bash
 
-cd json
+cd json || exit
 
-ls root-identities |
-xargs echo blank |
-xargs -n 1 find . -name |
-xargs tail -n +1 |
-tail -n +3 |
-sed -e 's/==> ..root-identities.//g' -e 's/<==//g' |
-xargs -n 2 |
-awk 'BEGIN{getline h < "server.head"; getline i < "server.head"; getline e < "server.end"; getline r < "server.end"; getline l < "server.middle"; getline m < "server.middle"}
-{print h i $2 l "\n" m $1 e "\n" r}' |
-head -c -2 > roots.zerotier
-
-cat moon.json.head roots.zerotier moon.json.end > moon.json
-cat planet.json.head roots.zerotier planet.json.end > planet.json
+jq -L/evix/scripts -r '{roots: .zt.roots, key: .zt.world_secret} | zt_create_world("moon")' /evix/secret-config.json > moon.json
+jq -L/evix/scripts -r '{roots: .zt.roots, key: .zt.world_secret} | zt_create_world("planet")' /evix/secret-config.json > planet.json
 
 cd ../
 zerotier-idtool genmoon json/moon.json
@@ -25,7 +14,7 @@ mv 0000000227883110.moon planet
 cp -u planet /evix/run/IX-Website/files/
 cp -u 0000002cb385e495.moon /evix/run/IX-Website/files/
 
-alt_id="~/.ssh/id_rsa"
+#alt_id="~/.ssh/id_rsa"
 
 #if (( EUID != 0 )); then
 #  if [ ! -f ~/.ssh/alt/id_rsa ]; then

@@ -5,16 +5,17 @@
 #  * 2020-11-28|>Bryce|>Fixed some bash errors
 #  * 2020-12-01|>Bryce|>Switched to brctl
 #  * 2021-02-18|>Bryce|>Almost complete re-write to use json to add and removed exactly the required tunnels
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
-ip=$(/evix/scripts/ip.sh "$host")
-ipv6=$(/evix/scripts/get-val.sh "$host" vxlan-ipv6)
-port_d=$(/evix/scripts/get-val.sh "$host" vxlan-port)
+ip=$(jq -L/evix/scripts --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
+ipv6=$(jq -L/evix/scripts --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
+port_d=$(jq -L/evix/scripts --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
 bridge="br10"
 
 {
-  /sbin/ip -json -d link show | jq 'map(if .linkinfo.info_kind == "vxlan" and (.ifname | startswith("vtep")) then . else empty end) | map({id: .linkinfo.info_data.id, ip: (.linkinfo.info_data.remote // .linkinfo.info_data.remote6), port: .linkinfo.info_data.port})'
-  jq --slurp --raw-input --argjson port "$port_d" 'split("\n") | .[:-1] | map(split(" ")) | map({id: .[0] | tonumber, ip: .[1], port: (if .[2] == "" or .[2] == null then $port else .[2] | tonumber end)})' "/evix/config/peers/$host.vxlan"
+  /sbin/ip -json -d link show | jq -L/evix/scripts 'parse_ip_vxlan'
+  jq -L/evix/scripts --slurp --raw-input --argjson port "$port_d" 'parse_config_vxlan($port)' "/evix/config/peers/$host.vxlan"
 } |
-  jq --slurp --raw-output --arg ip "$ip" --arg ipv6 "$ipv6" --arg bridge "$bridge" '{existing: .[0], new: .[1]} | {delete: (.existing - .new), add: (.new - .existing)} | (.delete[] | "link delete vtep\(.id)"), (.add[] | "link add vtep\(.id) type vxlan id \(.id) local \(if .ip | test("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+") then $ip else $ipv6 end) remote \(.ip) dstport \(.port)\nlink set up vtep\(.id)\nlink set vtep\(.id) master \($bridge)")' |
+  jq -L/evix/scripts --slurp --raw-output --arg ip "$ip" --arg ipv6 "$ipv6" --arg bridge "$bridge" 'diff_vxlan($ip, $ipv6, $bridge)' |
   ip -b -

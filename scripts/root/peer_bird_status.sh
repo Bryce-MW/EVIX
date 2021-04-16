@@ -1,21 +1,18 @@
 #! /bin/bash
 # NOTE(bryce): Witten by Bryce Wilson on 2020-09-11
 #  * 2020-11-28|>Bryce|>Improve readability of long pipelines
+#  * 2021-04-16|>Bryce|>Added JSON config
 
-#bird_servers=(fmt ams)
-bird_servers=(fmt)
 
-hosts=("/evix/config/hosts/${bird_servers[@]}")
-
-for host in "${hosts[@]}"; do
-  exec 6<"$host"
-  read -r name <&6
-  read -r hostname <&6
-  read -r port <&6
-  ssh -p "$port" "$hostname" birdc show protocols all | tail -n +3 | head -n -1 |
-    jq --slurp --raw-input --raw-output 'split("\n\n") | map(split("\n"))[] | {name: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[0]), type: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[1]), status: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[3]), since: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[4] + "T" + .[5] + "Z" | fromdate), all: .[1:]} | .all as $all | reduce $all[] as $item (.; if $item | startswith("  Description:") then . + {description: $item[18:]} else if $item | startswith("  Preference:") then . + {preference: $item[18:] | tonumber} else if $item | startswith("  Input filter:") then . + {in_filter: $item[18:]} else if $item | startswith("  Output filter:") then . + {out_filter: $item[18:]} else if $item | startswith("  Import limit:") then . + {route_limit: $item[18:] | gsub("\\[HIT\\]"; "") | tonumber} else if $item | startswith("  Routes:") then . + {routes: $item[18:] | split(" ") | {imported: .[0] | tonumber, filtered: (if .[3] == "filtered," then .[2] | tonumber else 0 end), exported: (if .[5] == "exported," then .[4] | tonumber else .[2] | tonumber end), preferred: (if .[7] == "preferred" then .[6] | tonumber else .[4] | tonumber end)}} else if $item | startswith("  BGP state:") then . + {state: $item[22:]} else if $item | startswith("    Neighbor address:") then . + {neighbor_address: $item[22:]} else if $item | startswith("    Neighbor AS:") then . + {neighbor_asn: $item[22:] | tonumber} else if $item | startswith("    Neighbor caps:") then . + {capabilities: $item[22:] | split(" ")} else if $item | startswith("    Session:") then . + {session_type: $item[22:] | split(" ")} else if $item | startswith("    Source address:") then . + {source_address: $item[22:]} else if $item | startswith("    Hold timer:") then . + {hold_timer: $item[22:] | split("/") | map(tonumber) | {current: .[0], max: .[1]}} else if $item | startswith("    Keepalive timer:") then . + {state: $item[22:] | split("/") | map(tonumber) | {current: .[0], max: .[1]}} else if $item | startswith("    Last error:") then . + {last_error: $item[22:]} else . end end end end end end end end end end end end end end end) | del(.all) | select(.type == "BGP") | "\(.status) \(.since) \(.neighbor_address) \(.neighbor_asn) \(.last_error)"' |
+jq -L/evix/scripts -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, hostname, ssh_port}' secret-config.json |
+while read -r line; do
+  name=$(jq -r '.name' <<<"$line")
+  hostname=$(jq -r '.hostname' <<<"$line")
+  port=$(jq -r '.ssh_port' <<<"$line")
+  ssh -p -n "$port" "$hostname" birdc show protocols all | tail -n +3 | head -n -1 |
+    jq -L/evix/scripts --slurp --raw-input --raw-output 'parse_bird' |
     python3 /evix/scripts/root/warn_disconnection.py 4 "$name"
-  ssh -p "$port" "$hostname" birdc6 show protocols all | tail -n +3 | head -n -1 |
-    jq --slurp --raw-input --raw-output 'split("\n\n") | map(split("\n"))[] | {name: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[0]), type: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[1]), status: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[3]), since: (.[0] | split(" ") | map(if . == "" then empty else . end) | .[4] + "T" + .[5] + "Z" | fromdate), all: .[1:]} | .all as $all | reduce $all[] as $item (.; if $item | startswith("  Description:") then . + {description: $item[18:]} else if $item | startswith("  Preference:") then . + {preference: $item[18:] | tonumber} else if $item | startswith("  Input filter:") then . + {in_filter: $item[18:]} else if $item | startswith("  Output filter:") then . + {out_filter: $item[18:]} else if $item | startswith("  Import limit:") then . + {route_limit: $item[18:] | gsub("\\[HIT\\]"; "") | tonumber} else if $item | startswith("  Routes:") then . + {routes: $item[18:] | split(" ") | {imported: .[0] | tonumber, filtered: (if .[3] == "filtered," then .[2] | tonumber else 0 end), exported: (if .[5] == "exported," then .[4] | tonumber else .[2] | tonumber end), preferred: (if .[7] == "preferred" then .[6] | tonumber else .[4] | tonumber end)}} else if $item | startswith("  BGP state:") then . + {state: $item[22:]} else if $item | startswith("    Neighbor address:") then . + {neighbor_address: $item[22:]} else if $item | startswith("    Neighbor AS:") then . + {neighbor_asn: $item[22:] | tonumber} else if $item | startswith("    Neighbor caps:") then . + {capabilities: $item[22:] | split(" ")} else if $item | startswith("    Session:") then . + {session_type: $item[22:] | split(" ")} else if $item | startswith("    Source address:") then . + {source_address: $item[22:]} else if $item | startswith("    Hold timer:") then . + {hold_timer: $item[22:] | split("/") | map(tonumber) | {current: .[0], max: .[1]}} else if $item | startswith("    Keepalive timer:") then . + {state: $item[22:] | split("/") | map(tonumber) | {current: .[0], max: .[1]}} else if $item | startswith("    Last error:") then . + {last_error: $item[22:]} else . end end end end end end end end end end end end end end end) | del(.all) | select(.type == "BGP") | "\(.status) \(.since) \(.neighbor_address) \(.neighbor_asn) \(.last_error)"' |
+  ssh -p -n "$port" "$hostname" birdc6 show protocols all | tail -n +3 | head -n -1 |
+    jq -L/evix/scripts --slurp --raw-input --raw-output 'parse_bird' |
     python3 /evix/scripts/root/warn_disconnection.py 6 "$name"
 done

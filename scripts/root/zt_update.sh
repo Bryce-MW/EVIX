@@ -1,19 +1,27 @@
 #! /bin/bash
 # NOTE(bryce): Written by Bryce Wilson 2021-02-12
 #  * 2021-02-13|>Bryce|>Finished the script
+#  * 2021-04-16|>Bryce|>Added JSON config
 
-export token="***REMOVED***"
-export root_ip="23.129.32.56"
-export network="***REMOVED***"
+token=$(jq -L/evix/scripts -r '.zt.auth_token' /evix/secret-config.json)
+export token
+root_ip=$(jq -L/evix/scripts -r '.zt.root_ip' /evix/secret-config.json)
+export root_ip
+network=$(jq -L/evix/scripts -r '.zt.network_id' /evix/secret-config.json)
+export network
 export auth="X-ZT1-Auth: $token"
 export member="http://$root_ip:9993/controller/network/$network/member"
+
+user=$(jq -L/evix/scripts -r '.database.user' /evix/secret-config.json)
+password=$(jq -L/evix/scripts -r '.database.password' /evix/secret-config.json)
+database=$(jq -L/evix/scripts -r '.database.database' /evix/secret-config.json)
 
 edit () {
   id=$(jq --null-input --raw-output --argjson value "$1" '$value | .zt')
   del=$(jq --null-input --raw-output --argjson value "$1" '$value | .post.authorized == false')
   jq --null-input --compact-output --argjson value "$1" '$value | .post' |
   curl -X POST --header "$auth" -d @- "$member/$id" 2>/dev/null |
-  jq --slurp --raw-output 'sort_by([.authorized, .bridge, (.vMajor > -1), .address]) | .[] | .address + ": " + ([(if .authorized then "Authorized" else empty end), (if .activeBridge then "Bridge" else empty end), (if .vMajor > -1 then "V" + (.vMajor | tostring) + "." + (.vMinor | tostring) + "." + (.vRev | tostring) else "Hasn’t been seen since last reboot" end), (if (.ipAssignments | length) > 0 then "IPs: " + (.ipAssignments | join(", ")) else empty end)] | join(", "))'
+  jq -L/evix/scripts --slurp --raw-output 'zt_parse_members'
   if [ "$del" == "true" ]; then
     curl -X DELETE --header "$auth" "$member/$id" >/dev/null 2>&1
   fi
@@ -21,10 +29,10 @@ edit () {
 export -f edit
 
 {
-  mysql --user evix --password=***REMOVED*** --reconnect -B -N evix 2>/dev/null <<<"SELECT ip, additional_args FROM connections WHERE type='zerotier';" |
+  mysql --user "$user" --password="$password" --reconnect -B -N "$database" 2>/dev/null <<<"SELECT ip, additional_args FROM connections WHERE type='zerotier';" |
   jq --slurp --compact-output --raw-input 'split("\n") | map(split("\t") | if length > 0 then [.[0], (.[1] | split(" "))] else empty end)' &
 
   curl -X GET --header "$auth" "$member" 2>/dev/null;
 } |
-jq --slurp --compact-output '[.[0], (.[1] | keys)] | {remove: (.[1] - (.[0] | map(.[0]))), add: .[0]} | (.remove | .[] | {zt: ., post: {"authorized": false, "activeBridge": false, "ipAssignments": []}}), (.add | .[] | {zt: .[0], post: {"authorized": true, "activeBridge": true, "ipAssignments": .[1]}})' |
+jq -L/evix/scripts --slurp --compact-output 'compute_zt_diff' |
 xargs -P 0 -d "\n" -I {} bash -c "edit '{}'" edit

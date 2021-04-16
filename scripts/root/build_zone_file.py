@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 # NOTE(bryce): Written Nate Sales on 2020-12-14.
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 import mysql.connector
 from jinja2 import Template
 import ipaddress
 from time import time
 from os import system
+import json
 
 zone_template = Template("""
 $TTL	86400
@@ -17,7 +19,10 @@ $TTL	86400
 
 """)
 
-database = mysql.connector.connect(host="localhost", user="evix", passwd="***REMOVED***", database="evix")
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
+
+database = mysql.connector.connect(user=config['database']['user'], password=config['database']['password'], host=config['database']['host'], database=config['database']['database'])
 cursor = database.cursor()
 cursor.execute("SELECT * FROM ips;")
 

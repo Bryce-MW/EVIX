@@ -1,5 +1,6 @@
 #! /bin/bash
 # NOTE(bryce): Written by Bryce Wilson a long time ago and fixed on 2021-02-18
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
 ip=$(/evix/scripts/ip.sh "$host")
@@ -20,8 +21,8 @@ if [ "$eoip_ps" == "" ]; then
 fi
 
 length=$({
-  jq --raw-input 'split("\u0000") | .[5:] | reduce .[] as $item ([]; if (.[-1] | length) == 1 then .[:-1] + [[.[-1][0], $item]] else . + [[$item]] end) | map({id: .[1], ip: .[0]})' "/proc/$eoip_ps/cmdline"
-  jq --slurp --raw-input 'split("\n") | map(select(length > 0)) | map(split(" ")) | map({id: .[0], ip: .[1]})' "/evix/config/peers/$host.eoip"
+  jq -L/evix/scripts --raw-input 'parse_eoip_cmdline' "/proc/$eoip_ps/cmdline"
+  jq -L/evix/scripts --slurp --raw-input 'parse_eoip_config' "/evix/config/peers/$host.eoip"
 } |
   jq --slurp '{existing: .[0], new: .[1]} | (.existing - .new) + (.new - .existing) | length')
 
@@ -40,4 +41,4 @@ fi
 
 # screen -S eoip -X stuff ^C
 # awk '{ print $2 ":" $1}' < /evix/config/peers/fmt.eoip | xargs
-# screen -dmS eoip /evix/run/eoip/eoip tun101 72.52.82.6 185.158.255.2:101 192.30.89.140:102 45.77.27.154:104 209.197.181.234:105 103.24.179.172:107 220.132.81.245:109 128.14.155.222:110 44.135.193.138:111 213.238.183.1:112 155.138.217.166:113 190.210.230.107:114 123.253.141.19:119 45.77.6.77:120 171.60.145.30:121 185.225.207.1:123 64.62.151.115:124 198.204.254.131:125 103.139.190.1:127 45.85.195.67:128 110.44.168.130:129 200.73.54.202:103 5.196.146.57:106
+# screen -dmS eoip /evix/run/eoip/eoip tun101 72.52.82.6 1.1.1.1:101 2.2.2.2:102 3.3.3.3:104 4.4.4.4:105 5.5.5.5:107 6.6.6.6:109 7.7.7.7:110 8.8.8.8:111 9.9.9.9:112 10.10.10.10:113 11.11.11.11:114 12.12.12.12:119 13.13.13.13:120 14.14.14.14:121

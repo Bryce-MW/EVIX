@@ -2,18 +2,23 @@
 #  * 2020-09-16|>Bryce|>Fixed many issues that cause the table to not always be created correctly
 #  * 2020-09-16|>Bryce|>Attempt to ensure that improperly formatted links do not link to ourselves
 #  * 2020-11-29|>Bryce|>Move strings to peers_table_webpage_strings.py so that this file is easier to read
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 import ipaddress
+import json
 
 import mysql.connector
 
 # NOTE(bryce): This is where all of the strings inserted into the table are kept
 from peers_table_webpage_strings import *
 
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
+
 database = None
 try:
-    database = mysql.connector.connect(user='evix', password='***REMOVED***', host='127.0.0.1',
-                                       database='evix')
+    database = mysql.connector.connect(user=config['database']['user'], password=config['database']['password'],
+                                       host=config['database']['host'], database=config['database']['database'])
 except mysql.connector.Error as err:
     print("Something went wrong with the database connection:")
     print(err)

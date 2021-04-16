@@ -17,15 +17,14 @@ else
 	ping_ping6="ping"
 fi
 
-data="`$ping_ping6 -c 3 -i 0.2 -n -q -W 2 $peer_ip 2>&1`"
+data="$($ping_ping6 -c 3 -i 0.2 -n -q -W 2 "$peer_ip" 2>&1)"
 
-echo "$data" | grep "0 received" &>/dev/null
 
-if [ $? -eq 0 ]; then
+if echo "$data" | grep "0 received" &>/dev/null; then
 	# no replies from peer
 	echo None
 	exit
 fi
 
-avg=`echo "$data" | grep "rtt min/avg/max/mdev" | egrep -o " [0-9\.\/]+ ms" | cut -d '/' -f 2`
-echo $avg
+avg=$(echo "$data" | grep "rtt min/avg/max/mdev" | grep -E -o " [0-9\.\/]+ ms" | cut -d '/' -f 2)
+echo "$avg"

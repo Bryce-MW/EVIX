@@ -1,17 +1,18 @@
 #!/bin/bash
 # NOTE(alex): Written by Alex on 2021-02-28
-# Performs some monitoring tasks
+# * Performs some monitoring tasks
 #  * 2021-02-28|>Alex|>Initial version
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 STATE_FILE_DIR="/tmp/evix_monitoring"
-WEBHOOK_URL="***REMOVED***"
+WEBHOOK_URL=$(jq -L/evix/scripts -r '.monitoring.webhook_url' /evix/secret-config.json)
 
 host=$(/evix/scripts/hostname.sh)
 bridge="br10"
 
-is_ts=$(/evix/scripts/get-val.sh "$host" is-ts)
-is_rs=$(/evix/scripts/get-val.sh "$host" is-rs)
-is_admin=$(/evix/scripts/get-val.sh "$host" is-admin)
+is_ts=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
+is_rs=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="rs")'/evix/secret-config.json)
+is_admin=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="admin")' /evix/secret-config.json)
 
 # Let's be careful
 alias rm='rm -I'
@@ -20,7 +21,7 @@ send_alert () {
   curl -X POST \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$host\", \"content\": \"$1\"}" \
-    $WEBHOOK_URL
+    "$WEBHOOK_URL"
 }
 
 if [ "$1" = "--test" ]; then
@@ -37,8 +38,7 @@ mkdir -p "$STATE_FILE_DIR"
 services=$(/evix/scripts/get-val.sh "$host" services)
 for service in $services; do
   state_file="$STATE_FILE_DIR/$service.not.running"
-  systemctl is-active --quiet "$service"
-  if [ $? -ne 0 ]; then
+  if ! systemctl is-active --quiet "$service"; then
     if [ ! -f "$state_file" ]; then
       send_alert ":exclamation: Service $service is not running."
       touch "$state_file"

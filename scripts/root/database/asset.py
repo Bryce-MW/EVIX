@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 # NOTE(bryce): Written by Bryce Wilson a while ago and added to git on 2020-09-10.
 #  * 2020-11-28|>Bryce|>Did some refactoring
+#  * 2021-04-16|>Bryce|>Added JSON config
 
 # TODO(bryce):
 #  <-> 2020-11-28 ==> This needs to be re-written and likely done very differently
@@ -8,17 +9,21 @@
 import datetime
 from os.path import expanduser
 from subprocess import call
+import json
 
 import mysql.connector
 
 from validateASSET import get_as_set
 from whois_strings import *
 
+with open("/evix/secret-config.json") as config_f:
+    config = json.load(config_f)
+
 database = mysql.connector.connect(
-    host="localhost",
-    user="evix",
-    passwd="***REMOVED***",
-    database="evix"
+    user=config['database']['user'],
+    password=config['database']['password'],
+    host=config['database']['host'],
+    database=config['database']['database']
 )
 
 cursor = database.cursor()
