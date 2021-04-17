@@ -8,9 +8,9 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
-ip=$(jq --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
-ipv6=$(jq --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
-port_d=$(jq --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
+ip=$(jq --arg host "$host" -r '.hosts[$host].primary_ipv4' /evix/secret-config.json)
+ipv6=$(jq --arg host "$host" -r '.hosts[$host].primary_ipv6' /evix/secret-config.json)
+port_d=$(jq --arg host "$host" -r '.hosts[$host].vxlan_port' /evix/secret-config.json)
 bridge="br10"
 
 {
