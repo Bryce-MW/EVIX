@@ -9,3 +9,7 @@ saying is that you can't just download this onto a server and quickly set up a c
 have the database DDL available yet. I have mainly made this public for future employers and similar people. Perhaps
 someday this will be a drop-in solution but that is not our goal. I will try to add in some documentation here in the
 future, if only for the sake of our own volunteers.
+
+Note: You will see quite a few commits from Chris. Few of them are actually from him. He is just the one logged in on
+our main server so any commits done from the main server will look like they were from him even if they were from
+someone else.
