@@ -12,11 +12,13 @@ ln /evix/config/keys.txt /home/evix/.ssh/authorized_keys
 ln /evix/config/ssh/config /home/evix/.ssh/config
 ln /evix/config/bashrc.sh /home/evix/.bashrc
 ln /evix/config/brycerc.sh /home/evix/.brycerc
+ln /evix/scripts/jqconf.jq /home/evix/.jq
 # root version
 ln /evix/config/keys.txt /root/.ssh/authorized_keys
 ln /evix/config/ssh/config /root/.ssh/config
 ln /evix/config/bashrc.sh /root/.bashrc
 ln /evix/config/brycerc.sh /root/.brycerc
+ln /evix/scripts/jqconf.jq /root/.jq
 
 # Requires root
 ln /evix/config/ansible /etc/ansible
