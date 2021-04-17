@@ -4,7 +4,7 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 
-jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, hostname, ssh_port}' secret-config.json |
+jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, hostname, ssh_port}' /evix/secret-config.json |
 while read -r line; do
   name=$(jq -r '.name' <<<"$line")
   hostname=$(jq -r '.hostname' <<<"$line")
