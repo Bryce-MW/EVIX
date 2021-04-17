@@ -4,12 +4,12 @@
 #  * 2021-02-19|>Bryce|>Add reconnect flag
 #  * 2021-04-16|>Bryce|>Added JSON config
 
-user=$(jq -L/evix/scripts -r '.database.user' /evix/secret-config.json)
-password=$(jq -L/evix/scripts -r '.database.password' /evix/secret-config.json)
-database=$(jq -L/evix/scripts -r '.database.database' /evix/secret-config.json)
+user=$(jq -r '.database.user' /evix/secret-config.json)
+password=$(jq -r '.database.password' /evix/secret-config.json)
+database=$(jq -r '.database.database' /evix/secret-config.json)
 
 
-jq -L/evix/scripts -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {hostname, ssh_port}' /evix/secret-config.json |
+jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {hostname, ssh_port}' /evix/secret-config.json |
 while read -r line; do
   hostname=$(jq -r '.hostname' <<<"$line")
   port=$(jq -r '.ssh_port' <<<"$line")

@@ -5,14 +5,14 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 STATE_FILE_DIR="/tmp/evix_monitoring"
-WEBHOOK_URL=$(jq -L/evix/scripts -r '.monitoring.webhook_url' /evix/secret-config.json)
+WEBHOOK_URL=$(jq -r '.monitoring.webhook_url' /evix/secret-config.json)
 
 host=$(/evix/scripts/hostname.sh)
 bridge="br10"
 
-is_ts=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
-is_rs=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="rs")'/evix/secret-config.json)
-is_admin=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="admin")' /evix/secret-config.json)
+is_ts=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
+is_rs=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="rs")'/evix/secret-config.json)
+is_admin=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="admin")' /evix/secret-config.json)
 
 # Let's be careful
 alias rm='rm -I'

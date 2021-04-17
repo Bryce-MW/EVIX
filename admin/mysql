@@ -3,8 +3,8 @@
 #  * 2020-02-12|>Bryce|>Add reconnect flag
 #  * 2021-04-16|>Bryce|>Added JSON config
 
-user=$(jq -L/evix/scripts -r '.database.user' /evix/secret-config.json)
-password=$(jq -L/evix/scripts -r '.database.password' /evix/secret-config.json)
-database=$(jq -L/evix/scripts -r '.database.database' /evix/secret-config.json)
+user=$(jq -r '.database.user' /evix/secret-config.json)
+password=$(jq -r '.database.password' /evix/secret-config.json)
+database=$(jq -r '.database.database' /evix/secret-config.json)
 
 mysql --user "$user" --password="$password" --pager='less --quit-if-one-screen' --reconnect "$database"

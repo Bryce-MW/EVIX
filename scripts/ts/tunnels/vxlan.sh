@@ -8,14 +8,14 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
-ip=$(jq -L/evix/scripts --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
-ipv6=$(jq -L/evix/scripts --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
-port_d=$(jq -L/evix/scripts --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
+ip=$(jq --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
+ipv6=$(jq --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
+port_d=$(jq --arg host "$host" -r '.hosts[$host]' /evix/secret-config.json)
 bridge="br10"
 
 {
-  /sbin/ip -json -d link show | jq -L/evix/scripts 'parse_ip_vxlan'
-  jq -L/evix/scripts --slurp --raw-input --argjson port "$port_d" 'parse_config_vxlan($port)' "/evix/config/peers/$host.vxlan"
+  /sbin/ip -json -d link show | jq 'parse_ip_vxlan'
+  jq --slurp --raw-input --argjson port "$port_d" 'parse_config_vxlan($port)' "/evix/config/peers/$host.vxlan"
 } |
-  jq -L/evix/scripts --slurp --raw-output --arg ip "$ip" --arg ipv6 "$ipv6" --arg bridge "$bridge" 'diff_vxlan($ip, $ipv6, $bridge)' |
+  jq --slurp --raw-output --arg ip "$ip" --arg ipv6 "$ipv6" --arg bridge "$bridge" 'diff_vxlan($ip; $ipv6; $bridge)' |
   ip -b -

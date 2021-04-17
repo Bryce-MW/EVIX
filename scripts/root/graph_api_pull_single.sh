@@ -11,7 +11,7 @@ seconds_in_week=604800
 day_ago_seconds=$((now - seconds_in_day))
 week_ago_seconds=$((now - seconds_in_week))
 out_dir='/evix/run/IX-Website/templates/static/graphs'
-token=$(jq -L/evix/scripts -r '.monitoring.librenms_token' /evix/secret-config.json)
+token=$(jq -r '.monitoring.librenms_token' /evix/secret-config.json)
 
 api_device_id="$1"
 server_name="$2"

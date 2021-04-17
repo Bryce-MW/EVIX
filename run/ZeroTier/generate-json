@@ -2,8 +2,8 @@
 
 cd json || exit
 
-jq -L/evix/scripts -r '{roots: .zt.roots, key: .zt.world_secret} | zt_create_world("moon")' /evix/secret-config.json > moon.json
-jq -L/evix/scripts -r '{roots: .zt.roots, key: .zt.world_secret} | zt_create_world("planet")' /evix/secret-config.json > planet.json
+jq -r '{roots: .zt.roots, key: .zt.world_secret} | zt_create_world("moon")' /evix/secret-config.json > moon.json
+jq -r '{roots: .zt.roots, key: .zt.world_secret} | zt_create_world("planet")' /evix/secret-config.json > planet.json
 
 cd ../
 zerotier-idtool genmoon json/moon.json

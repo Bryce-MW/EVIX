@@ -4,15 +4,15 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 
-jq -L/evix/scripts -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, hostname, ssh_port}' secret-config.json |
+jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, hostname, ssh_port}' secret-config.json |
 while read -r line; do
   name=$(jq -r '.name' <<<"$line")
   hostname=$(jq -r '.hostname' <<<"$line")
   port=$(jq -r '.ssh_port' <<<"$line")
   ssh -p -n "$port" "$hostname" birdc show protocols all | tail -n +3 | head -n -1 |
-    jq -L/evix/scripts --slurp --raw-input --raw-output 'parse_bird' |
+    jq --slurp --raw-input --raw-output 'parse_bird' |
     python3 /evix/scripts/root/warn_disconnection.py 4 "$name"
   ssh -p -n "$port" "$hostname" birdc6 show protocols all | tail -n +3 | head -n -1 |
-    jq -L/evix/scripts --slurp --raw-input --raw-output 'parse_bird' |
+    jq --slurp --raw-input --raw-output 'parse_bird' |
     python3 /evix/scripts/root/warn_disconnection.py 6 "$name"
 done

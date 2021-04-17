@@ -134,7 +134,7 @@ storage:
     # if both encryption_passcommand and encryption_passphrase are
     # set, then encryption_passphrase takes precedence. Defaults
     # to not set.
-    encryption_passcommand: jq -L/evix/scripts -r '.borgmatic.encryption_password' /evix/secret-config.json
+    encryption_passcommand: jq -r '.borgmatic.encryption_password' /evix/secret-config.json
 
     # Passphrase to unlock the encryption key with. Only use on
     # repositories that were initialized with passphrase/repokey

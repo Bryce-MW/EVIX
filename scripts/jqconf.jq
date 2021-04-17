@@ -438,7 +438,7 @@ def parse_config_vxlan($port):
   })
 ;
 
-def diff_vxlan($ip, $ipv6, $bridge):
+def diff_vxlan($ip; $ipv6; $bridge;):
   {existing: .[0], new: .[1]} # Get the new and existing config
   | {delete: (.existing - .new), add: (.new - .existing)} # Calculate diffs
   | (.delete[] | "link delete vtep\(.id)"), # Create the delete syntax

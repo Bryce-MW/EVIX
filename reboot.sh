@@ -7,16 +7,16 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
-local_ip=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].primary_ipv4' /evix/secret-config.json)
-is_ts=$(jq -L/evix/scripts -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
-fmt_ip=$(jq -L/evix/scripts -r '.hosts.fmt.primary_ipv4' /evix/secret-config.json)
+local_ip=$(jq -r --arg host "$host" '.hosts[$host].primary_ipv4' /evix/secret-config.json)
+is_ts=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
+fmt_ip=$(jq -r '.hosts.fmt.primary_ipv4' /evix/secret-config.json)
 
 # This should probably go away eventually?
 if [ -f "/evix/config/reboot/$host.sh" ]; then
   /evix/config/reboot/"$host".sh
 fi
 
-jq -L/evix/scripts -r --arg host "$host" '(.hosts[$host].ports // empty)[].commands[]' /evix/secret-config.json |
+jq -r --arg host "$host" '(.hosts[$host].ports // empty)[].commands[]' /evix/secret-config.json |
   ip -b -
 
 if [ "$is_ts" == "true" ]; then
@@ -27,7 +27,7 @@ if [ "$is_ts" == "true" ]; then
   /evix/scripts/ts/tunnels/vxlan.sh
   /evix/scripts/ts/tunnels/eoip.sh
 
-  jq -L/evix/scripts -r --arg host "nz" '.hosts[$host] | (.ports // empty)[].name, .eoip_interface // empty, .ovpn_interface // empty' /evix/secret-config.json
+  jq -r --arg host "nz" '.hosts[$host] | (.ports // empty)[].name, .eoip_interface // empty, .ovpn_interface // empty' /evix/secret-config.json
     xargs -n 1 brctl addif br10
 
   if [ "$host" != "fmt" ]; then
@@ -38,13 +38,13 @@ if [ "$is_ts" == "true" ]; then
   ip link set up EVIX
   brctl addif br10 EVIX
 
-  jq -L/evix/scripts -r --compact-output --arg host "$host" '.hosts[] | select((.roles | contains(["ts"])) and .short_name!=$host).primary_ipv4' /evix/secret-config.json |
+  jq -r --compact-output --arg host "$host" '.hosts[] | select((.roles | contains(["ts"])) and .short_name!=$host).primary_ipv4' /evix/secret-config.json |
     xargs -n1 bridge fdb append 00:00:00:00:00:00 dev EVIX dst
 
   ip link set up br10
 fi
 
-jq -L/evix/scripts -r --arg host "$host" '(.hosts[$host].ip_setup // empty)[]' /evix/secret-config.json |
+jq -r --arg host "$host" '(.hosts[$host].ip_setup // empty)[]' /evix/secret-config.json |
   ip -b -
 
 # brctl

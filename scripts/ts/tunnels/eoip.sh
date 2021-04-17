@@ -21,8 +21,8 @@ if [ "$eoip_ps" == "" ]; then
 fi
 
 length=$({
-  jq -L/evix/scripts --raw-input 'parse_eoip_cmdline' "/proc/$eoip_ps/cmdline"
-  jq -L/evix/scripts --slurp --raw-input 'parse_eoip_config' "/evix/config/peers/$host.eoip"
+  jq --raw-input 'parse_eoip_cmdline' "/proc/$eoip_ps/cmdline"
+  jq --slurp --raw-input 'parse_eoip_config' "/evix/config/peers/$host.eoip"
 } |
   jq --slurp '{existing: .[0], new: .[1]} | (.existing - .new) + (.new - .existing) | length')
 

@@ -3,25 +3,25 @@
 #  * 2021-02-13|>Bryce|>Finished the script
 #  * 2021-04-16|>Bryce|>Added JSON config
 
-token=$(jq -L/evix/scripts -r '.zt.auth_token' /evix/secret-config.json)
+token=$(jq -r '.zt.auth_token' /evix/secret-config.json)
 export token
-root_ip=$(jq -L/evix/scripts -r '.zt.root_ip' /evix/secret-config.json)
+root_ip=$(jq -r '.zt.root_ip' /evix/secret-config.json)
 export root_ip
-network=$(jq -L/evix/scripts -r '.zt.network_id' /evix/secret-config.json)
+network=$(jq -r '.zt.network_id' /evix/secret-config.json)
 export network
 export auth="X-ZT1-Auth: $token"
 export member="http://$root_ip:9993/controller/network/$network/member"
 
-user=$(jq -L/evix/scripts -r '.database.user' /evix/secret-config.json)
-password=$(jq -L/evix/scripts -r '.database.password' /evix/secret-config.json)
-database=$(jq -L/evix/scripts -r '.database.database' /evix/secret-config.json)
+user=$(jq -r '.database.user' /evix/secret-config.json)
+password=$(jq -r '.database.password' /evix/secret-config.json)
+database=$(jq -r '.database.database' /evix/secret-config.json)
 
 edit () {
   id=$(jq --null-input --raw-output --argjson value "$1" '$value | .zt')
   del=$(jq --null-input --raw-output --argjson value "$1" '$value | .post.authorized == false')
   jq --null-input --compact-output --argjson value "$1" '$value | .post' |
   curl -X POST --header "$auth" -d @- "$member/$id" 2>/dev/null |
-  jq -L/evix/scripts --slurp --raw-output 'zt_parse_members'
+  jq --slurp --raw-output 'zt_parse_members'
   if [ "$del" == "true" ]; then
     curl -X DELETE --header "$auth" "$member/$id" >/dev/null 2>&1
   fi
@@ -34,5 +34,5 @@ export -f edit
 
   curl -X GET --header "$auth" "$member" 2>/dev/null;
 } |
-jq -L/evix/scripts --slurp --compact-output 'compute_zt_diff' |
+jq --slurp --compact-output 'compute_zt_diff' |
 xargs -P 0 -d "\n" -I {} bash -c "edit '{}'" edit

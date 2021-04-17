@@ -5,7 +5,7 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 STATE_FILE_DIR="/tmp/evix_monitoring"
-WEBHOOK_URL=$(jq -L/evix/scripts -r '.monitoring.webhook_url' /evix/secret-config.json)
+WEBHOOK_URL=$(jq -r '.monitoring.webhook_url' /evix/secret-config.json)
 
 host=$(/bin/hostname -s)
 route_servers=("2602:fed2:fff:ffff::1" "2602:fed2:fff:ffff::253")
