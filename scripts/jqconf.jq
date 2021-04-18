@@ -303,9 +303,8 @@ def parse_bird:
       type: .[1],
       status: .[3],
       since: (.[4] + "T" + .[5] + "Z" | fromdate), # Format the date in a way that fromdate allows
-      all: .[1:]
     }
-  )
+  ) + {all: .[1:]}
   | reduce .all[] as $item # Go through each line and parse it into the object
     (.;
       if $item | startswith("  Description:") then
