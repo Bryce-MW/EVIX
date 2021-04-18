@@ -6,8 +6,9 @@
 #  * 2021-02-19|>Bryce|>Fixed minor bugs
 #  * 2021-04-16|>Bryce|>Added JSON config
 
-import mysql.connector
 import json
+
+import mysql.connector
 
 with open("/evix/secret-config.json") as config_f:
     config = json.load(config_f)

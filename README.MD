@@ -73,21 +73,21 @@ from fmt server).
 
 RS Session is true if the BGP session with the FMT RS is up (only tested daily).
 
-clients  # Individual person or company connecting  
-    id, name, website, contact  
-asns  # A single ASN  
-    asn, client_id  
-ips  # A IP address configured for a specific ASN. Monitor false means that we don't send deprovision messages (people
+clients # Individual person or company connecting  
+id, name, website, contact  
+asns # A single ASN  
+asn, client_id  
+ips # A IP address configured for a specific ASN. Monitor false means that we don't send deprovision messages (people
 who don't peer with the RS)  
-    ip, version, asn, monitor, provisioned  
-connections  # A tunnel. This is connected to a client, not ASN. Someone can have multiple IPs and use whatever tunnel
+ip, version, asn, monitor, provisioned  
+connections # A tunnel. This is connected to a client, not ASN. Someone can have multiple IPs and use whatever tunnel
 they want. Note that the IP column is the remote real IP, not an EVIX IP. Additional_args is a custom port for VXLAN and
 the any IPs for Zerotier to automatically assign. Zerotier does not yet have a good way to auto-provision. I will add a
 script for that in the future but I have to do it manually for now.  
-    id, client_id, type, server, tunnel_id, ip, additional_args  
-requests  # A request from our website. Many people have submitted multiple so you may find a few from the same person
+id, client_id, type, server, tunnel_id, ip, additional_args  
+requests # A request from our website. Many people have submitted multiple so you may find a few from the same person
 when approving their request. I try to remove them when I see them but it does not really matter.  
-    id, asn, name, contact, website, tunnel_location, tunnel_type, ipv4
+id, asn, name, contact, website, tunnel_location, tunnel_type, ipv4
 
 ### EVIX Directory
 

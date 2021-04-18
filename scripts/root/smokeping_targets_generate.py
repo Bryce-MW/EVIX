@@ -4,8 +4,9 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 import ipaddress
-import mysql.connector
 import json
+
+import mysql.connector
 
 with open("/evix/secret-config.json") as config_f:
     config = json.load(config_f)
@@ -69,7 +70,7 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
    menu = AS{asn} ({name})
    title = AS{asn} - {name}
 
-""".format(asn=asn['asn'], name = client['name'])
+""".format(asn=asn['asn'], name=client['name'])
 
             for ip in ips:
                 ip_stripped = ip['ip'].translate({ord(i): None for i in ':.'})
@@ -84,4 +85,3 @@ for client, _ in sorted(clients, key=lambda x: x[1]):
 database.close()
 
 print(sp_conf)
-

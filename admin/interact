@@ -10,8 +10,8 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 import ipaddress
-import subprocess
 import json
+import subprocess
 
 import mysql.connector
 from click import secho, style

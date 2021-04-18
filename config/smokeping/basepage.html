@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <META http-equiv="Refresh" content="<##step##>">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <META content="<##step##>" http-equiv="Refresh">
     <title>SmokePing Latency Page for <##title##></title>
-    <link rel="stylesheet" type="text/css" href="css/smokeping-print.css" media="print">
-    <link rel="stylesheet" type="text/css" href="css/smokeping-screen.css" media="screen">
+    <link href="css/smokeping-print.css" media="print" rel="stylesheet" type="text/css">
+    <link href="css/smokeping-screen.css" media="screen" rel="stylesheet" type="text/css">
 </head>
 <body id="body">
 
@@ -25,8 +25,11 @@
 </div>
 
 <div class="navbar">
-    <div class="navbar-menu"><a id="menu-button" href="#">Toggle Menu</a></div>
-    <div class="navbar-user"><div class="icon-person"></div><##authuser##></div>
+    <div class="navbar-menu"><a href="#" id="menu-button">Toggle Menu</a></div>
+    <div class="navbar-user">
+        <div class="icon-person"></div>
+        <##authuser##>
+    </div>
 </div>
 
 <div class="main">

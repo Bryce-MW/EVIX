@@ -124,9 +124,9 @@ cfg:
     #
     # Default: none
     global_black_list_pref:
-      #- prefix: "192.0.2.0"
-      #  length: 24
-      #  comment: "Local network"
+    #- prefix: "192.0.2.0"
+    #  length: 24
+    #  comment: "Local network"
 
     # Max length of AS_PATH attribute.
     #
@@ -695,37 +695,37 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     prefix_present_in_as_set:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prefix_not_present_in_as_set:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     origin_present_in_as_set:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     origin_not_present_in_as_set:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prefix_validated_via_rpki_roas:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prefix_validated_via_arin_whois_db_dump:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prefix_validated_via_registrobr_whois_db_dump:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     route_validated_via_white_list:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Blackhole filtering.
     #
@@ -741,10 +741,10 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     blackholing:
-      #std:
-      #lrg:
-      #ext:
- 
+    #std:
+    #lrg:
+    #ext:
+
     # Control communities.
     # 
     # Routes that are tagged with the following community are not
@@ -757,9 +757,9 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     do_not_announce_to_any:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following community are not
     # announced to clients whose ASN matches the value given in the
@@ -773,9 +773,9 @@ cfg:
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.
     do_not_announce_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following community are
     # announced to clients whose ASN matches the value given in the
@@ -790,9 +790,9 @@ cfg:
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.
     announce_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following community are not
     # announced to clients that have a RTT lower/higher than the
@@ -807,13 +807,13 @@ cfg:
     # 'rtt_thresholds' list that identifies the RTT value for
     # which the action is requested.
     do_not_announce_to_peers_with_rtt_lower_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     do_not_announce_to_peers_with_rtt_higher_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following community are
     # announced to clients that have a RTT lower/higher than the
@@ -832,13 +832,13 @@ cfg:
     # 'rtt_thresholds' list that identifies the RTT value for
     # which the action is requested.
     announce_to_peers_with_rtt_lower_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     announce_to_peers_with_rtt_higher_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Prepending communities.
     #
@@ -863,17 +863,17 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     prepend_once_to_any:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_twice_to_any:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_thrice_to_any:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following communities are
     # propagated to the clients whose ASN matches the one given in
@@ -885,17 +885,17 @@ cfg:
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.
     prepend_once_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_twice_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_thrice_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following communities are
     # propagated to clients having a RTT lower/higher than the value
@@ -912,29 +912,29 @@ cfg:
     # 'rtt_thresholds' list that identifies the RTT value for
     # which the action is requested.
     prepend_once_to_peers_with_rtt_lower_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_twice_to_peers_with_rtt_lower_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_thrice_to_peers_with_rtt_lower_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_once_to_peers_with_rtt_higher_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_twice_to_peers_with_rtt_higher_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     prepend_thrice_to_peers_with_rtt_higher_than:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # Routes that are tagged with the following communities are
     # propagated to other clients before the NO_EXPORT (65535:65281)
@@ -949,24 +949,24 @@ cfg:
     #
     # The 'rs_as' macro can be used here.
     add_noexport_to_any:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     add_noadvertise_to_any:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     #
     # The 'rs_as' macro can be used here.
     # The 'peer_as' macro must appear in the last part of values.
     add_noexport_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
     add_noadvertise_to_peer:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # This BGP community is used when the 'reject_policy' option is
     # set to 'tag'. It is used to track the code of the reason that
@@ -977,9 +977,9 @@ cfg:
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
     reject_cause:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
     # This BGP community is used when the 'reject_policy' option is
     # set to 'tag'. If configured, it is used to track the ASN
@@ -991,11 +991,11 @@ cfg:
     # The 'rs_as' macro can be used here.
     # The 'dyn_val' macro must appear in the last part of values.
     rejected_route_announced_by:
-      #std:
-      #lrg:
-      #ext:
+    #std:
+    #lrg:
+    #ext:
 
-  #custom_communities:
+    #custom_communities:
     # Custom BGP communities can be added to routes that enter the
     # route server from clients.
     # Each client can be configured with a set of custom communities

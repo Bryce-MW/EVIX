@@ -1,4 +1,4 @@
-- hosts: routeservers-primary 
+- hosts: routeservers-primary
   tasks:
     - name: Update bird config file
       template:
@@ -36,7 +36,7 @@
     - template:
         src: /etc/bird/header.local
         dest: /etc/bird/header.local
-  handlers: 
+  handlers:
     - name: reconfigure bird
       command: /usr/sbin/birdc configure
     - name: reconfigure bird6

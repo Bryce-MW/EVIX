@@ -2,12 +2,13 @@
 # NOTE(bryce): Written Nate Sales on 2020-12-14.
 #  * 2021-04-16|>Bryce|>Added JSON config
 
+import ipaddress
+import json
+from os import system
+from time import time
+
 import mysql.connector
 from jinja2 import Template
-import ipaddress
-from time import time
-from os import system
-import json
 
 zone_template = Template("""
 $TTL	86400
@@ -42,7 +43,6 @@ for line in cursor:
         ipv4.append(record)
     else:
         ipv6.append(record)
-
 
 serial = str(int(time()))
 

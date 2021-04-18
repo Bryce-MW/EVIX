@@ -5,12 +5,12 @@
 
 import ipaddress
 import json
-import mysql.connector
 import re
 import socket
 import subprocess
 import sys
-import json
+
+import mysql.connector
 
 with open("/evix/secret-config.json") as config_f:
     config = json.load(config_f)

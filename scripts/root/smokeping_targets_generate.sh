@@ -14,7 +14,7 @@ oldconf="$SMOKEPING_CONF_DIR/$CONF_FILE_NAME"
 newconf="$TMPDIR/$date_$CONF_FILE_NAME"
 
 # Generate new config
-/usr/bin/python3 /evix/scripts/root/smokeping_targets_generate.py > "$newconf"
+/usr/bin/python3 /evix/scripts/root/smokeping_targets_generate.py >"$newconf"
 
 # Check if the config has changed
 if ! cmp -s "$oldconf" "$newconf"; then

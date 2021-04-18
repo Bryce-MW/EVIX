@@ -7,11 +7,11 @@
 #  * 2021-02-18|>Bryce|>Add error and use new date format
 #  * 2021-04-16|>Bryce|>Added JSON config
 
-from datetime import datetime
+import json
 import smtplib
 import ssl
 import sys
-import json
+from datetime import datetime
 
 import mysql.connector
 

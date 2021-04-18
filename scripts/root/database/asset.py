@@ -7,9 +7,9 @@
 #  <-> 2020-11-28 ==> This needs to be re-written and likely done very differently
 
 import datetime
+import json
 from os.path import expanduser
 from subprocess import call
-import json
 
 import mysql.connector
 

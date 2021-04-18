@@ -17,7 +17,7 @@ is_admin=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="admin")' /evi
 # Let's be careful
 alias rm='rm -I'
 
-send_alert () {
+send_alert() {
   curl -X POST \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$host\", \"content\": \"$1\"}" \

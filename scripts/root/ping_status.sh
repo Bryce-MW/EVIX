@@ -8,13 +8,12 @@ user=$(jq -r '.database.user' /evix/secret-config.json)
 password=$(jq -r '.database.password' /evix/secret-config.json)
 database=$(jq -r '.database.database' /evix/secret-config.json)
 
-
 jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {hostname, ssh_port}' /evix/secret-config.json |
-while read -r line; do
-  hostname=$(jq -r '.hostname' <<<"$line")
-  port=$(jq -r '.ssh_port' <<<"$line")
-  mysql --user "$user" --password="$password" --batch --reconnect "$database" <<<"SELECT ip FROM ips" 2>/dev/null |
-    tail -n+2 |
-    ssh -p "$port" "$hostname" "xargs -n 1 -P 0 bash -c 'ping -c 5 -i 0.2 -n -w 5 \$0 >/dev/null 2>&1 && echo yes \$0 || echo no \$0'" |
-    /evix/scripts/root/ping_status.py
-done
+  while read -r line; do
+    hostname=$(jq -r '.hostname' <<<"$line")
+    port=$(jq -r '.ssh_port' <<<"$line")
+    mysql --user "$user" --password="$password" --batch --reconnect "$database" <<<"SELECT ip FROM ips" 2>/dev/null |
+      tail -n+2 |
+      ssh -p "$port" "$hostname" "xargs -n 1 -P 0 bash -c 'ping -c 5 -i 0.2 -n -w 5 \$0 >/dev/null 2>&1 && echo yes \$0 || echo no \$0'" |
+      /evix/scripts/root/ping_status.py
+  done

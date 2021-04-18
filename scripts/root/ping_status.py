@@ -4,10 +4,11 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 import datetime
-import sys
-from click import secho, style
-import mysql.connector
 import json
+import sys
+
+import mysql.connector
+from click import secho
 
 with open("/evix/secret-config.json") as config_f:
     config = json.load(config_f)

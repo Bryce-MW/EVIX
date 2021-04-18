@@ -15,7 +15,7 @@ if [ "$eoip_ps" == "" ]; then
 
   sleep 2
   ip link set "$interface" up
-  sleep 2  
+  sleep 2
   brctl addif br10 "$interface"
   exit 0
 fi

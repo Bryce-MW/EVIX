@@ -18,7 +18,7 @@ mkdir -p "$STATE_FILE_DIR"
 
 interfaces=$(basename -a /sys/class/net/{eoip,vxlan,ovpn,zt}*)
 
-send_alert () {
+send_alert() {
   curl -X POST \
     -H "Content-Type: application/json" \
     -d "{\"username\": \"$host\", \"content\": \"$1\"}" \

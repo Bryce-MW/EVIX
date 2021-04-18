@@ -11,34 +11,34 @@ cfg:
       max: 48
       min: 12
     global_black_list_pref:
-    - prefix: 206.81.104.0
-      length: 24
-    - prefix: '2602:fed2:fff:ffff::'
-      length: 64
+      - prefix: 206.81.104.0
+        length: 24
+      - prefix: '2602:fed2:fff:ffff::'
+        length: 64
     max_as_path_len: 32
     reject_invalid_as_in_as_path: true
     transit_free:
       action: reject
       asns:
-      - 174
-      - 209
-      - 286
-      - 701
-      - 1239
-      - 1299
-      - 2828
-      - 2914
-      - 3257
-      - 3320
-      - 3356
-      - 3549
-      - 5511
-      - 6453
-      - 6461
-      - 6762
-      - 6830
-      - 7018
-      - 12956
+        - 174
+        - 209
+        - 286
+        - 701
+        - 1239
+        - 1299
+        - 2828
+        - 2914
+        - 3257
+        - 3320
+        - 3356
+        - 3549
+        - 5511
+        - 6453
+        - 6461
+        - 6762
+        - 6830
+        - 7018
+        - 12956
     irrdb:
       enforce_origin_in_as_set: true
       enforce_prefix_in_as_set: true

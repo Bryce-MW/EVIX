@@ -9,6 +9,6 @@
   \ip -json -br addr | jq '[.[].addr_info | .[].local]'
   jq -r '[.hosts | .[] | {(.primary_ipv4 // empty): .short_name}] | add' /evix/secret-config.json
 } |
-jq -s -r '.[1][.[0][]] // empty' # This is really clever!
-  # It takes the IP to host mappings, indexes it by all of the IPs, only return those that are not null which should
-  # always be the hostname. Outputs nothing if it can't be found
+  jq -s -r '.[1][.[0][]] // empty' # This is really clever!
+# It takes the IP to host mappings, indexes it by all of the IPs, only return those that are not null which should
+# always be the hostname. Outputs nothing if it can't be found
