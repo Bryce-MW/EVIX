@@ -73,7 +73,7 @@ cursor = database.cursor(buffered=True)
 
 with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
     # server.set_debuglevel(2)
-    server.login(config['mail']['user'], config['mail']['password'])
+    server.login(config['mail']['username'], config['mail']['password'])
     cursor.execute("UPDATE ips SET birdable=false WHERE version=%s", (version,))
     for i in sys.stdin:
         line = i.split()
