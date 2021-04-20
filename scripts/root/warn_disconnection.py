@@ -109,7 +109,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
     for i in sys.stdin:
         session = json.loads(i)
         cursor.execute("SELECT birdable FROM ips WHERE ip=%s", (session['ip'],))
-        warnings_sent = cursor.fetchone()
+        warnings_sent = cursor.fetchone()[0]
         if session['up']:
             if session['down']:
                 if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7 <= 3:
