@@ -112,7 +112,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
             if session['down']:
                 cursor.execute("SELECT birdable FROM ips WHERE ip=%s", (session['ip'],))
                 warnings_sent = cursor.fetchone()
-                if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).weeks <= 3:
+                if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7 <= 3:
                     cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (ip,))
                     email, monitor = cursor.fetchone()
                     if not email:
@@ -135,7 +135,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
             else:
                 cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (session['ip'], 0))
         else:
-            weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).weeks
+            weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7
             if warnings_sent < weeks:
                 cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (ip,))
                 email, monitor = cursor.fetchone()
