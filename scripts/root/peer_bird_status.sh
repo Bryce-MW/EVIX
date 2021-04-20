@@ -14,4 +14,4 @@ jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, ho
       jq --slurp --raw-input --compact-output --arg version 6 --arg server "$name" '{version: $version, server: $server, status: parse_bird}'
   done |
   jq --slurp --compact-output 'determine_down'
-  #python3 /evix/scripts/root/warn_disconnection.py 4
+  python3 /evix/scripts/root/warn_disconnection.py
