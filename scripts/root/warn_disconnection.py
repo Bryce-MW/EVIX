@@ -108,12 +108,12 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
     server.login(config['mail']['username'], config['mail']['password'])
     for i in sys.stdin:
         session = json.loads(i)
+        cursor.execute("SELECT birdable FROM ips WHERE ip=%s", (session['ip'],))
+        warnings_sent = cursor.fetchone()
         if session['up']:
             if session['down']:
-                cursor.execute("SELECT birdable FROM ips WHERE ip=%s", (session['ip'],))
-                warnings_sent = cursor.fetchone()
                 if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7 <= 3:
-                    cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (ip,))
+                    cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
                     email, monitor = cursor.fetchone()
                     if not email:
                         print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
@@ -137,7 +137,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
         else:
             weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7
             if warnings_sent < weeks:
-                cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (ip,))
+                cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
                 email, monitor = cursor.fetchone()
                 if not email:
                     print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
