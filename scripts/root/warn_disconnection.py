@@ -15,38 +15,72 @@ from datetime import datetime
 
 import mysql.connector
 
-email = """From: "EVIX Support" <support@evix.org>
+email_warning = """From: "EVIX Support" <support@evix.org>
 To: "{name}" <{contact}>
 BCC: "EVIX Peering" <peering@evix.org>
-Subject: EVIX IPv{version} session down
+Subject: Your EVIX RS session - {ip}
 
 Hi {name}!
 
-Your IPv{version} session with EVIX has been down for {difference} days.
+You currently have a connection with one or more of our route
+servers. We just wanted to remind you that we have two route
+servers. Details below. This is reminder {count}/3.
 
-If your session has been down for 14 days or more, it will be deprovisioned.
-Please reply to this email with as many details as you can to help us fix
-the problem. We are volunteers with very limited time so please respect that
-we may not reply quickly and help us as much as possible. Be sure to check
-if this email is about your IPv4 or IPv6 session and which route server this
-disconnection was seen at. This email was sent by a robot so it may not know
-if you are in a specific situation that you have already discussed with us.
-If you already have a ticket, reply to that rather than replying to this
-email.
+Fremont Route Sever:
+  IPv4 - 206.81.104.1
+  IPv6 - 2602:fed2:fff:ffff::1
+  ASN  - 137933
 
-Sincerely,
-Your EVIX Admins (and the script that sent this email)
+Amsterdam Route Server:
+  IPv4 - 206.81.104.253
+  IPv6 - 2602:fed2:fff:ffff::253
+  ASN  - 209762
 
+We currently see the following session(s) being down
 
-Here are your connection details:
-ASN: {asn}
-IPv{version}: {ip}
-Route Server: {server}
-Last seen connected: {since}
-{error}
+{sessions}
 
-If you believe this to be in error, please reply to this email.
+If you believe this to be in error, please reply to this email
+with as many details as you can.
 """
+
+session_template = """
+{RS}:
+  IP         - {ip}
+  Down since - {since}
+  Last Error - {error}
+"""
+
+email_remove = """From: "EVIX Support" <support@evix.org>
+To: "{name}" <{contact}>
+BCC: "EVIX Peering" <peering@evix.org>
+Subject: Your EVIX RS session - {ip}
+
+Hi {name}!
+
+The IP {ip} currently has no sessions with any of our route
+servers. The connection details of our route servers are
+below. {remove}
+
+Fremont Route Sever:
+  IPv4 - 206.81.104.1
+  IPv6 - 2602:fed2:fff:ffff::1
+  ASN  - 137933
+
+Amsterdam Route Server:
+  IPv4 - 206.81.104.253
+  IPv6 - 2602:fed2:fff:ffff::253
+  ASN  - 209762
+
+We currently see the following session(s) being down
+
+{sessions}
+
+If you believe this to be in error, please reply to this email
+with as many details as you can.
+"""
+
+remove_template = "No session has been up in the past 4 weeks so we are\nremoving your IP, contact us to have them provisioned again."
 
 with open("/evix/secret-config.json") as config_f:
     config = json.load(config_f)
@@ -73,41 +107,52 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
     # server.set_debuglevel(2)
     server.login(config['mail']['username'], config['mail']['password'])
     for i in sys.stdin:
-        res = json.loads(i)
-        version = res['version']
-        rt = res["server"]
-        line = res['old'].split()
-        status = line[0]
-        date = int(line[1])
-        ip = line[2]
-        asn = line[3]
-        error = ("Last error: " + " ".join(line[4:])) if line[4] != "null" else "Bird reports no errors"
-        if status == "up":
-            cursor.execute("UPDATE ips SET birdable=true WHERE ip=%s", (ip,))
-            cursor.execute("SELECT 1 FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s AND monitor=true AND provisioned=true", (ip,))
-            if len(tuple(cursor)) == 0:
-                cursor.execute("UPDATE ips SET provisioned=true, monitor=true WHERE ip=%s", (ip,))
-                print(f"+ Found up session for {asn} over {ip}. Set provisioned and monitored")
-            continue
-        since = datetime.fromtimestamp(date)
-        difference = (now - since).days
-        if difference == 3 or difference >= 14:
-            cursor.execute("SELECT name,contact,provisioned FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s AND monitor=true AND provisioned=true", (ip,))
-            results = tuple(cursor)
-            if len(results) == 0:
-                print(f"- No result found for {asn} over {ip} (not monitored or deprovisioned?)")
-                continue
-            name, contact, provisioned = results[0]
-            if not contact:
-                print(f"Error: {name} has no email, not sending email for {asn} over {ip}")
-                continue
-            if difference >= 14 and provisioned:
-                cursor.execute("UPDATE ips SET provisioned=false WHERE ip=%s", (ip,))
-                if cursor.rowcount == 0:
-                    print(f"- Could not deprovision {ip}?")
-                results = tuple(cursor)
-                server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact, error=error, since=since))
-                print(f"Sent deprovision for {asn} over {ip} to {contact}")
-            elif difference == 3 and provisioned:
-                server.sendmail("support@evix.org", (contact, "peering@evix.org"), email.format(name=name, version=version, difference=difference, asn=asn, ip=ip, server=rt, contact=contact, error=error, since=since))
-                print(f"Sent warning for {asn} over {ip} to {contact}")
+        session = json.loads(i)
+        if session['up']:
+            if session['down']:
+                cursor.execute("SELECT birdable FROM ips WHERE ip=%s", (session['ip'],))
+                warnings_sent = cursor.fetchone()
+                if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).weeks <= 3:
+                    cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (ip,))
+                    email, monitor = cursor.fetchone()
+                    if not email:
+                        print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
+                        continue
+                    server.sendmail("support@evix.org", (email, "peering@evix.org"), email_warning.format(
+                        name=session['down'][0]['status']['description'],
+                        contact=email,
+                        ip=session['ip'],
+                        count=warnings_sent + 1,
+                        sessions="".join(session_template.format(
+                            RS=i['server'],
+                            ip=i['status']['neighbor_address'],
+                            since=datetime.fromtimestamp(i['status']['since']),
+                            error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors"
+                        ) for i in session['down'])
+                    ))
+                    print(f"Warned {session['ip']}: {email} {warnings_sent + 1}/3")
+                    cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (session['ip'], warnings_sent + 1))
+            else:
+                cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (session['ip'], 0))
+        else:
+            weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).weeks
+            if warnings_sent < weeks:
+                cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (ip,))
+                email, monitor = cursor.fetchone()
+                if not email:
+                    print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
+                    continue
+                server.sendmail("support@evix.org", (email, "peering@evix.org"), email_remove.format(
+                    name=session['down'][0]['status']['description'],
+                    contact=email,
+                    ip=session['ip'],
+                    remove=remove_template if weeks >= 4 else "",
+                    sessions="".join(session_template.format(
+                        RS=i['server'],
+                        ip=i['status']['neighbor_address'],
+                        since=datetime.fromtimestamp(i['status']['since']),
+                        error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors"
+                    ) for i in session['down'])
+                ))
+                print(f"Removed {session['ip']}: {email} {warnings_sent + 1}/4")
+                cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (session['ip'], warnings_sent + 1))
