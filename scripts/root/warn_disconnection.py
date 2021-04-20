@@ -63,8 +63,6 @@ except mysql.connector.Error as err:
 
 context = ssl.create_default_context()
 
-version = sys.argv[1]
-rt = sys.argv[2]
 now = datetime.now()
 print("\n\n")
 print(now)
@@ -74,9 +72,12 @@ cursor = database.cursor(buffered=True)
 with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
     # server.set_debuglevel(2)
     server.login(config['mail']['username'], config['mail']['password'])
-    cursor.execute("UPDATE ips SET birdable=false WHERE version=%s", (version,))
+    cursor.execute("UPDATE ips SET birdable=false")  # Yes, we really do want this for all
     for i in sys.stdin:
-        line = i.split()
+        res = json.loads(i)
+        version = res['version']
+        rt = res["server"]
+        line = res['old'].split()
         status = line[0]
         date = int(line[1])
         ip = line[2]

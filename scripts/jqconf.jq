@@ -354,9 +354,6 @@ def parse_bird:
       end
     )
   | del(.all) # Remove the set of lines that we just parsed
-  | select(.type == "BGP") # Ignore protocols other than BGP (like kernel, device, and static)
-  | "\(.status) \(.since) \(.neighbor_address) \(.neighbor_asn) \(.last_error)" # Should be JSON output but we haven't
-    # done that yet.
 ;
 
 def compute_zt_diff:
