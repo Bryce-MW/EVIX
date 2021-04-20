@@ -118,7 +118,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                     if not email:
                         print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
                         continue
-                    server.sendmail("support@evix.org", (email, "peering@evix.org"), email_warning.format(
+                    print("support@evix.org", (email, "peering@evix.org"), email_warning.format(
                         name=session['down'][0]['status']['description'],
                         contact=email,
                         ip=session['ip'],
@@ -142,7 +142,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                 if not email:
                     print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
                     continue
-                server.sendmail("support@evix.org", (email, "peering@evix.org"), email_remove.format(
+                print("support@evix.org", (email, "peering@evix.org"), email_remove.format(
                     name=session['down'][0]['status']['description'],
                     contact=email,
                     ip=session['ip'],
