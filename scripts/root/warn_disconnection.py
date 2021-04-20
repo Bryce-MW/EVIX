@@ -72,7 +72,6 @@ cursor = database.cursor(buffered=True)
 with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
     # server.set_debuglevel(2)
     server.login(config['mail']['username'], config['mail']['password'])
-    cursor.execute("UPDATE ips SET birdable=false")  # Yes, we really do want this for all
     for i in sys.stdin:
         res = json.loads(i)
         version = res['version']

@@ -91,7 +91,7 @@ formats = {
     "Requests":    "Request: {id}, ASN: {asn}, Name: {name}, Email: {contact}, Website: {website}, Location:{tunnel_location}, Type: {tunnel_type}, Needs v4: {ipv4}",
     "Clients":     "Client: {id}, Name: {name}, Website: {website}, Email: {contact}",
     "ASNs":        "ASN: {asn}, Client ID: {client_id}",
-    "IPs":         "IP: {ip}, IPv{version}, ASN: {asn}, Monitor: {monitor}, Provisioned: {provisioned}, Pingable: {pingable}, RS Session: {birdable}",
+    "IPs":         "IP: {ip}, IPv{version}, ASN: {asn}, Monitor: {monitor}, Provisioned: {provisioned}, Pingable: {pingable}, Warnings sent: {birdable}",
     "Connections": "Connection: {id}, Client ID: {client_id}, Type: {type}, POP: {server}, Tunnel ID: {tunnel_id}, Remote IP: {ip}, Port: {additional_args}",
 }
 
