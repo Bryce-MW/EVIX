@@ -8,9 +8,9 @@ jq -r --compact-output '.hosts[] | select(.roles | contains(["rs"])) | {name, ho
     name=$(jq -r '.name' <<<"$line")
     hostname=$(jq -r '.hostname' <<<"$line")
     port=$(jq -r '.ssh_port' <<<"$line")
-    ssh -p -n "$port" "$hostname" birdc show protocols all | tail -n +3 | head -n -1 |
+    ssh -n -p "$port" "$hostname" birdc show protocols all | tail -n +3 | head -n -1 |
       jq --slurp --raw-input --compact-output --var version 4 --var server "$name" '{version: $version, server: $server, status: parse_bird}'
-    ssh -p -n "$port" "$hostname" birdc6 show protocols all | tail -n +3 | head -n -1 |
+    ssh -n -p "$port" "$hostname" birdc6 show protocols all | tail -n +3 | head -n -1 |
       jq --slurp --raw-input --compact-output --var version 6 --var server "$name" '{version: $version, server: $server, status: parse_bird}'
   done #|
   #python3 /evix/scripts/root/warn_disconnection.py 4
