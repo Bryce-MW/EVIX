@@ -47,7 +47,7 @@ with as many details as you can.
 session_template = """
 {RS}:
   IP         - {ip}
-  Down since - {since}
+  Down since - {since} ({days} days)
   Last Error - {error}
 """
 
@@ -128,7 +128,8 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                             RS=i['server'],
                             ip=i['status']['neighbor_address'],
                             since=datetime.fromtimestamp(i['status']['since']),
-                            error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors"
+                            error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors",
+                            days=(now - datetime.fromtimestamp(i['status']['since'])).days
                         ) for i in session['down'])
                     ))
                     print(f"Warned {session['ip']}: {email} {warnings_sent + 1}/3")
@@ -153,7 +154,8 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                         RS=i['server'],
                         ip=i['status']['neighbor_address'],
                         since=datetime.fromtimestamp(i['status']['since']),
-                        error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors"
+                        error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors",
+                        days=(now - datetime.fromtimestamp(i['status']['since'])).days
                     ) for i in session['down'])
                 ))
                 print(f"Removed {session['ip']}: {email} {warnings_sent + 1}/4")
