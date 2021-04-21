@@ -22,6 +22,10 @@ Subject: Your EVIX RS session - {ip}
 
 Hi {name} (AS{asn})!
 
+This is a new email system so let us know if it does
+something weird. Make sure to read the whole email since it
+is different than before.
+
 You currently have a connection with one or more of our route
 servers. We just wanted to remind you that we have two route
 servers. Details below. This is reminder {count}/3.
@@ -57,6 +61,10 @@ BCC: "EVIX Peering" <peering@evix.org>
 Subject: Your EVIX RS session - {ip}
 
 Hi {name} (AS{asn})!
+
+This is a new email system so let us know if it does
+something weird. Make sure to read the whole email since it
+is different than before.
 
 The IP {ip} currently has no sessions with any of our route
 servers. The connection details of our route servers are
@@ -115,14 +123,42 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                 if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7 <= 3:
                     cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
                     email, monitor, asn = cursor.fetchone()
+                    if monitor:
+                        if not email:
+                            print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
+                            continue
+                        server.sendmail("support@evix.org", (email, "peering@evix.org"), email_warning.format(
+                            name=session['down'][0]['status']['description'],
+                            contact=email,
+                            ip=session['ip'],
+                            count=warnings_sent + 1,
+                            asn=asn,
+                            sessions="".join(session_template.format(
+                                RS=i['server'],
+                                ip=i['status']['neighbor_address'],
+                                since=datetime.fromtimestamp(i['status']['since']),
+                                error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors",
+                                days=(now - datetime.fromtimestamp(i['status']['since'])).days
+                            ) for i in session['down'])
+                        ))
+                        print(f"Warned {session['ip']}: {email} {warnings_sent + 1}/3")
+                        cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (weeks, session['ip']))
+            else:
+                cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (0, session['ip']))
+        else:
+            weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7
+            if warnings_sent < weeks:
+                cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
+                email, monitor, asn = cursor.fetchone()
+                if monitor:
                     if not email:
-                        print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
+                        print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
                         continue
-                    print("support@evix.org", (email, "peering@evix.org"), email_warning.format(
+                    server.sendmail("support@evix.org", (email, "peering@evix.org"), email_remove.format(
                         name=session['down'][0]['status']['description'],
                         contact=email,
                         ip=session['ip'],
-                        count=warnings_sent + 1,
+                        remove=remove_template if weeks >= 4 else "",
                         asn=asn,
                         sessions="".join(session_template.format(
                             RS=i['server'],
@@ -132,31 +168,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                             days=(now - datetime.fromtimestamp(i['status']['since'])).days
                         ) for i in session['down'])
                     ))
-                    print(f"Warned {session['ip']}: {email} {warnings_sent + 1}/3")
+                    print(f"Removed {session['ip']}: {email} {warnings_sent + 1}/4")
                     cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (weeks, session['ip']))
-            else:
-                cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (0, session['ip']))
-        else:
-            weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7
-            if warnings_sent < weeks:
-                cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
-                email, monitor, asn = cursor.fetchone()
-                if not email:
-                    print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
-                    continue
-                print("support@evix.org", (email, "peering@evix.org"), email_remove.format(
-                    name=session['down'][0]['status']['description'],
-                    contact=email,
-                    ip=session['ip'],
-                    remove=remove_template if weeks >= 4 else "",
-                    asn=asn,
-                    sessions="".join(session_template.format(
-                        RS=i['server'],
-                        ip=i['status']['neighbor_address'],
-                        since=datetime.fromtimestamp(i['status']['since']),
-                        error=i['status']['last_error'] if 'last_error' in i['status'] else "Bird reports no errors",
-                        days=(now - datetime.fromtimestamp(i['status']['since'])).days
-                    ) for i in session['down'])
-                ))
-                print(f"Removed {session['ip']}: {email} {warnings_sent + 1}/4")
-                cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (weeks, session['ip']))
+                    if weeks >= 4:
+                        cursor.execute("UPDATE ips SET provisioned=%s WHERE ip=%s", (False, session['ip']))
