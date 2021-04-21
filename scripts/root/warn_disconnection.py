@@ -121,8 +121,12 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
         if session['up']:
             if session['down']:
                 if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7 <= 3:
-                    cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
-                    email, monitor, asn = cursor.fetchone()
+                    cursor.execute("SELECT contact,monitor,asns.asn,provisioned FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
+                    email, monitor, asn, provisioned = cursor.fetchone()
+                    if not provisioned:
+                        if not email:
+                            print(f"Error: {session['ip']} is not provisioned. Bird config not updated?")
+                            continue
                     if monitor:
                         if not email:
                             print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
@@ -148,8 +152,12 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
         else:
             weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7
             if warnings_sent < weeks:
-                cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
-                email, monitor, asn = cursor.fetchone()
+                cursor.execute("SELECT contact,monitor,asns.asn,provisioned FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
+                email, monitor, asn, provisioned = cursor.fetchone()
+                if not provisioned:
+                    if not email:
+                        print(f"Error: {session['ip']} is not provisioned. Bird config not updated?")
+                        continue
                 if monitor:
                     if not email:
                         print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
