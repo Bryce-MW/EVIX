@@ -20,7 +20,7 @@ To: "{name}" <{contact}>
 BCC: "EVIX Peering" <peering@evix.org>
 Subject: Your EVIX RS session - {ip}
 
-Hi {name}!
+Hi {name} (AS{asn})!
 
 You currently have a connection with one or more of our route
 servers. We just wanted to remind you that we have two route
@@ -56,7 +56,7 @@ To: "{name}" <{contact}>
 BCC: "EVIX Peering" <peering@evix.org>
 Subject: Your EVIX RS session - {ip}
 
-Hi {name}!
+Hi {name} (AS{asn})!
 
 The IP {ip} currently has no sessions with any of our route
 servers. The connection details of our route servers are
@@ -113,8 +113,8 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
         if session['up']:
             if session['down']:
                 if warnings_sent < (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7 <= 3:
-                    cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
-                    email, monitor = cursor.fetchone()
+                    cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
+                    email, monitor, asn = cursor.fetchone()
                     if not email:
                         print(f"Error: {session['down'][0]['status']['description']}, not sending warning for {session['ip']}")
                         continue
@@ -123,6 +123,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                         contact=email,
                         ip=session['ip'],
                         count=warnings_sent + 1,
+                        asn=asn,
                         sessions="".join(session_template.format(
                             RS=i['server'],
                             ip=i['status']['neighbor_address'],
@@ -137,8 +138,8 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
         else:
             weeks = (now - datetime.fromtimestamp(max(i['status']['since'] for i in session['down']))).days // 7
             if warnings_sent < weeks:
-                cursor.execute("SELECT contact,monitor FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
-                email, monitor = cursor.fetchone()
+                cursor.execute("SELECT contact,monitor,asns.asn FROM clients INNER JOIN asns ON client_id=id INNER JOIN ips ON ips.asn=asns.asn WHERE ip=%s", (session['ip'],))
+                email, monitor, asn = cursor.fetchone()
                 if not email:
                     print(f"Error: {session['down'][0]['status']['description']} has no email, not sending remove for {session['ip']}")
                     continue
@@ -147,6 +148,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                     contact=email,
                     ip=session['ip'],
                     remove=remove_template if weeks >= 4 else "",
+                    asn=asn,
                     sessions="".join(session_template.format(
                         RS=i['server'],
                         ip=i['status']['neighbor_address'],
