@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>EVIX - Get Connected</title>
+    <meta content="Experimental Virtual Internet Exchange - Get Connected" name="description">
+    <meta content="Bryce Wilson" name="author">
+    <link href="main.css" rel="stylesheet">
+    <link href="https://code.cdn.mozilla.net/fonts/fira.css" rel="stylesheet">
+</head>
+<body>
+<div class="head">
+    <div>
+        <h1><a href="index.html">EVIX</a></h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="locations.html">Locations</a></li>
+            <li><a href="get_connected.html">Get Connected</a></li>
+            <li><a href="peers.html">Peers</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+    </nav>
+</div>
+<div class="body">
+    <div class="get_connected_header">
+        <div class="info">
+            <p>Anyone is welcome to join EVIX. to start the process, please review our rules: FAQ and then fill out the
+                contact form below (unless noted, all fields are required):</p>
+            <p>Please note, only local connections are supported at our FRA and VAN POPs. If you wish to connect by a
+                tunnel, please select a pop from the locations list. If you are connecting via a VM interface (such as
+                ones offered by iFog or Free Range Cloud), please select the local connection type!</p>
+            <p>Once your application has been received, it will be evaluated and processed by one of our volunteer
+                staff. When your application has been approved, you will be contacted by email to establish a peering
+                session. Please whitelist 'helpdesk@evix.org' in your mail client to avoid missing these important
+                instructions.</p>
+        </div>
+        <div class="form">
+            <h4>EVIX Peering Request Form (<b>Read the instructions above!</b>)</h4>
+            <form action="/peering-form.php" method="POST">
+                <label for="asn"><b>ASN:</b></label>
+                <input id="asn" name="asn" type="text"/><br/>
+
+                <label for="description"><b>Network Name:</b></label>
+                <input id="description" name="description" type="text"/><br/>
+
+                <label for="asset"><b>IRRDB AS-SET:</b></label>
+                <input id="asset" name="asset" type="text"/><br/>
+
+                <label for="contact"><b>Contact Email:</b></label>
+                <input id="contact" name="contact" type="text"/><br/>
+
+                <label for="website"><b>Website (optional):</b></label>
+                <input id="website" name="website" type="text"/><br/>
+
+                <label for="location"><b>Tunnel Location</b></label>
+                <select id="location" name="location">
+                    <option value="fmt">Fremont</option>
+                    <option value="ams">Netherlands</option>
+                    <option value="nz">New Zealand</option>
+                    <option value="zur">Zurich</option>
+                    <option value="van">Vancouver</option>
+                    <option value="fra">Frankfurt</option>
+                </select><br/>
+
+                <label for="name"><b>Tunnel Type</b></label>
+                <select id="name" name="type">
+                    <option value="openvpn">OpenVPN</option>
+                    <option value="zerotier">ZeroTier</option>
+                    <option value="eoip">EoIP</option>
+                    <option value="vxlan">VXLAN</option>
+                    <option value="custom">Local/Ethernet/Other</option>
+                </select><br/>
+
+                <label for="ipv4"><b>Do you require legacy IPv4?</b></label>
+                <input id="ipv4" name="ipv4" type="checkbox" value="true"/><br/>
+
+                <input type="submit" value="submit"/>
+            </form>
+        </div>
+    </div>
+    <div class="get_connected_body">
+        <p>If you need to contact us directly, please open a ticket by emailing <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a>
+            or by joining us on our Discord <a href="https://discord.gg/dXVpp6d">discord.gg/dXVpp6d</a></p>
+    </div>
+</div>
+</body>
+</html>
