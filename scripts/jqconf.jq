@@ -106,7 +106,7 @@ def ixp_json_format:
         [
           {
             ixp_id: 756,
-            state: (if [.asn.ips[].pingable] | any(. > 0) then "active" else "inactive" end), # Members are considered inactive if none of their sessions are up.
+            state: "active", # This is a long story that will need fixing. Needs to be provisional not operational.
             if_list:
               [
                 .tunnels // [] # Get the list of tunnels if any
