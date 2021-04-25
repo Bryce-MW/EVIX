@@ -1,0 +1,24 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <defs>
+        <linearGradient id="bi-b" x1="0" y1="1" x2="1" y2="0">
+            <stop class="bi-lb" offset="0%"/>
+            <stop class="bi-mag" offset="100%"/>
+        </linearGradient>
+        <linearGradient id="bi" x1="1" y1="0" x2="0" y2="1">
+            <stop class="bi-lb" offset="0%"/>
+            <stop class="bi-mag" offset="100%"/>
+        </linearGradient>
+        <style type="text/css"><![CDATA[
+            .bi-lb {stop-color: #7692ff;}
+            .bi-mag {stop-color: #e60073;}
+            #hover {transition: stroke-width 200ms ease-in-out;}
+            :target {stroke-width: 4}
+        ]]></style>
+    </defs>
+    <path id="hover"
+          fill="url(#bi)"
+          stroke="url(#bi-b)"
+          stroke-width="0"
+          d="M51.6,-70.8C64.6,-61.5,71.5,-43.5,75.1,-25.9C78.8,-8.3,79.3,8.8,75.3,25.6C71.4,42.4,63,58.8,49.7,63.6C36.5,68.4,18.2,61.5,-0.1,61.6C-18.3,61.7,-36.7,68.7,-52.5,64.7C-68.4,60.8,-81.7,45.8,-81.6,30.3C-81.5,14.7,-67.9,-1.5,-60.3,-18C-52.7,-34.5,-51.1,-51.3,-42,-61.9C-33,-72.5,-16.5,-77,1.4,-78.9C19.3,-80.8,38.5,-80.1,51.6,-70.8Z"
+          transform="translate(100 100)"/>
+</svg>
