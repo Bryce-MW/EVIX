@@ -13,6 +13,12 @@
     background-position: left
   }
 }
+:-moz-window-inactive {
+  animation-play-state: paused;
+}
+::selection {
+  background-color: var(--accent-translucent);
+}
 
 :root {
   /* Colors go here */
@@ -20,6 +26,7 @@
   --light: #7692ff;
   --light-font: #ABD2FA;
   --accent: #e60073;
+  --accent-translucent: #e6007377;
 
   --gradient-continuous: linear-gradient(45deg, var(--accent), var(--light), var(--accent), var(--light));
 
@@ -27,6 +34,7 @@
 }
 
 body {
+  margin: 0;
   font-family: "Fira Sans", sans-serif;
   color: var(--dark);
   background-color: var(--light);
@@ -34,6 +42,8 @@ body {
 
 .top {
   .head {
+    flex: 0 1 auto;
+
     width: 100%;
     background-color: var(--dark);
     color: var(--light-font);
@@ -124,5 +134,23 @@ body {
 }
 
 .body {
-  font-size: 1.5rem
+  font-size: 1.5rem;
+}
+
+.hero {
+  margin: auto;
+  padding-top: 2em;
+  width: max-content;
+
+  p {
+    font-size: 10rem;
+    line-height: 0.9;
+    font-weight: 900;
+    margin: 0;
+    width: max-content;
+
+    &:first-letter {
+      color: var(--accent);
+    }
+  }
 }
