@@ -85,9 +85,11 @@ body {
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      flex-wrap: wrap;
 
       li {
         padding: 1em;
+        text-align: right;
 
         a {
           box-shadow: 0 0 0 0 var(--dark),
@@ -142,15 +144,43 @@ body {
   padding-top: 2em;
   width: max-content;
 
-  p {
-    font-size: 10rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-items: stretch;
+  align-items: stretch;
+
+  p, label {
+    font-size: min(10rem, 15vw);
     line-height: 0.9;
     font-weight: 900;
     margin: 0;
     width: max-content;
+  }
 
-    &:first-letter {
-      color: var(--accent);
+  label {
+    grid-column: 1;
+    color: var(--accent);
+    text-align: center;
+    justify-self: center;
+    cursor: pointer;
+  }
+
+  div {
+    overflow: hidden;
+    width: 102%;
+    padding-left: 1%;
+    margin-left: -1%;
+    margin-top: -2%;
+    height: 130%;
+
+    p {
+      margin-left: -110%;
+      margin-top: 2%;
+      transition: margin-left 1s ease-in-out;
     }
+  }
+
+  input:checked + div p {
+    margin-left: 0;
   }
 }
