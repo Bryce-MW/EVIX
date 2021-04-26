@@ -1,7 +1,4 @@
 #! /bin/bash
 
-mkdir -p /var/www/evix/new
-rm -rf /var/www/evix/new/*
-cp -r /evix/run/website/* /var/www/evix/new/
-cd /var/www/evix/new || exit
-sass main.scss main.css
+sass /evix/run/website/main.scss /evix/run/website/main.css
+rsync -r /evix/run/website /var/www/evix/new
