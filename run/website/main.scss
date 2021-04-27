@@ -55,27 +55,50 @@ body {
     align-items: center;
 
     > a {
+      position: relative;
+      display: flow-root;
       width: max-content;
-      padding: 1em;
-      display: block;
 
-      background: url("static/images/icon-bg.svg") center no-repeat;
-      background-size: 100% 100%;
+      font-size: 4rem;
+      padding: 0.5em;
+      margin: 0.3em 0.2em 0.3em 0.4em;
 
       &:hover, &:focus, &:focus-visible {
-        background-image: url("static/images/icon-bg.svg#hover");
         outline: none;
+
+        path {
+          stroke-width: 4
+        }
       }
 
-      h1 {
-        font-size: 4rem;
-        font-weight: 900;
-        letter-spacing: 0.1em;
+      svg {
+        position: absolute;
+
+        width: calc(100% + 0.5em);
+        height: calc(100% + 0.5em);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+
+        stop {
+          &:first-of-type {
+            stop-color: var(--light);
+          }
+          &:last-of-type {
+            stop-color: var(--accent);
+          }
+        }
+        path {
+          transition: stroke-width 200ms ease-in-out;
+        }
+      }
+
+      span {
+        position: relative;
 
         color: var(--dark);
-
-        margin: 0.3em 0.2em 0.3em 0.4em;
-        width: max-content;
+        font-weight: 900;
+        letter-spacing: 0.1em;
       }
     }
 
@@ -137,6 +160,7 @@ body {
 
 .body {
   font-size: 1.5rem;
+  margin: 2em;
 }
 
 .hero {
