@@ -59,7 +59,8 @@ body {
       display: flow-root;
       width: max-content;
 
-      font-size: 4rem;
+      font-size: clamp(1rem, 4rem, 15vw);
+      text-decoration: none;
       padding: 0.5em;
       margin: 0.3em 0.2em 0.3em 0.4em;
 
@@ -111,7 +112,8 @@ body {
       flex-wrap: wrap;
 
       li {
-        padding: 1em;
+        padding: clamp(0.2em, 1em, 2vw);
+        font-size: clamp(0.5rem, 100%, 5vw);
         text-align: right;
 
         a {
@@ -119,15 +121,18 @@ body {
           0 0 0 0 var(--accent);
           border-radius: var(--corner-round);
 
-          transition: color 100ms ease-in-out,
-          box-shadow 200ms ease-in-out;
-
           -webkit-background-clip: text;
           //noinspection CssInvalidPropertyValue
           background-clip: text;
           background-size: 400%;
           background-image: var(--gradient-continuous);
           animation: gradient-animation 1s infinite linear normal paused;
+
+          transition: color 100ms ease-in-out,
+          box-shadow 200ms ease-in-out;
+
+          color: inherit;
+          text-decoration: none;
 
           &:hover {
             color: transparent;
@@ -144,11 +149,6 @@ body {
           }
         }
       }
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
     }
   }
 
