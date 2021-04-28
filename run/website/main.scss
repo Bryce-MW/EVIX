@@ -32,8 +32,13 @@
 
   --corner-round: 0.2em;
 }
-
+html, body {
+  height: 100%;
+}
 body {
+  display: flex;
+  flex-direction: column;
+
   margin: 0;
   font-family: "Fira Sans", sans-serif;
   color: var(--dark);
@@ -59,7 +64,7 @@ body {
       display: flow-root;
       width: max-content;
 
-      font-size: clamp(1rem, 4rem, 15vw);
+      font-size: clamp(1rem, 4rem, 14vw);
       text-decoration: none;
       padding: 0.5em;
       margin: 0.3em 0.2em 0.3em 0.4em;
@@ -157,24 +162,25 @@ body {
     width: 100%;
   }
 }
-
 .body {
   font-size: 1.5rem;
-  margin: 2em;
+  margin: clamp(5%, 2em, 10vw);
+  height: 100%;
 }
+
 
 .hero {
   margin: auto;
-  padding-top: 2em;
   width: max-content;
 
   display: grid;
   grid-template-columns: auto auto;
   justify-items: stretch;
-  align-items: stretch;
+  align-items: center;
+  align-content: center;
 
   p, label {
-    font-size: min(10rem, 15vw);
+    font-size: min(10rem, 13vw);
     line-height: 0.9;
     font-weight: 900;
     margin: 0;
@@ -206,5 +212,17 @@ body {
 
   input:checked + div p {
     margin-left: 0;
+  }
+}
+
+.about {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2em;
+
+  .info, .thanks {
+    flex: 1 1 40ch;
+    max-width: 70ch;
   }
 }
