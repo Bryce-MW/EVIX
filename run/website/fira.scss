@@ -1,0 +1,228 @@
+/*
+    This is a local copy of https://code.cdn.mozilla.net/fonts/fira.css. It is unlikely that will ever change so using
+    a local copy for speed is a good idea. We still fetch the font remotely since that could (unlikely) change and also
+    I just don't really want to host a font. It's not a huge size but still. I also feel weird about putting someone
+    else's font in our repo. I could use a git submodule but then that just adds a ton of sources that we don't need.
+ */
+
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Hair.eot');
+    src: local('Fira Sans Hair'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Hair.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Hair.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Hair.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-HairItalic.eot');
+    src: local('Fira Sans Hair Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-HairItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-HairItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-HairItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-UltraLight.eot');
+    src: local('Fira Sans UltraLight'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-UltraLight.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-UltraLight.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-UltraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-UltraLightItalic.eot');
+    src: local('Fira Sans UltraLight Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-UltraLightItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-UltraLightItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-UltraLightItalic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Light.eot');
+    src: local('Fira Sans Light'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Light.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Light.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-LightItalic.eot');
+    src: local('Fira Sans Light Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-LightItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-LightItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Regular.eot');
+    src: local('Fira Sans Regular'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Regular.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Regular.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Italic.eot');
+    src: local('Fira Sans Regular Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Italic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Italic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Medium.eot');
+    src: local('Fira Sans Medium'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Medium.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Medium.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-MediumItalic.eot');
+    src: local('Fira Sans Medium Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-MediumItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-MediumItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-SemiBold.eot');
+    src: local('Fira Sans SemiBold'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-SemiBold.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-SemiBold.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-SemiBoldItalic.eot');
+    src: local('Fira Sans SemiBold Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-SemiBoldItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-SemiBoldItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Bold.eot');
+    src: local('Fira Sans Bold'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Bold.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Bold.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-BoldItalic.eot');
+    src: local('Fira Sans Bold Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-BoldItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-BoldItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-ExtraBold.eot');
+    src: local('Fira Sans ExtraBold'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-ExtraBold.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-ExtraBold.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-ExtraBoldItalic.eot');
+    src: local('Fira Sans ExtraBold Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-ExtraBoldItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-ExtraBoldItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Heavy.eot');
+    src: local('Fira Sans Heavy'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-Heavy.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-Heavy.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-Heavy.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Sans';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-HeavyItalic.eot');
+    src: local('Fira Sans Heavy Italic'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraSans-HeavyItalic.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraSans-HeavyItalic.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraSans-HeavyItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+
+@font-face{
+    font-family: 'Fira Mono';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraMono-Regular.eot');
+    src: local('Fira Mono'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraMono-Regular.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraMono-Regular.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'Fira Mono';
+    src: url('https://code.cdn.mozilla.net/fonts/eot/FiraMono-Bold.eot');
+    src: local('Fira Mono Bold'),
+    url('https://code.cdn.mozilla.net/fonts/eot/FiraMono-Bold.eot') format('embedded-opentype'),
+    url('https://code.cdn.mozilla.net/fonts/woff/FiraMono-Bold.woff') format('woff'),
+    url('https://code.cdn.mozilla.net/fonts/ttf/FiraMono-Bold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
