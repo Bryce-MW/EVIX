@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="1095pt" height="1095pt" viewBox="0 0 200 200"
+ preserveAspectRatio="xMidYMid meet">
+    <path d="M51.6,-70.8C64.6,-61.5,71.5,-43.5,75.1,-25.9C78.8,-8.3,79.3,8.8,75.3,25.6C71.4,42.4,63,58.8,49.7,63.6C36.5,68.4,18.2,61.5,-0.1,61.6C-18.3,61.7,-36.7,68.7,-52.5,64.7C-68.4,60.8,-81.7,45.8,-81.6,30.3C-81.5,14.7,-67.9,-1.5,-60.3,-18C-52.7,-34.5,-51.1,-51.3,-42,-61.9C-33,-72.5,-16.5,-77,1.4,-78.9C19.3,-80.8,38.5,-80.1,51.6,-70.8Z"
+          fill="#000000"
+          id="hover"
+          stroke-width="0"
+          transform="translate(100 100)"/>
+</svg>
