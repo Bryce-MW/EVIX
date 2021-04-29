@@ -11,7 +11,7 @@ host=$(/evix/scripts/hostname.sh)
 bridge="br10"
 
 is_ts=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="ts")' /evix/secret-config.json)
-is_rs=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="rs")'/evix/secret-config.json)
+is_rs=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="rs")' /evix/secret-config.json)
 is_admin=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="admin")' /evix/secret-config.json)
 
 # Let's be careful
