@@ -403,7 +403,6 @@ def peer_pairs:
         # IP version. Ignore weird things
       |= (. // [] ) + [$item]
     )
-  }
 ;
 
 def compute_zt_diff:
