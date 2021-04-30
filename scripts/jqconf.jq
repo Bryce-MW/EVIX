@@ -375,6 +375,37 @@ def determine_down:
   }
 ;
 
+def peer_pairs:
+  reduce
+    .[] # We slurped up entries to get this
+  as
+    $item
+    (
+      {}; # Start with an empty object
+      .[$item.status.neighbor_address // empty] # Get the existing entry for an address. Ignore protocols with no
+        # address (like device protocols). I probably should select BGP protocols first but it's not a big deal
+      |= (. // []) + [$item] # Update that entry by appending to the list. Or start a new list if there was no entry
+    )
+  | to_entries # We want key value pairs since we are done with the grouping
+  | map({
+    ip: .key, # Since we no longer are using a dictionary, we need the IP
+    up: (.value | any(.status.status == "up")), # An IP will be considered up if any RS is up
+    sessions: .value # Include all pairs this time
+  })
+  | reduce
+    .[] # Go through each item
+  as
+    $item
+    (
+      {}; # Start with an empty object
+      .[$item.sessions[0].status.neighbor_asn // empty | tostring]
+        .[if $item.sessions[0] // empty | contains(":") then "v6" else "v4" end] # Get the existing entry for an ASN and
+        # IP version. Ignore weird things
+      |= (. // []) + [$item]
+    )
+  }
+;
+
 def compute_zt_diff:
   [ # Get all the info from the database and just thee keys from the API
     .[0],
