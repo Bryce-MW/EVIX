@@ -35,7 +35,7 @@ mkdir -p "$STATE_FILE_DIR"
 #
 # Are all our services running?
 #
-services=$(/evix/scripts/get-val.sh "$host" services)
+services=$(jq -r --arg host "$host" '.hosts[$host].services | join(" ")' /evix/secret-config.json)
 for service in $services; do
   state_file="$STATE_FILE_DIR/$service.not.running"
   if ! systemctl is-active --quiet "$service"; then
