@@ -399,7 +399,7 @@ def peer_pairs:
     (
       {}; # Start with an empty object
       .[$item.sessions[0].status.neighbor_asn // empty | tostring]
-        [if $item.sessions[0].status.neighbor_address // empty | contains(":") then "v6" else "v4" end] # Get the existing entry for an ASN and
+        [if ($item.sessions[0].version // empty) == 6 then "v6" else "v4" end] # Get the existing entry for an ASN and
         # IP version. Ignore weird things
       |= (. // [] ) + [$item]
     )
