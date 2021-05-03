@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-CA">
 <head>
-    <link rel="preconnect" href="https://code.cdn.mozilla.net/" crossorigin>
-    <link rel="dns-prefetch" href="https://code.cdn.mozilla.net/">
+    <link crossorigin href="https://code.cdn.mozilla.net/" rel="preconnect">
+    <link href="https://code.cdn.mozilla.net/" rel="dns-prefetch">
 
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
@@ -88,13 +88,54 @@
 <div class="body">
     <div class="about">
         <div class="info">
-            <h1>Mission Statement</h1>
-            <h2>These are the core objectives of EVIX:</h2>
+            <h1>What is EVIX anyway?</h1>
+            <p>
+                As you probably saw on our main page, EVIX stands for the Experimental Virtual Internet Exchange. For
+                those who are not familiar with how the internet works, every computer, whether that be your phone or
+                one of the many servers used by Google, must know how to navigate the large number of connections
+                running all over the Earth. Your phone must know how to get to Google and Google must know how to send
+                the reply back to your phone. Since there are many internet service providers in the world, it would be
+                impossible for them all to connect directly to each other. So we have a protocol called BGP that your
+                ISP to tell the other ISPs that it connects to that it knows how to get to your phone. All of those ISPs
+                then forward that message to all of the ISPs that it is connected to until the whole world knows the
+                route.
+            </p>
+            <p>
+                But if a connection has to go through many ISPs, it is going to take longer. So having direct
+                connections to more ISPs is usually a good thing. Many ISPs of the same size may connect to each other
+                for free since they both receive benefit by doing that. But once you have more than a few ISPs, the
+                number of direct connections grows quickly. Each new ISP would have to connect to every existing one. We
+                have almost 200 member so each new member would have to connect to 200 other members!
+            </p>
+            <p>
+                As you can probably guess, there is a better way. That's with an internet exchange. An internet exchange
+                allows many ISPs or other networks in a close by area to make a single connection to the internet
+                exchange which then acts as if they were directly connected to all of the other members.
+            </p>
+            <p>
+                But traditional IXs can be very expensive and are generally only available to those who store servers in
+                the same facility. This is reasonable for businesses but for hobbyists like the members of EVIX, it is
+                very expensive. That's why we created EVIX, to support the network engineers of the future. EVIX allows
+                our members to learn how real internet exchanges work with almost no cost. The skills that they learn
+                can be transferred directly to future jobs and experiences. It's been an amazing learning opportunity
+                for those of us running EVIX as well since it has allowed us to learn what it is like to develop in an
+                environment where hundreds of people are counting on our work and have special questions or issues that
+                we never thought of.
+            </p>
+
+            <h1>Our Goals</h1>
             <ul>
-                <li>Provide a 0 cost, low-barrier Internet Exchange Point for users holding public resources to
-                    experiment with BGP and routing protocols.
+                <li>
+                    We want to provide a low barrier to entry opportunity for hobbyists and the like to get experience
+                    with as close to a real internet exchange as we can provide.
                 </li>
-                <li>Facilitate tunnel-based peering in a more automated manner.</li>
+                <li>
+                    It is also important that we automate the entire process as much as possible. For the sake of learning,
+                    reducing the workload on our volunteers, and supporting other internet exchanges in their own automation.
+                </li>
+                <li>
+
+                </li>
             </ul>
 
             <h1>What is an Internet Exchange?</h1>
@@ -106,7 +147,7 @@
                 switches. It has the advantage of allowing remote users with public resources to peer in a more
                 automated manner.</p>
             <p>Note that while traditional Internet Exchanges generally decrease latency and increase bandwidth, EVIX
-                makes no such guarentee. In fact, EVIX may potentially increase latency (for example if 2 people on the
+                makes no such guarantee. In fact, EVIX may potentially increase latency (for example if 2 people on the
                 East Coast need to send traffic to each other via our West Coast switch).</p>
             <p>EVIX's primary purpose is for research and education, and should not be expected to increase Internet
                 performance.</p>

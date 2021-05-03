@@ -163,6 +163,11 @@ body {
   margin: clamp(5%, 2em, 10vw);
   height: 100%;
 }
+.flex-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 
 .hero {
@@ -213,12 +218,14 @@ body {
 
 .about {
   display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
+  justify-content: space-around;
+  --modifier: calc(70ch - 100%);
   gap: 2em;
 
-  .info, .thanks {
-    flex: 1 1 40ch;
+  > div {
+    flex-grow: 1;
+    flex-basis: calc(var(--modifier) * 999);
     max-width: 70ch;
   }
 }
