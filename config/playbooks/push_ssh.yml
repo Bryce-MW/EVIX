@@ -3,6 +3,6 @@
     - name: push ssh key
       authorized_key:
         user: root
-        key: "{{ item }}"
         state: present
-      with_lines: cat /evix/config/keys.txt
+        key: "{{ lookup('file', '/evix/config/keys.txt') }}"
+        exclusive: yes
