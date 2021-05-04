@@ -92,20 +92,21 @@
             <p>
                 As you probably saw on our main page, EVIX stands for the Experimental Virtual Internet Exchange. For
                 those who are not familiar with how the internet works, every computer, whether that be your phone or
-                one of the many servers used by Google, must know how to navigate the large number of connections
-                running all over the Earth. Your phone must know how to get to Google and Google must know how to send
-                the reply back to your phone. Since there are many internet service providers in the world, it would be
-                impossible for them all to connect directly to each other. So we have a protocol called BGP that your
-                ISP to tell the other ISPs that it connects to that it knows how to get to your phone. All of those ISPs
-                then forward that message to all of the ISPs that it is connected to until the whole world knows the
-                route.
+                one of the many servers used by <a href="https://www.google.ca/about/datacenters/">Google</a>, must know
+                how to navigate the large number of connections running all over the Earth. Your phone must know how to
+                get to Google and Google must know how to send the reply back to your phone. Since there are <a
+                href="https://isp.today/">many internet service providers</a> in the world, it would be impossible for
+                them all to connect directly to each other. So we have a protocol called BGP that your ISP to tell the
+                other ISPs that it connects to that it knows how to get to your phone. All of those ISPs then forward
+                that message to all of the ISPs that it is connected to until the whole world knows the route.
             </p>
             <p>
                 But if a connection has to go through many ISPs, it is going to take longer. So having direct
-                connections to more ISPs is usually a good thing. Many ISPs of the same size may connect to each other
-                for free since they both receive benefit by doing that. But once you have more than a few ISPs, the
-                number of direct connections grows quickly. Each new ISP would have to connect to every existing one. We
-                have almost 200 member so each new member would have to connect to 200 other members!
+                connections to more ISPs is usually a good thing. Many ISPs of the same size may <a
+                href="https://www.thousandeyes.com/learning/techtorials/isp-peering">connect to each other for free</a>
+                since they both receive benefit by doing that. But once you have more than a few ISPs, the number of
+                direct connections grows quickly. Each new ISP would have to connect to every existing one. We have
+                almost 200 member so each new member would have to connect to 200 other members!
             </p>
             <p>
                 As you can probably guess, there is a better way. That's with an internet exchange. An internet exchange
@@ -114,13 +115,13 @@
             </p>
             <p>
                 But traditional IXs can be very expensive and are generally only available to those who store servers in
-                the same facility. This is reasonable for businesses but for hobbyists like the members of EVIX, it is
-                very expensive. That's why we created EVIX, to support the network engineers of the future. EVIX allows
-                our members to learn how real internet exchanges work with almost no cost. The skills that they learn
-                can be transferred directly to future jobs and experiences. It's been an amazing learning opportunity
-                for those of us running EVIX as well since it has allowed us to learn what it is like to develop in an
-                environment where hundreds of people are counting on our work and have special questions or issues that
-                we never thought of.
+                the same facility. This is reasonable for businesses. For hobbyists like the members of EVIX, it is
+                prohibitively expensive. That's why we created EVIX, to support the network engineers of the future.
+                EVIX allows our members to learn how real internet exchanges work with almost no cost. The skills that
+                they learn can be transferred directly to future jobs and experiences. It's been an amazing learning
+                opportunity for those of us running EVIX as well since it has allowed us to learn what it is like to
+                develop in an environment where hundreds of people are counting on our work and have special questions
+                or issues that we never thought of.
             </p>
 
             <h1>Our Goals</h1>
@@ -130,67 +131,184 @@
                     with as close to a real internet exchange as we can provide.
                 </li>
                 <li>
-                    It is also important that we automate the entire process as much as possible. For the sake of learning,
-                    reducing the workload on our volunteers, and supporting other internet exchanges in their own automation.
-                </li>
-                <li>
-
+                    It is also important that we automate the entire process as much as possible. For the sake of
+                    learning, reducing the workload on our volunteers, and supporting other internet exchanges in their
+                    own automation.
                 </li>
             </ul>
 
-            <h1>What is an Internet Exchange?</h1>
-            <p>An IX (Internet Exchange) allows networks to interconnect on an open-access ethernet fabric -- providing
-                low-latency, high-bandwidth, cost-effectively, in a locale.</p>
 
-            <h1>What is a Virtual Internet Exchange</h1>
-            <p>A Virtual Internet Exchange simulates a real Internet Exchange Point using tunnels and virtualized
-                switches. It has the advantage of allowing remote users with public resources to peer in a more
-                automated manner.</p>
-            <p>Note that while traditional Internet Exchanges generally decrease latency and increase bandwidth, EVIX
-                makes no such guarantee. In fact, EVIX may potentially increase latency (for example if 2 people on the
-                East Coast need to send traffic to each other via our West Coast switch).</p>
-            <p>EVIX's primary purpose is for research and education, and should not be expected to increase Internet
-                performance.</p>
+            <h1>Supported Connection Types</h1>
+            <p>
+                Because internet exchanges allow each member to determine their own policy with all of the other
+                networks connected to the exchange, it is required that we use connection types that support the
+                tunneling of packets on layer 2 of the OSI model. This is the layer that Ethernet and MAC addresses work
+                at. Importantly, this means that the Generic Routing Encapsulation (GRE) tunneling protocol is not
+                supported since it is only able to tunnel layer 3 packets. There is an extension called GRE-TAP which
+                can transport layer 2 packets but it has inconsistent implementations which often lead to unresolvable
+                issues. For that reason, we do not support it.
+            </p>
+            <ul>
+                <li>Virtual Extensible LAN (VXLAN)</li>
+                <li>Ethernet over IP (EoIP)</li>
+                <li>OpenVPN</li>
+                <li>ZeroTier</li>
+                <li>Local Ethernet</li>
+                <li>Custom Layer 2 Transit</li>
+            </ul>
+            <p>
+                We are open to trying other protocols that work on layer 2 as well. Let us know in your ticket.
+            </p>
 
-            <h1>How is traffic exchanged?</h1>
-            <p>EVIX uses OpenVPN, EoIP, ZeroTier or VXLAN tunnels to establish layer 2 connectivity and exchange IP and
-                IPv6 data. As with any Internet Exchange peers use BGP to send routes to each other.</p>
-
-            <h1>Where is EVIX?</h1>
-            <p>Right now we have three POPs; our primary switch is in Fremont, California and we have extension switches
-                in the Netherlands and New Zealand. We are planning additional sites to further reduce latency.</p>
-            <p>PeeringDB: peeringdb.com/ix/2274</p>
-
-            <h1>How much does it cost?</h1>
-            <p>Participating in EVIX is free, although we do appreciate any donations to keep the infrastructure
-                running.</p>
-
-            <h1>How do I join?</h1>
-            <p>Anyone who holds public resources (ASN and IPv4/IPv6) is free to join EVIX to gain experience with BGP
-                and routing. To get started first fill out the peering request form on our contact page</p>
+            <h1>Technologies Used</h1>
+            <ul>
+                <li>
+                    This website was written by hand with HTML5 and SCSS and is served with OpenLiteSped. Jinja is used
+                    for templating.
+                </li>
+                <li>All of our servers run on the Ubuntu Server distribution of Linux.</li>
+                <li>Our automation scripts are primarily written with Bash, JQ, Python, and PHP.</li>
+                <li>We use a MySQL database for our peer information and monitoring.</li>
+                <li>Monitoring is done with LibreNMS and SmokePing</li>
+                <li>
+                    Git is used for managing script and static config changes. Our repository is stored on a GitLab
+                    server hosted by one of our admins. We have a mirror of our repository <a
+                    href="https://github.com/Bryce-MW/EVIX">on GitHub</a> so that we can share our work with others. We
+                    do accept pull requests and issues on that repository so if you have ideas, let us know!
+                </li>
+                <li>Deployment of new scripts and configuration is done with Ansible.</li>
+            </ul>
         </div>
         <div class="thanks">
-            <h1>Who are the network operators?</h1>
-            <ul>
-                <li>Christopher Munz-Michielin - Technical Operations</li>
-                <li>Bryce Wilson - Technical Operations & Public Relations</li>
-                <li>Michelle Goossens - Technical Operations</li>
-            </ul>
+            <h1>Volunteers</h1>
+            <div class="dual-row">
+                <span>AirGapped</span>
+                <ul>
+                    <li>Technical Operations</li>
+                </ul>
+
+                <span>Alex</span>
+                <ul>
+                    <li>Technical Operations</li>
+                    <li>Software Development</li>
+                </ul>
+
+                <span><a href="https://brycemw.ca">Bryce Wilson</a></span>
+                <ul>
+                    <li>Technical Operations</li>
+                    <li>Public Relations</li>
+                    <li>Software Development</li>
+                    <li>Leadership</li>
+                </ul>
+
+                <span>Christopher Munz-Michielin</span>
+                <ul>
+                    <li>Technical Operations</li>
+                    <li>Software Development</li>
+                    <li>
+                        Donation and management of the
+                        <!--suppress HtmlUnknownAnchorTarget -->
+                        <a href="locations.html#fmt">FMT</a>,
+                        <!--suppress HtmlUnknownAnchorTarget -->
+                        <a href="locations.html#van">VAN</a>, and
+                        <!--suppress HtmlUnknownAnchorTarget -->
+                        <a href="locations.html#ams">AMS</a> POPs
+                    </li>
+                </ul>
+
+                <span>Fognet</span>
+                <ul>
+                    <li>Technical Operations</li>
+                    <li>Donation and management of the
+                        <!--suppress HtmlUnknownAnchorTarget -->
+                        <a href="locations.html#fra">FRA</a> and
+                        <!--suppress HtmlUnknownAnchorTarget -->
+                        <a href="locations.html#zur">ZUR</a> POPs
+                    </li>
+                </ul>
+
+                <span>Gabriel</span>
+                <ul>
+                    <li>Technical Operations</li>
+                    <li>Software Development</li>
+                </ul>
+
+                <span>Marc SN</span>
+                <ul>
+                    <li>Technical Operations</li>
+                </ul>
+
+                <span>Michelle Goossens</span>
+                <ul>
+                    <li>Technical Operations</li>
+                </ul>
+
+                <span>Nate</span>
+                <ul>
+                    <li>Technical Operations</li>
+                </ul>
+
+                <span>Ross Tajvar</span>
+                <ul>
+                    <li>Technical Operations</li>
+                    <li>Software Development</li>
+                    <li>Linux Administration and Security</li>
+                </ul>
+
+                <span>TacticalGazelle</span>
+                <ul>
+                    <li>Technical Operations</li>
+                </ul>
+
+                <span>Vox</span>
+                <ul>
+                    <li>Technical Operations</li>
+                </ul>
+            </div>
 
             <h1>Special Thanks</h1>
             <ul>
-                <li>Free Range Cloud / 10VPN Hosting for a donation of a VPS in Fremont as well as IPv6 space for the
-                    peering LAN.
+                <li>
+                    <a href="https://freerangecloud.com">Free Range Cloud</a> / <a href="https://10vpn.net">10VPN
+                    Hosting</a> for donation of a VPS in Fremont and Vancouver and IPv6 space for the peering LAN.
+                    They also sponsored our ASNs and IPv4 space and offer VPSs directly connected to the exchange.
                 </li>
-                <li>CIRALabs for the excellent IXP-Website template which is used as a base for this site.</li>
-                <li>iFog Gmbh for a donation of VMs in Frankfurt and Zurich.</li>
+                <li>
+                    <a href="https://ifog.ch/en">iFog Gmbh</a> for donation of VMs in Frankfurt and Zurich.
+                </li>
             </ul>
 
             <h1>Github</h1>
+            <p>
+                All of our code is hosted on <a href="https://github.com/Bryce-MW/EVIX">GitHub</a> for anyone to use by
+                Bryce Wilson. The code is not meant to be a cookie-cutter solution at the moment so there is a lot of
+                documentation that is lacking and other config that is not integrated into the repository at the moment.
+                It is more meant to be used as a reference for those who have come across similar issues to us. For
+                example, we have a few <a href="https://github.com/Bryce-MW/EVIX/blob/5ca3b91fb44ed16d8cce2c2d864eb34fcd708a40/scripts/root/expanded_bird_status.sh">JQ scripts</a> for parsing the output of the Bird BGP Daemon.
+            </p>
+            <p>
+                While we are happy to share snippets of our code, we ask that you do not copy our code in its entirety.
+                Essentially, please do not outright copy our website design or text or utilize all of our scripts
+                together as a whole. But in general, we are happy to see our code used by others. If in doubt, send us
+                an email and we will be happy to chat. We can also give you some tips or help you when something is not
+                properly explained.
+            </p>
 
             <h1>Donate</h1>
+            <p>
+                At one point, we were accepting donations by PayPal. We are looking into overhauling the donation system
+                but this has not been done yet. For now, let us know by email if you wish to donate and we can help you
+                out with that. We also greatly accept donations of hardware, software, rack space, transit, and sometimes
+                VMs for new POPs if it is in an area where we have little presence. We would currently be open to a POP
+                on the east coast of Canada or the USA, Asia, Africa, or South America. If you have another idea for a
+                POP location or have another donation idea, send us an email and let us know.
+            </p>
 
             <h1>Contact</h1>
+            <p>
+                You may submit a peering request on our <a href="get_connected.html">get connected</a> page. Otherwise,
+                you may <a href="mailto:helpdesk@evix.org">email us</a>.
+            </p>
         </div>
     </div>
 </div>
