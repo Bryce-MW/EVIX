@@ -222,6 +222,7 @@ body {
   justify-content: space-around;
   --modifier: calc(70ch - 100%);
   gap: 2em;
+  margin-bottom: clamp(5%, 2em, 10vw);
 
   > div {
     flex-grow: 1;
