@@ -30,6 +30,7 @@
   --corner-round: 0.2em;
 
   --bg: var(--light);
+  font-size: min(1em, 5vw);
 }
 html, body {
   height: 100%;
@@ -74,6 +75,9 @@ a {
     box-shadow: 0 0 0 0.4em var(--bg),
     0 0 0 0.7em var(--accent);
   }
+}
+ul {
+  padding-left: 1.5em;
 }
 
 .top {
@@ -287,5 +291,20 @@ a {
         margin: 0.5em 0;
       }
     }
+  }
+}
+
+.locations {
+  max-width: 70ch;
+  margin: auto;
+  padding-bottom: clamp(5%, 2em, 10vw);
+
+  img {
+    width: calc(100% - min(1em, 5vw - 1em) * 2);
+    padding: 1em;
+    border-radius: calc(var(--corner-round) * 2);
+    border: 0.3em solid var(--accent);
+    background: var(--light-font);
+    margin: min(1em, 5vw - 1em);
   }
 }
