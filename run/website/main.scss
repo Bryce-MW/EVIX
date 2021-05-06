@@ -295,16 +295,46 @@ ul {
 }
 
 .locations {
-  max-width: 70ch;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, min(100%, 70ch));
+  justify-content: center;
+  gap: 2em;
+
+  > div {
+    width: min(70ch, 100%);
+  }
+
   margin: auto;
   padding-bottom: clamp(5%, 2em, 10vw);
 
-  img {
-    width: calc(100% - min(1em, 5vw - 1em) * 2);
-    padding: 1em;
-    border-radius: calc(var(--corner-round) * 2);
-    border: 0.3em solid var(--accent);
-    background: var(--light-font);
-    margin: min(1em, 5vw - 1em);
+  div {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 4;
+    gap: 0.2em;
+
+    h1 {
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    img {
+      width: calc(100% - max(0ch, calc((1 / 20) * 100% + 1ch - (5ch / 2))) * 2);
+      /* 0ch at 50ch and 1ch at 70ch. 1ch / 20ch = 1/20, b = 1ch - 5ch/2 */
+      padding: max(0.2em, calc((1 / 20) * 100% + 1ch - (5ch / 2)));
+      border-radius: calc(var(--corner-round) * 2);
+      border: 0.3em solid var(--accent);
+      background: var(--light-font);
+      /* 0ch at 50ch and 1ch at 70ch. 1ch / 20ch = 1/20, b = 1ch - 5ch/2 */
+      margin: max(0ch, calc((1 / 20) * 100% + 1ch - (5ch / 2)));
+    }
   }
 }
