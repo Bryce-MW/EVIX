@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-CA">
 <head>
-    <link rel="preconnect" href="https://code.cdn.mozilla.net/" crossorigin>
-    <link rel="dns-prefetch" href="https://code.cdn.mozilla.net/">
+    <link crossorigin href="https://code.cdn.mozilla.net/" rel="preconnect">
+    <link href="https://code.cdn.mozilla.net/" rel="dns-prefetch">
 
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
@@ -88,35 +88,56 @@
 <div class="body">
     <div class="get_connected_header">
         <div class="info">
-            <p>Anyone is welcome to join EVIX. to start the process, please review our rules: FAQ and then fill out the
-                contact form below (unless noted, all fields are required):</p>
-            <p>Please note, only local connections are supported at our FRA and VAN POPs. If you wish to connect by a
-                tunnel, please select a pop from the locations list. If you are connecting via a VM interface (such as
-                ones offered by iFog or Free Range Cloud), please select the local connection type!</p>
-            <p>Once your application has been received, it will be evaluated and processed by one of our volunteer
-                staff. When your application has been approved, you will be contacted by email to establish a peering
-                session. Please whitelist 'helpdesk@evix.org' in your mail client to avoid missing these important
-                instructions.</p>
+            <h1>Instructions for Connecting</h1>
+            <p>
+                Hi! Thanks for your interest in EVIX. Anyone is welcome to join but please read the rules below to make
+                everyone's lives easier.
+            </p>
+            <p>
+                As EVIX is a full internet exchange, you must have a non-reserved ASN assigned to you by an RIR. If you
+                don't have an ASN yet. We recommend experimenting with DN42 until you are sure that you want to go the
+                route of registering an ASN. Also, due to the limited amount of IPv4 that we have available. Please only
+                request it if you are planning on announcing IPv4 space. You can always get an IPv4 address later if
+                needed. We will check if you have IPv4 space before granting an IPv4 address but you can always let us
+                know if you have a special situation. We are all here to learn so we are happy to accommodate.
+            </p>
+            <p>
+                Please note, <b>only local connections are supported at our FRA and VAN POPs</b>. If you wish to connect
+                by a tunnel, please select a pop from the locations list. If you are connecting via a VM interface (such
+                as ones offered by iFog or Free Range Cloud), please select the local connection type! I put this in
+                bold because many people select the wrong connection type for a VM or request tunnels for a local-only
+                location.
+            </p>
+            <p>
+                All that is left is for you to fill out the application! You won't receive a reply until we look at your
+                application. Note that it may take a while before you get a reply. We are volunteer driven so you will
+                just have to wait until we have time. This is especially important during the school year when many of
+                our admins do not have the time to work on this project. I apologise if this causes any difficulties but
+                this is just for fun so don't get too worked up about it. If you are rejected for any reason (only
+                happened once) we will let you know so don't worry about that.
+            </p>
+            <p>
+                Please whitelist 'helpdesk@evix.org' in your mail client to avoid missing these important instructions.
+                We have ended up on blacklists a few times.
+            </p>
         </div>
         <div class="form">
-            <h4>EVIX Peering Request Form (<b>Read the instructions above!</b>)</h4>
-            <form action="/peering-form.php" method="POST">
-                <label for="asn"><b>ASN:</b></label>
-                <input id="asn" name="asn" type="text"/><br/>
+            <h1>Peering Request Form</h1>
+            <p><b>Read the instructions first to make this easier for everyone.</b></p>
+            <form class="dual-row" action="peering_form.py" id="peering_form" method="POST" style="--rows: 8">
+                <label for="name">Network Name:</label>
+                <input id="name" name="name" type="text"/>
 
-                <label for="description"><b>Network Name:</b></label>
-                <input id="description" name="description" type="text"/><br/>
+                <label for="asn">ASN</label>
+                <input id="asn" name="asn" type="text"/>
 
-                <label for="asset"><b>IRRDB AS-SET:</b></label>
-                <input id="asset" name="asset" type="text"/><br/>
+                <label for="contact">Contact Email</label>
+                <input id="contact" name="contact" type="text"/>
 
-                <label for="contact"><b>Contact Email:</b></label>
-                <input id="contact" name="contact" type="text"/><br/>
+                <label for="website">Website (optional)</label>
+                <input id="website" name="website" type="text"/>
 
-                <label for="website"><b>Website (optional):</b></label>
-                <input id="website" name="website" type="text"/><br/>
-
-                <label for="location"><b>Tunnel Location</b></label>
+                <label for="location">Tunnel Location</label>
                 <select id="location" name="location">
                     <option value="fmt">Fremont</option>
                     <option value="ams">Netherlands</option>
@@ -124,22 +145,26 @@
                     <option value="zur">Zurich</option>
                     <option value="van">Vancouver</option>
                     <option value="fra">Frankfurt</option>
-                </select><br/>
+                </select>
 
-                <label for="name"><b>Tunnel Type</b></label>
-                <select id="name" name="type">
+                <label for="type">Tunnel Type</label>
+                <select id="type" name="type">
                     <option value="openvpn">OpenVPN</option>
                     <option value="zerotier">ZeroTier</option>
                     <option value="eoip">EoIP</option>
                     <option value="vxlan">VXLAN</option>
-                    <option value="custom">Local/Ethernet/Other</option>
-                </select><br/>
+                    <option value="custom">Local/VPS/Other</option>
+                </select>
 
-                <label for="ipv4"><b>Do you require legacy IPv4?</b></label>
-                <input id="ipv4" name="ipv4" type="checkbox" value="true"/><br/>
+                <label for="ipv4">Do you require legacy IPv4?</label>
+                <input id="ipv4" name="ipv4" type="checkbox" value="true"/>
 
-                <input type="submit" value="submit"/>
+                <label for="comments">Additional Comments</label>
+                <textarea id="comments" form="peering_form"></textarea>
+
+                <div></div>
             </form>
+            <input form="peering_form" type="submit" value="Submit"/>
         </div>
     </div>
     <div class="get_connected_body">

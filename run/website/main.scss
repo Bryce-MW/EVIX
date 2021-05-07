@@ -187,6 +187,47 @@ ul {
   flex-direction: column;
   justify-content: center;
 }
+/* Note: ensure that you set the --rows variable in a style property for the number of rows needed. This can't be
+  automated yet*/
+.dual-row {
+  display: grid;
+  grid-template-columns: auto 0.1em auto;
+  grid-template-rows: repeat(var(--rows, 1), auto) [rows-end];
+  gap: 1em;
+  align-items: start;
+
+  > div:nth-of-type(1) {
+    grid-column: 2 / 3;
+    grid-row: 1 / rows-end;
+    justify-self: stretch;
+    align-self: stretch;
+
+    background: var(--accent);
+    width: 100%;
+    height: auto;
+    border-radius: var(--corner-round);
+  }
+
+  > *:nth-child(even) {
+    justify-self: left;
+    text-align: left;
+  }
+  > *:nth-child(odd) {
+    justify-self: right;
+    text-align: right;
+  }
+
+  ul {
+    list-style: none;
+    margin: -0.5em 0;
+    padding: 0;
+
+    li {
+      line-height: 1.2;
+      margin: 0.5em 0;
+    }
+  }
+}
 
 
 .hero {
@@ -250,48 +291,6 @@ ul {
     flex-basis: calc(var(--modifier) * 999);
     max-width: 70ch;
   }
-
-  /* Note: ensure that you set the --rows variable in a style property for the number of rows needed. This can't be
-  automated yet*/
-  .dual-row {
-    display: grid;
-    grid-template-columns: auto 0.1em auto;
-    grid-template-rows: repeat(var(--rows, 1), auto) [rows-end];
-    gap: 1em;
-    align-items: start;
-
-    > div:nth-of-type(1) {
-      grid-column: 2 / 3;
-      grid-row: 1 / rows-end;
-      justify-self: stretch;
-      align-self: stretch;
-
-      background: var(--accent);
-      width: 100%;
-      height: auto;
-      border-radius: var(--corner-round);
-    }
-
-    > *:nth-child(even) {
-      justify-self: left;
-      text-align: left;
-    }
-    > *:nth-child(odd) {
-      justify-self: right;
-      text-align: right;
-    }
-
-    ul {
-      list-style: none;
-      margin: -0.5em 0;
-      padding: 0;
-
-      li {
-        line-height: 1.2;
-        margin: 0.5em 0;
-      }
-    }
-  }
 }
 
 .locations {
@@ -335,6 +334,50 @@ ul {
       background: var(--light-font);
       /* 0ch at 50ch and 1ch at 70ch. 1ch / 20ch = 1/20, b = 1ch - 5ch/2 */
       margin: max(0ch, calc((1 / 20) * 100% + 1ch - (5ch / 2)));
+    }
+  }
+}
+
+.get_connected_header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  --modifier: calc(80ch - 100%);
+  gap: 2em;
+
+  > div {
+    flex-grow: 1;
+    flex-basis: calc(var(--modifier) * 999);
+    max-width: 70ch;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    gap: 1em;
+
+    h1 {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    h1, p {
+      text-align: center;
+    }
+
+    > input[type="submit"] {
+      width: 15ch;
+      height: 3em;
+      border-radius: var(--corner-round);
+      border: 0.2em solid var(--accent);
+      line-height: 1.5em;
+      background: var(--light-font);
     }
   }
 }
