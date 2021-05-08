@@ -45,7 +45,7 @@
     <meta content="static/icons/browserconfig.xml" name="msapplication-config">
     <meta content="#091540" name="theme-color">
 </head>
-<body>
+<body onload="loc_toggle()">
 <div class="top">
     <div class="head">
         <a href="index.html">
@@ -142,7 +142,7 @@
                        placeholder="https://evix.org" type="url"/>
 
                 <label for="location">Tunnel Location</label>
-                <select id="location" name="location" required>
+                <select id="location" name="location" onchange="loc_toggle()" required>
                     <option value="fmt">Fremont</option>
                     <option value="ams">Netherlands</option>
                     <option value="nz">New Zealand</option>
@@ -179,4 +179,17 @@
     </div>
 </div>
 </body>
+<script>
+// Allow only local connections for FRA and VAN
+function loc_toggle() {
+    var loc = document.getElementById('location');
+    var type = document.getElementById('type');
+    if (["van", "fra"].includes(loc.value)) {
+        type.disabled = true;
+        type.value = "custom";
+    } else {
+        type.disabled = false;
+    }
+}
+</script>
 </html>

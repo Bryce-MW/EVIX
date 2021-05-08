@@ -24,6 +24,7 @@
   --accent: #e60073;
   --accent-translucent: #e6007377;
   --midpoint: rgb(60.3% 24.82% 36.2%);
+  --disabled: #a5a5a5;
 
   --gradient-continuous: linear-gradient(45deg, var(--accent), var(--light), var(--accent), var(--light));
 
@@ -473,6 +474,11 @@ ul {
 
           box-shadow: 0 0 0 0.4em var(--bg),
           0 0 0 0.7em var(--accent);
+        }
+
+        &:disabled {
+          border-color: var(--disabled);
+          color: var(--disabled);
         }
 
         &:invalid {
