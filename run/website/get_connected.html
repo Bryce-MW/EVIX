@@ -124,21 +124,25 @@
         <div class="form">
             <h1>Peering Request Form</h1>
             <p><b>Read the instructions first to make this easier for everyone.</b></p>
-            <form class="dual-row" action="peering_form.py" id="peering_form" method="POST" style="--rows: 8">
+            <form action="peering_form.py" class="dual-row" id="peering_form" method="POST" style="--rows: 8">
                 <label for="name">Network Name:</label>
-                <input id="name" name="name" type="text"/>
+                <input autocorrect="off" id="name" inputmode="text" maxlength="128" minlength="1" mozactionhint="send" name="name"
+                       placeholder="EVIX" required type="text"/>
 
                 <label for="asn">ASN</label>
-                <input id="asn" name="asn" type="text"/>
+                <input id="asn" inputmode="numeric" min="1" mozactionhint="send" name="asn" placeholder="137933" required
+                       type="number"/>
 
                 <label for="contact">Contact Email</label>
-                <input id="contact" name="contact" type="text"/>
+                <input id="contact" inputmode="email" maxlength="128" mozactionhint="send" name="contact" placeholder="helpdesk@evix.org"
+                       required type="email"/>
 
-                <label for="website">Website (optional)</label>
-                <input id="website" name="website" type="text"/>
+                <label for="website">Website (Optional)</label>
+                <input id="website" inputmode="url" maxlength="128" mozactionhint="send" name="website"
+                       placeholder="https://evix.org" type="url"/>
 
                 <label for="location">Tunnel Location</label>
-                <select id="location" name="location">
+                <select id="location" name="location" required>
                     <option value="fmt">Fremont</option>
                     <option value="ams">Netherlands</option>
                     <option value="nz">New Zealand</option>
@@ -148,7 +152,7 @@
                 </select>
 
                 <label for="type">Tunnel Type</label>
-                <select id="type" name="type">
+                <select id="type" name="type" required>
                     <option value="openvpn">OpenVPN</option>
                     <option value="zerotier">ZeroTier</option>
                     <option value="eoip">EoIP</option>
@@ -157,10 +161,12 @@
                 </select>
 
                 <label for="ipv4">Do you require legacy IPv4?</label>
-                <input id="ipv4" name="ipv4" type="checkbox" value="true"/>
+                <input id="ipv4" name="ipv4" type="checkbox" value="true" hidden/>
+                <label for="ipv4" tabindex="0" onkeyup="if(event.code==='Space')event.target.click()"><span></span></label>
 
-                <label for="comments">Additional Comments</label>
-                <textarea id="comments" form="peering_form"></textarea>
+                <label for="comments">Additional Comments (Optional)</label>
+                <textarea autocapitalize="sentences" autocomplete="off" autocorrect="on" form="peering_form"
+                          id="comments" maxlength="65535" mozactionhint="send" spellcheck="true"></textarea>
 
                 <div></div>
             </form>
@@ -169,7 +175,7 @@
     </div>
     <div class="get_connected_body">
         <p>If you need to contact us directly, please open a ticket by emailing <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a>
-            or by joining us on our Discord <a href="https://discord.gg/dXVpp6d">discord.gg/dXVpp6d</a></p>
+            or by joining us on <a href="https://discord.gg/dXVpp6d">our Discord</a>.</p>
     </div>
 </div>
 </body>
