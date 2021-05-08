@@ -88,7 +88,7 @@
 <div class="body">
     <div class="faq">
         <h1>How do we contact EVIX?</h1>
-        <p>Send email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> for any issues.</p>
+        <p>Send an email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> for any issues.</p>
 
         <h1>How much do ports cost?</h1>
         <p>EVIX does not charge for participation as we believe in providing a low barrier of entry for any holders of
@@ -96,21 +96,21 @@
             cover the costs associated with running EVIX's infrastructure.</p>
 
         <h1>How do we donate to EVIX?</h1>
-        <p>EVIX was built upon donations. We are very interested in receiving donations of VPS' to further extend the
+        <p>EVIX was built upon donations. We are very interested in receiving donations of servers to further extend the
             reach of our network. If you would be interested in donating resources to EVIX, please contact us by
-            email:<a href="mailto: helpdesk@evix.org">helpdesk@evix.org</a> We also accept monetary donations to our
+            email: <a href="mailto: helpdesk@evix.org">helpdesk@evix.org</a>. We also accept monetary donations to our
             PayPal email address: evix.org@gmail.com</p>
 
-        <h1>What Technology is Used to Connect Peers?</h1>
-        <p>EVIX has two types of peers - local and remote. Local peers have a <a href="https://freerangecloud.com">Free
-            Range Cloud</a> VPS and have requested a complimentary cross connect to the EVIX switch. Remote peers use a
-            layer2 tunneling protocol to connect to the EVIX switch without a physical presence. Supported tunneling
-            protocols are EoIP, OpenVPN, VXLAN and ZeroTier (Experimental). All peers, local and remote, use BGP to
-            exchange routing information with each other, and optionally, the EVIX route server.</p>
+        <h1>What technology is used to connect Peers?</h1>
+        <p>EVIX has two types of peers &ndash; local and remote. Local peers have a <a href="https://freerangecloud.com"
+            target="_blank">Free Range Cloud</a> (Fremont, Vancouver) or <a href="https://ifog.ch/en/ip/ixp-access"
+            target="_blank">iFog</a> (Zurich, Frankfurt) VPS and have requested a complimentary cross connect to the
+            EVIX switch.<br>Remote peers use a Layer 2 Tunneling Protocol to connect to the EVIX switch without a physical
+            presence. Supported tunneling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. All peers, local and remote, use
+            BGP to exchange routing information with each other and the EVIX route servers.</p>
 
         <h1>Are there any rules?</h1>
-        <p>
-            The internet exchange switch is a fabric shared by all peers. Peers must avoid doing anything which might
+        <p>The internet exchange switch is a fabric shared by all peers. Peers must avoid doing anything which might
             overload the fabric, mis-direct traffic, or otherwise cause harm to any other peers. If a peer shows a
             willful disregard for others, they will be disconnected by the operators. Additionally, peers are
             requested to only send traffic to destinations advertised by BGP. Do not point default routes and do
@@ -131,28 +131,28 @@
             6</p>
 
         <h1>Are there any example configurations?</h1>
-        <p>Yes! We have example configuration instructions available at: <a href="/Documents/example-config.pdf">example-config.pdf</a><br>Send
-            us an email if you would like to add to this document!</p>
+        <p>Yes! We have example configuration instructions available at: <a href="/Documents/example-config.pdf">example-config.pdf</a>
+            <br>Send us an email if you would like to add to this document!</p>
 
         <h1>What Subnets do you use?</h1>
-        <p>Our IPv6 subnet is 2602:fed2:fff:ffff::/64 which has been donated by 10VPN Hosting, while our IPv4 subnet is
-            206.81.104.0/24 and has been acquired directly from ARIN</p>
+        <p>Our IPv6 subnet is <code>2602:fed2:fff:ffff::/64</code> which has been donated by 10VPN Hosting, while our IPv4
+            subnet is <code>206.81.104.0/24</code> and has been acquired directly from ARIN</p>
 
         <h1>What is the process for getting connected?</h1>
         <p>
-            Please fill out the peering request form on our <a href="/#contact">contact page</a> and one of our staff
+            Please fill out the peering request form on our <a href="get_connected.html">contact page</a> and one of our staff
             will get in touch.
         </p>
         <p>
             Please see our <a href="locations.html">Locations list</a> for
             the closest virtual switch to you.</p>
 
-        <h1>Do you have a looking glass?</h1>
+        <h1>Do you have a Looking Glass?</h1>
         <p>
-            Yes! We have a public looking glass available at <a href="http://lg.evix.org">lg.evix.org</a> which shows
-            all peering sessions the router is configured for.</p>
+            Yes! We have a public looking glass available at <a href="https://lg.evix.org/" target="_blank">lg.evix.org</a> which
+            shows all peering sessions the router is configured for.</p>
 
-        <h1>Do you Support Communities?</h1>
+        <h1>Do you support Communities?</h1>
         <p>Yes! Our route server currently tags routes received from each POP with a unique community depending on where
             the route originated. The currently supported communities are:
         </p>
