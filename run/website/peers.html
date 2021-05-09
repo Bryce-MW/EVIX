@@ -44,6 +44,27 @@
     <meta content="static/icons/mstile-144x144.png" name="msapplication-TileImage">
     <meta content="static/icons/browserconfig.xml" name="msapplication-config">
     <meta content="#091540" name="theme-color">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.peers .disclosure label').forEach(item => {
+                item.addEventListener('click', event => {
+                    let next = event.target.parentElement;
+                    // noinspection StatementWithEmptyBodyJS
+                    while ((next = next.nextElementSibling)?.className !== 'hide') ;
+                    // This is empty because we ignore the non-hidden ones
+                    while ((next = next.nextElementSibling)?.className === 'hide') {
+                        next.hidden = !next.hidden
+                    }
+                })
+                item.addEventListener('keyup', event => {
+                    if (event.code === 'Space') {
+                        event.target.click()
+                    }
+                })
+            })
+        })
+    </script>
 </head>
 <body>
 <div class="top">
@@ -86,7 +107,7 @@
     </svg>
 </div>
 <div class="body">
-    <div class="peers">
+    <div class="peers" style="--rows: 8">
         <div class="h1"></div>
         <div class="h2"></div>
 
@@ -94,82 +115,65 @@
         <span class="title">AS</span>
         <span class="title">IPv4</span>
         <span class="title">IPv6</span>
-        <span class="title">Location</span>
-        <span class="title">Tunnel Type</span>
+        <span class="title">Tunnel Types</span>
 
         <input hidden id="disclosure-0" type="checkbox"/>
-        <div class="disclosure"><label for="disclosure-0"
-                                       onclick="let next=event.target.parentElement;while((next=next.nextElementSibling).className!=='hide');while((next=next.nextElementSibling).className==='hide')next.hidden=!next.hidden"
-                                       onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+        <div class="disclosure"><label for="disclosure-0" tabindex="0"></label>
         </div>
         <span>EVIX Primary Route Server</span>
         <span>137933</span>
         <span>206.81.104.1</span>
         <span>2602:fed2:fff:ffff::1</span>
-        <span>fmt</span>
-        <span>local/custom</span>
+        <span>fmt local/custom</span>
         <div class="hide"></div>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
         <span class="hide" hidden>209762</span>
         <span class="hide" hidden>206.81.104.253</span>
         <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden>ams</span>
-        <span class="hide" hidden>local/custom</span>
+        <span class="hide" hidden></span>
 
         <input hidden id="disclosure-1" type="checkbox"/>
-        <div class="disclosure"><label for="disclosure-1"
-                                       onclick="let next=event.target.parentElement;while((next=next.nextElementSibling).className!=='hide');while((next=next.nextElementSibling).className==='hide')next.hidden=!next.hidden"
-                                       onkeyup="if(event.code==='Space')event.target.click()"
-                                       tabindex="0"></label></div>
+        <div class="disclosure"><label for="disclosure-1" tabindex="0"></label></div>
         <span>EVIX Primary Route Server</span>
         <span>137933</span>
         <span>206.81.104.1</span>
         <span>2602:fed2:fff:ffff::1</span>
-        <span>fmt</span>
-        <span>local/custom</span>
+        <span>fmt local/custom</span>
         <div class="hide"></div>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
         <span class="hide" hidden>209762</span>
         <span class="hide" hidden>206.81.104.253</span>
         <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden>ams</span>
-        <span class="hide" hidden>local/custom</span>
+        <span class="hide" hidden></span>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
         <span class="hide" hidden>209762</span>
         <span class="hide" hidden>206.81.104.253</span>
         <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden>ams</span>
-        <span class="hide" hidden>local/custom</span>
+        <span class="hide" hidden></span>
 
         <input hidden id="disclosure-2" type="checkbox"/>
-        <div class="disclosure"><label for="disclosure-2"
-                                       onclick="let next=event.target.parentElement;while((next=next.nextElementSibling).className!=='hide');while((next=next.nextElementSibling).className==='hide')next.hidden=!next.hidden"
-                                       onkeyup="if(event.code==='Space')event.target.click()"
-                                       tabindex="0"></label></div>
+        <div class="disclosure"><label for="disclosure-2" tabindex="0"></label></div>
         <span>EVIX Primary Route Server</span>
         <span>137933</span>
         <span>206.81.104.1</span>
         <span>2602:fed2:fff:ffff::1</span>
-        <span>fmt</span>
-        <span>local/custom</span>
+        <span>fmt local/custom, ams local/custom</span>
         <div class="hide"></div>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
         <span class="hide" hidden>209762</span>
         <span class="hide" hidden>206.81.104.253</span>
         <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden>ams</span>
-        <span class="hide" hidden>local/custom</span>
+        <span class="hide" hidden></span>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
         <span class="hide" hidden>209762</span>
         <span class="hide" hidden>206.81.104.253</span>
         <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden>ams</span>
-        <span class="hide" hidden>local/custom</span>
+        <span class="hide" hidden></span>
     </div>
 </div>
 </body>
