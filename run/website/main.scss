@@ -521,6 +521,8 @@ ul {
   align-items: center;
   gap: 0.5em;
 
+  font-size: min(1em, 2vw);
+
   --count: 1;
 
   .h1 {
