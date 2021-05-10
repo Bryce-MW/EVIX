@@ -660,11 +660,8 @@ ul {
 
   div:nth-of-type(even) {
     overflow: hidden;
-    height: 0;
-
+    display: none;
     margin-left: 2em;
-
-    transition: height 200ms ease-in-out;
 
     p {
       max-width: 70ch;
@@ -675,12 +672,13 @@ ul {
     }
   }
 
-  input:checked {
+  input:checked,
+  input:target {
     + div > label{
       transform: rotate(90deg);
     }
     + div + div {
-      height: auto;
+      display: block;
     }
   }
 }
