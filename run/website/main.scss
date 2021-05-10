@@ -618,6 +618,8 @@ ul {
 }
 
 .faq {
+  padding-bottom: 1em;
+
   div:nth-of-type(odd) {
     display: flex;
     justify-content: flex-start;
@@ -666,6 +668,10 @@ ul {
 
     p {
       max-width: 70ch;
+    }
+
+    &:focus-within, :has(::selection) {
+      height: auto;
     }
   }
 

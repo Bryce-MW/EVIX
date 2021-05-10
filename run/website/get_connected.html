@@ -44,6 +44,20 @@
     <meta content="static/icons/mstile-144x144.png" name="msapplication-TileImage">
     <meta content="static/icons/browserconfig.xml" name="msapplication-config">
     <meta content="#091540" name="theme-color">
+
+    <script>
+        // Allow only local connections for FRA and VAN
+        function loc_toggle() {
+            let loc = document.getElementById('location');
+            let type = document.getElementById('type');
+            if (["van", "fra"].includes(loc.value)) {
+                type.disabled = true;
+                type.value = "custom";
+            } else {
+                type.disabled = false;
+            }
+        }
+    </script>
 </head>
 <body onload="loc_toggle()">
 <div class="top">
@@ -91,7 +105,8 @@
             <h1>Instructions for Connecting</h1>
             <p>
                 Hi! Thanks for your interest in EVIX. Anyone is welcome to join but please read the rules below to make
-                everyone's lives easier.
+                everyone's lives easier. If you have more questions or just want to hang out, join us on
+                <a href="https://discord.gg/dXVpp6d">Discord</a>!
             </p>
             <p>
                 As EVIX is a full internet exchange, you must have a non-reserved ASN assigned to you by an RIR. If you
@@ -118,7 +133,14 @@
             </p>
             <p>
                 Please whitelist 'helpdesk@evix.org' in your mail client to avoid missing these important instructions.
-                We have ended up on blacklists a few times.
+                We have ended up on blacklists a few times. If you get stuck at any time and can't solve an issue by
+                yourself, feel free to email us. But please look at our example <a
+                href="static/documents/example-config.pdf">configuration instructions</a>. It would also help us a great
+                deal if you could include as much information in your first email as possible. Things like logs, pings,
+                traceroutes, and configuration are all very useful. We are still learning too so we appreciate your help
+                in solving the issue, especially if you are using an operating system that we are not familiar with.
+                Importantly, be kind and remember that we are just volunteers with our own lives. Harassment of our
+                volunteers will not be tolerated and could lead to being permanently removed from our network.
             </p>
         </div>
         <div class="form">
@@ -175,21 +197,8 @@
     </div>
     <div class="get_connected_body">
         <p>If you need to contact us directly, please open a ticket by emailing <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a>
-            or by joining us on <a href="https://discord.gg/dXVpp6d">our Discord</a>.</p>
+            or by joining us on <a href="https://discord.gg/dXVpp6d">Discord</a>.</p>
     </div>
 </div>
 </body>
-<script>
-// Allow only local connections for FRA and VAN
-function loc_toggle() {
-    var loc = document.getElementById('location');
-    var type = document.getElementById('type');
-    if (["van", "fra"].includes(loc.value)) {
-        type.disabled = true;
-        type.value = "custom";
-    } else {
-        type.disabled = false;
-    }
-}
-</script>
 </html>

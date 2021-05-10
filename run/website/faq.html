@@ -7,12 +7,15 @@
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
     <link as="style" href="fira.css" rel="preload">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Heavy.woff" rel="preload"
-          type="font/woff">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Bold.woff" rel="preload"
-          type="font/woff">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Regular.woff" rel="preload"
-          type="font/woff">
+    <link
+            as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Heavy.woff" rel="preload"
+            type="font/woff">
+    <link
+            as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Bold.woff" rel="preload"
+            type="font/woff">
+    <link
+            as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Regular.woff" rel="preload"
+            type="font/woff">
 
     <meta charset="UTF-8">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -44,6 +47,18 @@
     <meta content="static/icons/mstile-144x144.png" name="msapplication-TileImage">
     <meta content="static/icons/browserconfig.xml" name="msapplication-config">
     <meta content="#091540" name="theme-color">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.faq input + div > label').forEach(item => {
+                item.addEventListener('keyup', event => {
+                    if (event.code === 'Space') {
+                        event.target.click()
+                    }
+                })
+            })
+        })
+    </script>
 </head>
 <body>
 <div class="top">
@@ -60,12 +75,13 @@
                         <stop class="stop" offset="100%"/>
                     </linearGradient>
                 </defs>
-                <path d="M51.6,-70.8C64.6,-61.5,71.5,-43.5,75.1,-25.9C78.8,-8.3,79.3,8.8,75.3,25.6C71.4,42.4,63,58.8,49.7,63.6C36.5,68.4,18.2,61.5,-0.1,61.6C-18.3,61.7,-36.7,68.7,-52.5,64.7C-68.4,60.8,-81.7,45.8,-81.6,30.3C-81.5,14.7,-67.9,-1.5,-60.3,-18C-52.7,-34.5,-51.1,-51.3,-42,-61.9C-33,-72.5,-16.5,-77,1.4,-78.9C19.3,-80.8,38.5,-80.1,51.6,-70.8Z"
-                      fill="url(#bi)"
-                      id="hover"
-                      stroke="url(#bi-b)"
-                      stroke-width="0"
-                      transform="translate(100 100)"/>
+                <path
+                        d="M51.6,-70.8C64.6,-61.5,71.5,-43.5,75.1,-25.9C78.8,-8.3,79.3,8.8,75.3,25.6C71.4,42.4,63,58.8,49.7,63.6C36.5,68.4,18.2,61.5,-0.1,61.6C-18.3,61.7,-36.7,68.7,-52.5,64.7C-68.4,60.8,-81.7,45.8,-81.6,30.3C-81.5,14.7,-67.9,-1.5,-60.3,-18C-52.7,-34.5,-51.1,-51.3,-42,-61.9C-33,-72.5,-16.5,-77,1.4,-78.9C19.3,-80.8,38.5,-80.1,51.6,-70.8Z"
+                        fill="url(#bi)"
+                        id="hover"
+                        stroke="url(#bi-b)"
+                        stroke-width="0"
+                        transform="translate(100 100)"/>
             </svg>
             <span>EVIX</span>
         </a>
@@ -80,52 +96,79 @@
         </nav>
     </div>
     <svg preserveAspectRatio="none" viewBox="0 90 1440 320" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,96L80,96C160,96,320,96,480,133.3C640,171,800,245,960,245.3C1120,245,1280,171,1360,133.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-              fill="#091540"
-              fill-opacity="1"></path>
+        <path
+                d="M0,96L80,96C160,96,320,96,480,133.3C640,171,800,245,960,245.3C1120,245,1280,171,1360,133.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+                fill="#091540"
+                fill-opacity="1"></path>
     </svg>
 </div>
 <div class="body">
     <div class="faq">
+        <!--- (input#disclosure-$@21[hidden,type="checkbox"]+div>label[for="disclosure-$@21",tabindex="0"]+h1>label[for="disclosure-$@21"]^^div>p)*10 --->
+
         <input hidden id="disclosure-0" type="checkbox"/>
         <div>
-            <label for="disclosure-0" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-0" tabindex="0"></label>
             <h1><label for="disclosure-0">How do we contact EVIX?</label></h1>
         </div>
         <div>
-            <p>Send an email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> for any issues.</p>
+            <p>
+                Send an email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> or join us on
+                <a href="https://discord.gg/dXVpp6d">Discord</a>.
+            </p>
         </div>
 
         <input hidden id="disclosure-1" type="checkbox"/>
         <div>
-            <label for="disclosure-1" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
-            <h1><label for="disclosure-1">How much do ports cost?</label></h1>
+            <label for="disclosure-1" tabindex="0"></label>
+            <h1><label for="disclosure-1">What are the costs involved?</label></h1>
         </div>
         <div>
             <p>
-                EVIX does not charge for participation as we believe in providing a low barrier of entry for any holders
-                of public resources to participate in BGP. While we do not charge for participation, we do accept
-                donations to cover the costs associated with running EVIX's infrastructure.
+                At the moment, we do not charge for connection to EVIX. This is for a few reasons. One of our primary
+                goals is to provide a low barrier to entry opportunity for hobbyists. Many of us can not afford the high
+                fees that other exchanges, even those for hobbyists, charge. We are able to do this because all of our
+                infrastructure and resources are donated so we have few reoccurring fees. We are happy to accept
+                donations to help us with that and with expanding our resources. At one point, we considered adding a
+                nominal fee of about $1/yr but we ended up deciding against it.
+            </p>
+            <p>
+                We also don't want to feel like our members are customers. Since most of us are students or are busy
+                with our own jobs, we can't provide the same level of service as a company can. If we had a required
+                charge then we would be more obligated to solve issues and work on improvements. This could be
+                detrimental to our own lives. There are also some cases where we can't figure out how to solve something
+                from our end. Since all of our members have slightly different setups, it is up to them to solve that
+                kind of issue. We don't want to feel like we must be full support agents who are required to solve
+                issues that are not on our end. Sometimes neither of us can figure it out and it is just best for the
+                member to disconnect than to spend a considerable amount of time remotely debugging their configuration.
+            </p>
+            <p>
+                In the future, we would like to provide a way that you can make a reoccurring contribution to help us
+                with our costs and development. Since this is a donation, we would not feel as obligated towards the
+                previously mentioned issues. We could also stick to having no refunds even in the case of an outage
+                since you would always be free to stop your contributions and still recive the same service.
             </p>
         </div>
 
         <input hidden id="disclosure-2" type="checkbox"/>
         <div>
-            <label for="disclosure-2" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-2" tabindex="0"></label>
             <h1><label for="disclosure-2">How do we donate to EVIX?</label></h1>
         </div>
         <div>
             <p>
-                EVIX was built upon donations. We are very interested in receiving donations of servers to further
-                extend the reach of our network. If you would be interested in donating resources to EVIX, please
-                contact us by email: <a href="mailto: helpdesk@evix.org">helpdesk@evix.org</a>. We also accept monetary
-                donations to our PayPal email address: evix.org@gmail.com
+                At one point, we were accepting donations by PayPal. We are looking into overhauling the donation system
+                but this has not been done yet. For now, let us know by email if you wish to donate and we can help you
+                out with that. We also greatly accept donations of hardware, software, rack space, transit, and
+                sometimes VMs for new POPs if it is in an area where we have little presence. We would currently be open
+                to a POP on the east coast of Canada or the USA, Asia, Africa, or South America. If you have another
+                idea for a POP location or have another donation idea, send us an email and let us know.
             </p>
         </div>
 
         <input hidden id="disclosure-3" type="checkbox"/>
         <div>
-            <label for="disclosure-3" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-3" tabindex="0"></label>
             <h1><label for="disclosure-3">What technology is used to connect Peers?</label></h1>
         </div>
         <div>
@@ -144,8 +187,8 @@
 
         <input hidden id="disclosure-4" type="checkbox"/>
         <div>
-            <label for="disclosure-4" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
-            <h1><label for="disclosure-4">Are there any rules?</label></h1>
+            <label for="disclosure-4" tabindex="0"></label>
+            <h1><label for="disclosure-4">What are the rules?</label></h1>
         </div>
         <div>
             <p>
@@ -168,7 +211,7 @@
 
         <input hidden id="disclosure-5" type="checkbox"/>
         <div>
-            <label for="disclosure-5" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-5" tabindex="0"></label>
             <h1><label for="disclosure-5">What operating systems are supported?</label></h1>
         </div>
         <div>
@@ -181,8 +224,8 @@
 
         <input hidden id="disclosure-6" type="checkbox"/>
         <div>
-            <label for="disclosure-6" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
-            <h1><label for="disclosure-6">Are there any example configurations?</label></h1>
+            <label for="disclosure-6" tabindex="0"></label>
+            <h1><label for="disclosure-6">Something's not working!</label></h1>
         </div>
         <div>
             <p>
@@ -196,8 +239,8 @@
 
         <input hidden id="disclosure-7" type="checkbox"/>
         <div>
-            <label for="disclosure-7" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
-            <h1><label for="disclosure-7">What Subnets do you use?</label></h1>
+            <label for="disclosure-7" tabindex="0"></label>
+            <h1><label for="disclosure-7">What are the subnets and route servers?</label></h1>
         </div>
         <div>
             <p>
@@ -208,7 +251,7 @@
 
         <input hidden id="disclosure-8" type="checkbox"/>
         <div>
-            <label for="disclosure-8" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-8" tabindex="0"></label>
             <h1><label for="disclosure-8">What is the process for getting connected?</label></h1>
         </div>
         <div>
@@ -217,25 +260,27 @@
                 our staff will get in touch.
             </p>
             <p>
-                Please see our <a href="locations.html">Locations list</a> for the closest virtual switch to you.</p>
+                Please see our <a href="locations.html">Locations list</a> for the closest virtual switch to you.
+            </p>
         </div>
 
         <input hidden id="disclosure-9" type="checkbox"/>
         <div>
-            <label for="disclosure-9" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-9" tabindex="0"></label>
             <h1><label for="disclosure-9">Do you have a Looking Glass?</label></h1>
         </div>
         <div>
             <p>
-                Yes! We have a public looking glass available at <a href="https://lg.evix.org/"
-                                                                    target="_blank">lg.evix.org</a> which shows all
+                Yes! We have a public looking glass available at <a
+                    href="https://lg.evix.org/"
+                    target="_blank">lg.evix.org</a> which shows all
                 peering sessions the router is configured for.
             </p>
         </div>
 
         <input hidden id="disclosure-10" type="checkbox"/>
         <div>
-            <label for="disclosure-10" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-10" tabindex="0"></label>
             <h1><label for="disclosure-10">Do you support Communities?</label></h1>
         </div>
         <div>
@@ -254,7 +299,7 @@
 
         <input hidden id="disclosure-11" type="checkbox"/>
         <div>
-            <label for="disclosure-11" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <label for="disclosure-11" tabindex="0"></label>
             <h1><label for="disclosure-11">What other services can we expect?</label></h1>
         </div>
         <div>
@@ -262,6 +307,135 @@
                 EVIX currently operates a Route Server with ASN 137933. No other services at available at this time,
                 however, in future we may turn up some new services.
             </p>
+        </div>
+
+        <input hidden id="disclosure-12" type="checkbox">
+        <div>
+            <label for="disclosure-12" tabindex="0"></label>
+            <h1><label for="disclosure-12">Where is EVIX?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-13" type="checkbox">
+        <div>
+            <label for="disclosure-13" tabindex="0"></label>
+            <h1><label for="disclosure-13">Do you have a PeeringDB page?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-14" type="checkbox">
+        <div>
+            <label for="disclosure-14" tabindex="0"></label>
+            <h1><label for="disclosure-14">Do you have any social media?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-15" type="checkbox">
+        <div>
+            <label for="disclosure-15" tabindex="0"></label>
+            <h1><label for="disclosure-15">Do you have a mailing list?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-16" type="checkbox">
+        <div>
+            <label for="disclosure-16" tabindex="0"></label>
+            <h1><label for="disclosure-16">I want to volunteer!</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-17" type="checkbox">
+        <div>
+            <label for="disclosure-17" tabindex="0"></label>
+            <h1><label for="disclosure-17">Why make a virtual exchange?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-18" type="checkbox">
+        <div>
+            <label for="disclosure-18" tabindex="0"></label>
+            <h1><label for="disclosure-18">Have you gotten any complaints / can I complain?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-19" type="checkbox">
+        <div>
+            <label for="disclosure-19" tabindex="0"></label>
+            <h1><label for="disclosure-19">What do you say to those who disagree with virtual exchanges?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input hidden id="disclosure-20" type="checkbox">
+        <div>
+            <label for="disclosure-20" tabindex="0"></label>
+            <h1><label for="disclosure-20">What is the MTU?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input type="checkbox" id="disclosure-21" hidden>
+        <div><label for="disclosure-21" tabindex="0"></label>
+            <h1><label for="disclosure-21">I want to sell you something.</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input type="checkbox" id="disclosure-22" hidden>
+        <div><label for="disclosure-22" tabindex="0"></label>
+            <h1><label for="disclosure-22">Does this website have a dark mode?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input type="checkbox" id="disclosure-23" hidden>
+        <div><label for="disclosure-23" tabindex="0"></label>
+            <h1><label for="disclosure-23">Why is your logo so terrible?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input type="checkbox" id="disclosure-24" hidden>
+        <div><label for="disclosure-24" tabindex="0"></label>
+            <h1><label for="disclosure-24">I am an employer, what skills do your volunteers have? Can I contact you?</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input type="checkbox" id="disclosure-25" hidden>
+        <div><label for="disclosure-25" tabindex="0"></label>
+            <h1><label for="disclosure-25">I have a great idea!</label></h1>
+        </div>
+        <div>
+            <p></p>
+        </div>
+
+        <input type="checkbox" id="disclosure-26" hidden>
+        <div><label for="disclosure-26" tabindex="0"></label>
+            <h1><label for="disclosure-26">I have another question not listed here.</label></h1>
+        </div>
+        <div>
+            <p></p>
         </div>
     </div>
 </div>
