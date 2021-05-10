@@ -104,12 +104,13 @@
 </div>
 <div class="body">
     <div class="faq">
-        <!--- (input#disclosure-$@21[hidden,type="checkbox"]+div>label[for="disclosure-$@21",tabindex="0"]+h1>label[for="disclosure-$@21"]^^div>p)*10 --->
+        <!--- (input#disclosure-$@21[hidden,type="checkbox"]+div#$@21>label[for="disclosure-$@21",tabindex="0"]+h2>label[for="disclosure-$@21"]^^div>p)*10 --->
 
+        <h1>General Questions</h1>
         <input hidden id="disclosure-0" type="checkbox"/>
-        <div>
+        <div id="0">
             <label for="disclosure-0" tabindex="0"></label>
-            <h1><label for="disclosure-0">How do we contact EVIX?</label></h1>
+            <h2><label for="disclosure-0">How do we contact EVIX?</label></h2>
         </div>
         <div>
             <p>
@@ -119,9 +120,9 @@
         </div>
 
         <input hidden id="disclosure-1" type="checkbox"/>
-        <div>
+        <div id="1">
             <label for="disclosure-1" tabindex="0"></label>
-            <h1><label for="disclosure-1">What are the costs involved?</label></h1>
+            <h2><label for="disclosure-1">What are the costs involved?</label></h2>
         </div>
         <div>
             <p>
@@ -151,9 +152,9 @@
         </div>
 
         <input hidden id="disclosure-2" type="checkbox"/>
-        <div>
+        <div id="2">
             <label for="disclosure-2" tabindex="0"></label>
-            <h1><label for="disclosure-2">How do we donate to EVIX?</label></h1>
+            <h2><label for="disclosure-2">How do we donate to EVIX?</label></h2>
         </div>
         <div>
             <p>
@@ -166,35 +167,10 @@
             </p>
         </div>
 
-        <input hidden id="disclosure-3" type="checkbox"/>
-        <div>
-            <label for="disclosure-3" tabindex="0"></label>
-            <h1><label for="disclosure-3">What technology is used to connect Peers?</label></h1>
-        </div>
-        <div>
-            <p>
-                EVIX has two types of peers, local and remote. Local peers have a <a
-                href="https://freerangecloud.com">Free Range Cloud</a> (Fremont, Vancouver) or <a
-                href="https://ifog.ch/en/ip/ixp-access">iFog</a> (Zurich, Frankfurt) VPS and have requested a
-                complimentary cross connect to the EVIX switch. There are also some peers connected via physical cross
-                connect or other custom methods at our Fremont and Amsterdam locations. We are happy to discuss
-                alternate methods. Currently, all of our physical cross-connects are 1G copper but we can support
-                various types of fiber at 1G and 10G as well (though a 10G connection would be of little benefit over a
-                1G connection).
-            </p>
-            <p>
-                Remote peers use a Layer 2 Tunneling Protocol to connect to the EVIX switch without a physical presence.
-                Supported tunneling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. Note that GRE and GRE-TAP are not
-                supported and will never be due to continued issues. We are open to supporting other methods however.
-                All peers, local and remote, use BGP to exchange routing information with each other and the EVIX route
-                servers.
-            </p>
-        </div>
-
         <input hidden id="disclosure-4" type="checkbox"/>
-        <div>
+        <div id="4">
             <label for="disclosure-4" tabindex="0"></label>
-            <h1><label for="disclosure-4">What are the rules?</label></h1>
+            <h2><label for="disclosure-4">What are the rules?</label></h2>
         </div>
         <div>
             <p>
@@ -247,35 +223,20 @@
             </p>
             <p>
                 While not a rule, we request that peers register themselves with <a
-                href="https://peeringdb.com/ix/2274">PeeringDB</a>, because visibility there will encourage other
+                    href="https://peeringdb.com/ix/2274">PeeringDB</a>, because visibility there will encourage other
                 networks to join as well, bringing more benefit to all.
             </p>
         </div>
 
-        <input hidden id="disclosure-5" type="checkbox"/>
-        <div>
-            <label for="disclosure-5" tabindex="0"></label>
-            <h1><label for="disclosure-5">What operating systems are supported?</label></h1>
-        </div>
-        <div>
-            <p>
-                Just about any OS that supports one of our tunneling protocols and BGP would likely work on EVIX. We
-                have officially tested and support Bird on Ubuntu Server and Debian, VyOS 1.18, and RouterOS 6. We can't
-                provide the same level of support on other devices but we are happy to try. If you use another OS and
-                get it to work, please consider sending us your instructions so that we can add it to the example
-                configuration
-            </p>
-        </div>
-
         <input hidden id="disclosure-6" type="checkbox"/>
-        <div>
+        <div id="6">
             <label for="disclosure-6" tabindex="0"></label>
-            <h1><label for="disclosure-6">Something's not working!</label></h1>
+            <h2><label for="disclosure-6">Something's not working!</label></h2>
         </div>
         <div>
             <p>
                 Start by looking at our example <a href="static/documents/example-config.pdf">configuration
-                instructions</a>. Your setup may be slightly different so these instructions may not work for you but
+                                                                                              instructions</a>. Your setup may be slightly different so these instructions may not work for you but
                 these are what we have found the most success with. If you find that a different configuration works
                 better for you or you would like to contribute with instructions for a different operating system,
                 please let us know!
@@ -295,27 +256,10 @@
             </p>
         </div>
 
-        <input hidden id="disclosure-7" type="checkbox"/>
-        <div>
-            <label for="disclosure-7" tabindex="0"></label>
-            <h1><label for="disclosure-7">What are the subnets and route servers?</label></h1>
-        </div>
-        <div>
-            <p>
-                Our IPv6 subnet is 2602:fed2:fff:ffff::/64 which has been donated by 10VPN Hosting, while
-                our IPv4 subnet is 206.81.104.0/24 and has been acquired directly from ARIN.
-            </p>
-            <p>
-                We have two route servers. Our Fremont route server has AS137933 and is at IPv4 206.81.104.1 and IPv6
-                2602:fed2:fff:ffff::1. Our Amsterdam route server has AS209762 and is at IPv4 206.81.104.253 and IPv6
-                2602:fed2:fff:ffff::253.
-            </p>
-        </div>
-
         <input hidden id="disclosure-8" type="checkbox"/>
-        <div>
+        <div id="8">
             <label for="disclosure-8" tabindex="0"></label>
-            <h1><label for="disclosure-8">What is the process for getting connected?</label></h1>
+            <h2><label for="disclosure-8">What is the process for getting connected?</label></h2>
         </div>
         <div>
             <p>
@@ -326,15 +270,15 @@
                 See our <a href="locations.html">locations list</a> to find the closest virtual switch to you. If you
                 need any help, please email us. You can also get a connection through a VPS in Vancouver or Fremont from
                 <a href="https://freerangecloud.com">Free Range Cloud</a> or in Zurich or Frankfurt from <a
-                href="https://ifog.ch/en/ip/ixp-access">iFog</a>. Both of them have donated resources to us so we fully
+                    href="https://ifog.ch/en/ip/ixp-access">iFog</a>. Both of them have donated resources to us so we fully
                 endorse them. Their admins have also played a bit part here at EVIX and have full access to our systems.
             </p>
         </div>
 
         <input hidden id="disclosure-9" type="checkbox"/>
-        <div>
+        <div id="9">
             <label for="disclosure-9" tabindex="0"></label>
-            <h1><label for="disclosure-9">Do you have a Looking Glass?</label></h1>
+            <h2><label for="disclosure-9">Do you have a Looking Glass?</label></h2>
         </div>
         <div>
             <p>
@@ -344,51 +288,17 @@
             </p>
         </div>
 
-        <input hidden id="disclosure-10" type="checkbox"/>
-        <div>
-            <label for="disclosure-10" tabindex="0"></label>
-            <h1><label for="disclosure-10">Do you support Communities?</label></h1>
-        </div>
-        <div>
-            <p>
-                Yes! Our route server currently tags routes received from each POP with a unique community depending on
-                where the route originated. The currently supported communities are:
-            </p>
-            <ul>
-                <li>65517:01, rt:65517:01, rs_as:65517:01 &mdash; Fremont</li>
-                <li>65517:02, rt:65517:02, rs_as:65517:02 &mdash; Netherlands</li>
-                <li>65517:03, rt:65517:03, rs_as:65517:03 &mdash; New Zealand</li>
-                <li>65517:04, rt:65517:04, rs_as:65517:04 &mdash; Vancouver</li>
-                <li>65517:05, rt:65517:05, rs_as:65517:05 &mdash; Zurich</li>
-                <li>65517:06, rt:65517:06, rs_as:65517:06 &mdash; Frankfurt</li>
-            </ul>
-            <p>Additionally, RFC 1997 communities are supported.</p>
-        </div>
-
-        <input hidden id="disclosure-11" type="checkbox"/>
-        <div>
-            <label for="disclosure-11" tabindex="0"></label>
-            <h1><label for="disclosure-11">What other services can we expect?</label></h1>
-        </div>
-        <div>
-            <p>
-                EVIX currently operates two Route Servers, one with AS137933 and one with AS209762. No other services at
-                available at this time, however, in future we may turn up some new services. If you host any services on
-                EVIX such as NTP or DNS, let us know and we can add you to this list.
-            </p>
-        </div>
-
         <input hidden id="disclosure-12" type="checkbox">
-        <div>
+        <div id="12">
             <label for="disclosure-12" tabindex="0"></label>
-            <h1><label for="disclosure-12">Where is EVIX?</label></h1>
+            <h2><label for="disclosure-12">Where is EVIX?</label></h2>
         </div>
         <div>
             <p>
                 Because EVIX is a virtual exchange, it has no true location. We have tunnel servers present in Fremont,
                 Vancouver, Amsterdam, Zurich, Frankfurt, and New Zealand. VMs are available at Fremont, Vancouver, and
                 Frankfurt. Physical cross connects are available at <a href="https://he.net/colocation.html">Hurricane
-                Electric's Fremont 2 DC</a> and <a href="https://serverius.net/">Serverius DC1</a>. It is also possible
+                                                                                                             Electric's Fremont 2 DC</a> and <a href="https://serverius.net/">Serverius DC1</a>. It is also possible
                 to get a VLAN or layer 2 transit to our Amsterdam (Serverius DC1), Zurich, and Frankfurt locations. If
                 your servers are hosted in Europe then we would be happy to look into a direct connection this way.
             </p>
@@ -399,83 +309,10 @@
             </p>
         </div>
 
-        <input hidden id="disclosure-13" type="checkbox">
-        <div>
-            <label for="disclosure-13" tabindex="0"></label>
-            <h1><label for="disclosure-13">Do you have a PeeringDB page?</label></h1>
-        </div>
-        <div>
-            <p>
-                Yes! We do have a <a href="https://peeringdb.com/ix/2274">PeeringDB page</a>.
-            </p>
-        </div>
-
-        <input hidden id="disclosure-14" type="checkbox">
-        <div>
-            <label for="disclosure-14" tabindex="0"></label>
-            <h1><label for="disclosure-14">Do you have any social media?</label></h1>
-        </div>
-        <div>
-            <p>
-                We have a <a href="https://twitter.com/EVI_Exchange">Twitter account</a> but it is rarely used these
-                days. The best way to keep up to date with us is to join our <a
-                href="https://discord.gg/dXVpp6d">Discord</a>.
-            </p>
-        </div>
-
-        <input hidden id="disclosure-15" type="checkbox">
-        <div>
-            <label for="disclosure-15" tabindex="0"></label>
-            <h1><label for="disclosure-15">Do you have a mailing list?</label></h1>
-        </div>
-        <div>
-            <p>
-                We do not have a mailing list at the moment but it is on our todo list for the future. It would be a
-                great way to disseminate critical information about changes to our system. We are thinking about using
-                <a href="https://list.org/">mailman</a> but if you know of better mailing list software, please let us
-                know.
-            </p>
-        </div>
-
-        <input hidden id="disclosure-16" type="checkbox">
-        <div>
-            <label for="disclosure-16" tabindex="0"></label>
-            <h1><label for="disclosure-16">I want to volunteer!</label></h1>
-        </div>
-        <div>
-            <p>
-                That's great! All of our coordination happens on <a href="https://discord.gg/dXVpp6d">Discord</a> so be
-                sure to join that first. Then just send a message to the EVIX channel or message me personally. My
-                Discord user is Bryce#0873. I recommend looking over our <a
-                href="https://github.com/Bryce-MW/EVIX">GitHub</a> repo first since it contains a lot of our training
-                instructions and general information about our system.
-            </p>
-        </div>
-
-        <input hidden id="disclosure-17" type="checkbox">
-        <div>
-            <label for="disclosure-17" tabindex="0"></label>
-            <h1><label for="disclosure-17">Why make a virtual exchange?</label></h1>
-        </div>
-        <div>
-            <p>
-                A lot of people ask us why we made a virtual exchange rather than make a free one in a datacenter
-                similar to what FCIX does. The reason is because datacenters are expensive. When I (Bryce) first started
-                EVIX, there was no way that I would be able to afford a full rack, even in the datacenter that FCIX is
-                in which is very cheap. FCIX requires a full rack to join. In many other datacenters, cross connects
-                cost an additional monthly fee. The only way that we would even be able to afford to start an IX in
-                those situations would be sponsorships or donations. To continue, we would likely need to charge large
-                fees on top of the already large fees just to be in the datacenter. This means that the only way to
-                support the large number of hobbyists who can not afford a full rack, and may not even be able to afford
-                a VPS, is to start a virtual exchange. There are many criticisms of virtual exchanges in general which
-                are covered in the next few points.
-            </p>
-        </div>
-
         <input hidden id="disclosure-18" type="checkbox">
-        <div>
+        <div id="18">
             <label for="disclosure-18" tabindex="0"></label>
-            <h1><label for="disclosure-18">Have you gotten any complaints / can I complain?</label></h1>
+            <h2><label for="disclosure-18">Have you gotten any complaints / can I complain?</label></h2>
         </div>
         <div>
             <p>
@@ -499,10 +336,189 @@
             </p>
         </div>
 
-        <input hidden id="disclosure-19" type="checkbox">
+        <h1>Technical Questions</h1>
+        <input hidden id="disclosure-3" type="checkbox"/>
+        <div id="3">
+            <label for="disclosure-3" tabindex="0"></label>
+            <h2><label for="disclosure-3">What technology is used to connect Peers?</label></h2>
+        </div>
         <div>
+            <p>
+                EVIX has two types of peers, local and remote. Local peers have a <a
+                    href="https://freerangecloud.com">Free Range Cloud</a> (Fremont, Vancouver) or <a
+                    href="https://ifog.ch/en/ip/ixp-access">iFog</a> (Zurich, Frankfurt) VPS and have requested a
+                complimentary cross connect to the EVIX switch. There are also some peers connected via physical cross
+                connect or other custom methods at our Fremont and Amsterdam locations. We are happy to discuss
+                alternate methods. Currently, all of our physical cross-connects are 1G copper but we can support
+                various types of fiber at 1G and 10G as well (though a 10G connection would be of little benefit over a
+                1G connection).
+            </p>
+            <p>
+                Remote peers use a Layer 2 Tunneling Protocol to connect to the EVIX switch without a physical presence.
+                Supported tunneling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. Note that GRE and GRE-TAP are not
+                supported and will never be due to continued issues. We are open to supporting other methods however.
+                All peers, local and remote, use BGP to exchange routing information with each other and the EVIX route
+                servers.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-5" type="checkbox"/>
+        <div id="5">
+            <label for="disclosure-5" tabindex="0"></label>
+            <h2><label for="disclosure-5">What operating systems are supported?</label></h2>
+        </div>
+        <div>
+            <p>
+                Just about any OS that supports one of our tunneling protocols and BGP would likely work on EVIX. We
+                have officially tested and support Bird on Ubuntu Server and Debian, VyOS 1.18, and RouterOS 6. We can't
+                provide the same level of support on other devices but we are happy to try. If you use another OS and
+                get it to work, please consider sending us your instructions so that we can add it to the example
+                configuration
+            </p>
+        </div>
+
+        <input hidden id="disclosure-7" type="checkbox"/>
+        <div id="7">
+            <label for="disclosure-7" tabindex="0"></label>
+            <h2><label for="disclosure-7">What are the subnets and route servers?</label></h2>
+        </div>
+        <div>
+            <p>
+                Our IPv6 subnet is 2602:fed2:fff:ffff::/64 which has been donated by 10VPN Hosting, while
+                our IPv4 subnet is 206.81.104.0/24 and has been acquired directly from ARIN.
+            </p>
+            <p>
+                We have two route servers. Our Fremont route server has AS137933 and is at IPv4 206.81.104.1 and IPv6
+                2602:fed2:fff:ffff::1. Our Amsterdam route server has AS209762 and is at IPv4 206.81.104.253 and IPv6
+                2602:fed2:fff:ffff::253.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-10" type="checkbox"/>
+        <div id="10">
+            <label for="disclosure-10" tabindex="0"></label>
+            <h2><label for="disclosure-10">Do you support Communities?</label></h2>
+        </div>
+        <div>
+            <p>
+                Yes! Our route server currently tags routes received from each POP with a unique community depending on
+                where the route originated. The currently supported communities are:
+            </p>
+            <ul>
+                <li>65517:01, rt:65517:01, rs_as:65517:01 &mdash; Fremont</li>
+                <li>65517:02, rt:65517:02, rs_as:65517:02 &mdash; Netherlands</li>
+                <li>65517:03, rt:65517:03, rs_as:65517:03 &mdash; New Zealand</li>
+                <li>65517:04, rt:65517:04, rs_as:65517:04 &mdash; Vancouver</li>
+                <li>65517:05, rt:65517:05, rs_as:65517:05 &mdash; Zurich</li>
+                <li>65517:06, rt:65517:06, rs_as:65517:06 &mdash; Frankfurt</li>
+            </ul>
+            <p>Additionally, RFC 1997 communities are supported.</p>
+        </div>
+
+        <input hidden id="disclosure-11" type="checkbox"/>
+        <div id="11">
+            <label for="disclosure-11" tabindex="0"></label>
+            <h2><label for="disclosure-11">What other services can we expect?</label></h2>
+        </div>
+        <div>
+            <p>
+                EVIX currently operates two Route Servers, one with AS137933 and one with AS209762. No other services at
+                available at this time, however, in future we may turn up some new services. If you host any services on
+                EVIX such as NTP or DNS, let us know and we can add you to this list.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-20" type="checkbox">
+        <div id="20">
+            <label for="disclosure-20" tabindex="0"></label>
+            <h2><label for="disclosure-20">What is the MTU?</label></h2>
+        </div>
+        <div>
+            <p>
+                While our standard MTU is 1500. There are some cases where this cases issues (and we are not sure why).
+                So one solution to some issues that people have come across is to set your MTU to 1400. So if you are
+                able to ping the route servers but not connect to them, try setting your MTU to 1400.
+            </p>
+        </div>
+
+        <h1>Other Stuff</h1>
+        <input hidden id="disclosure-13" type="checkbox">
+        <div id="13">
+            <label for="disclosure-13" tabindex="0"></label>
+            <h2><label for="disclosure-13">Do you have a PeeringDB page?</label></h2>
+        </div>
+        <div>
+            <p>
+                Yes! We do have a <a href="https://peeringdb.com/ix/2274">PeeringDB page</a>.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-14" type="checkbox">
+        <div id="14">
+            <label for="disclosure-14" tabindex="0"></label>
+            <h2><label for="disclosure-14">Do you have any social media?</label></h2>
+        </div>
+        <div>
+            <p>
+                We have a <a href="https://twitter.com/EVI_Exchange">Twitter account</a> but it is rarely used these
+                days. The best way to keep up to date with us is to join our <a
+                    href="https://discord.gg/dXVpp6d">Discord</a>.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-15" type="checkbox">
+        <div id="15">
+            <label for="disclosure-15" tabindex="0"></label>
+            <h2><label for="disclosure-15">Do you have a mailing list?</label></h2>
+        </div>
+        <div>
+            <p>
+                We do not have a mailing list at the moment but it is on our todo list for the future. It would be a
+                great way to disseminate critical information about changes to our system. We are thinking about using
+                <a href="https://list.org/">mailman</a> but if you know of better mailing list software, please let us
+                know.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-16" type="checkbox">
+        <div id="16">
+            <label for="disclosure-16" tabindex="0"></label>
+            <h2><label for="disclosure-16">I want to volunteer!</label></h2>
+        </div>
+        <div>
+            <p>
+                That's great! All of our coordination happens on <a href="https://discord.gg/dXVpp6d">Discord</a> so be
+                sure to join that first. Then just send a message to the EVIX channel or message me personally. My
+                Discord user is Bryce#0873. I recommend looking over our <a
+                    href="https://github.com/Bryce-MW/EVIX">GitHub</a> repo first since it contains a lot of our training
+                instructions and general information about our system.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-17" type="checkbox">
+        <div id="17">
+            <label for="disclosure-17" tabindex="0"></label>
+            <h2><label for="disclosure-17">Why make a virtual exchange?</label></h2>
+        </div>
+        <div>
+            <p>
+                A lot of people ask us why we made a virtual exchange rather than make a free one in a datacenter
+                similar to what FCIX does. The reason is because datacenters are expensive. When I (Bryce) first started
+                EVIX, there was no way that I would be able to afford a full rack, even in the datacenter that FCIX is
+                in which is very cheap. FCIX requires a full rack to join. In many other datacenters, cross connects
+                cost an additional monthly fee. The only way that we would even be able to afford to start an IX in
+                those situations would be sponsorships or donations. To continue, we would likely need to charge large
+                fees on top of the already large fees just to be in the datacenter. This means that the only way to
+                support the large number of hobbyists who can not afford a full rack, and may not even be able to afford
+                a VPS, is to start a virtual exchange. There are many criticisms of virtual exchanges in general which
+                are covered in the next few points.
+            </p>
+        </div>
+
+        <input hidden id="disclosure-19" type="checkbox">
+        <div id="19">
             <label for="disclosure-19" tabindex="0"></label>
-            <h1><label for="disclosure-19">What do you say to those who disagree with virtual exchanges?</label></h1>
+            <h2><label for="disclosure-19">What do you say to those who disagree with virtual exchanges?</label></h2>
         </div>
         <div>
             <p>
@@ -528,22 +544,10 @@
             </p>
         </div>
 
-        <input hidden id="disclosure-20" type="checkbox">
-        <div>
-            <label for="disclosure-20" tabindex="0"></label>
-            <h1><label for="disclosure-20">What is the MTU?</label></h1>
-        </div>
-        <div>
-            <p>
-                While our standard MTU is 1500. There are some cases where this cases issues (and we are not sure why).
-                So one solution to some issues that people have come across is to set your MTU to 1400. So if you are
-                able to ping the route servers but not connect to them, try setting your MTU to 1400.
-            </p>
-        </div>
-
         <input type="checkbox" id="disclosure-21" hidden>
-        <div><label for="disclosure-21" tabindex="0"></label>
-            <h1><label for="disclosure-21">I want to sell you something.</label></h1>
+        <div id="21">
+            <label for="disclosure-21" tabindex="0"></label>
+            <h2><label for="disclosure-21">I want to sell you something.</label></h2>
         </div>
         <div>
             <p>
@@ -555,8 +559,9 @@
         </div>
 
         <input type="checkbox" id="disclosure-22" hidden>
-        <div><label for="disclosure-22" tabindex="0"></label>
-            <h1><label for="disclosure-22">Does this website have a dark mode?</label></h1>
+        <div id="22">
+            <label for="disclosure-22" tabindex="0"></label>
+            <h2><label for="disclosure-22">Does this website have a dark mode?</label></h2>
         </div>
         <div>
             <p>
@@ -569,8 +574,9 @@
         </div>
 
         <input type="checkbox" id="disclosure-23" hidden>
-        <div><label for="disclosure-23" tabindex="0"></label>
-            <h1><label for="disclosure-23">Why is your logo so terrible?</label></h1>
+        <div id="23">
+            <label for="disclosure-23" tabindex="0"></label>
+            <h2><label for="disclosure-23">Why is your logo so terrible?</label></h2>
         </div>
         <div>
             <p>
@@ -583,21 +589,23 @@
         </div>
 
         <input type="checkbox" id="disclosure-24" hidden>
-        <div><label for="disclosure-24" tabindex="0"></label>
-            <h1><label for="disclosure-24">I am an employer, what skills do your volunteers have? Can I contact you?</label></h1>
+        <div id="24">
+            <label for="disclosure-24" tabindex="0"></label>
+            <h2><label for="disclosure-24">I am an employer, what skills do your volunteers have? Can I contact you?</label></h2>
         </div>
         <div>
             <p>
                 Many of our volunteers gain valuable team working, tech support, dev-ops, software development, and
                 leadership skills. Email us to learn more about a specific person or more about what we do. I (Bryce)
                 can also give you my personal contact information if you wish or you can visit <a
-                href="https://brycemw.ca">my website</a>.
+                    href="https://brycemw.ca">my website</a>.
             </p>
         </div>
 
         <input type="checkbox" id="disclosure-25" hidden>
-        <div><label for="disclosure-25" tabindex="0"></label>
-            <h1><label for="disclosure-25">I have a great idea!</label></h1>
+        <div id="25">
+            <label for="disclosure-25" tabindex="0"></label>
+            <h2><label for="disclosure-25">I have a great idea!</label></h2>
         </div>
         <div>
             <p>
@@ -607,8 +615,9 @@
         </div>
 
         <input type="checkbox" id="disclosure-26" hidden>
-        <div><label for="disclosure-26" tabindex="0"></label>
-            <h1><label for="disclosure-26">I have another question not listed here.</label></h1>
+        <div id="26">
+            <label for="disclosure-26" tabindex="0"></label>
+            <h2><label for="disclosure-26">I have another question not listed here.</label></h2>
         </div>
         <div>
             <p>
