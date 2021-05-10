@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-CA">
 <head>
-    <link rel="preconnect" href="https://code.cdn.mozilla.net/" crossorigin>
-    <link rel="dns-prefetch" href="https://code.cdn.mozilla.net/">
+    <link crossorigin href="https://code.cdn.mozilla.net/" rel="preconnect">
+    <link href="https://code.cdn.mozilla.net/" rel="dns-prefetch">
 
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
@@ -87,89 +87,182 @@
 </div>
 <div class="body">
     <div class="faq">
-        <h1>How do we contact EVIX?</h1>
-        <p>Send an email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> for any issues.</p>
+        <input hidden id="disclosure-0" type="checkbox"/>
+        <div>
+            <label for="disclosure-0" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-0">How do we contact EVIX?</label></h1>
+        </div>
+        <div>
+            <p>Send an email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> for any issues.</p>
+        </div>
 
-        <h1>How much do ports cost?</h1>
-        <p>EVIX does not charge for participation as we believe in providing a low barrier of entry for any holders of
-            public resources to participate in BGP. While we do not charge for participation, we do accept donations to
-            cover the costs associated with running EVIX's infrastructure.</p>
+        <input hidden id="disclosure-1" type="checkbox"/>
+        <div>
+            <label for="disclosure-1" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-1">How much do ports cost?</label></h1>
+        </div>
+        <div>
+            <p>
+                EVIX does not charge for participation as we believe in providing a low barrier of entry for any holders
+                of public resources to participate in BGP. While we do not charge for participation, we do accept
+                donations to cover the costs associated with running EVIX's infrastructure.
+            </p>
+        </div>
 
-        <h1>How do we donate to EVIX?</h1>
-        <p>EVIX was built upon donations. We are very interested in receiving donations of servers to further extend the
-            reach of our network. If you would be interested in donating resources to EVIX, please contact us by
-            email: <a href="mailto: helpdesk@evix.org">helpdesk@evix.org</a>. We also accept monetary donations to our
-            PayPal email address: evix.org@gmail.com</p>
+        <input hidden id="disclosure-2" type="checkbox"/>
+        <div>
+            <label for="disclosure-2" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-2">How do we donate to EVIX?</label></h1>
+        </div>
+        <div>
+            <p>
+                EVIX was built upon donations. We are very interested in receiving donations of servers to further
+                extend the reach of our network. If you would be interested in donating resources to EVIX, please
+                contact us by email: <a href="mailto: helpdesk@evix.org">helpdesk@evix.org</a>. We also accept monetary
+                donations to our PayPal email address: evix.org@gmail.com
+            </p>
+        </div>
 
-        <h1>What technology is used to connect Peers?</h1>
-        <p>EVIX has two types of peers &ndash; local and remote. Local peers have a <a href="https://freerangecloud.com"
-            target="_blank">Free Range Cloud</a> (Fremont, Vancouver) or <a href="https://ifog.ch/en/ip/ixp-access"
-            target="_blank">iFog</a> (Zurich, Frankfurt) VPS and have requested a complimentary cross connect to the
-            EVIX switch.<br>Remote peers use a Layer 2 Tunneling Protocol to connect to the EVIX switch without a physical
-            presence. Supported tunneling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. All peers, local and remote, use
-            BGP to exchange routing information with each other and the EVIX route servers.</p>
+        <input hidden id="disclosure-3" type="checkbox"/>
+        <div>
+            <label for="disclosure-3" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-3">What technology is used to connect Peers?</label></h1>
+        </div>
+        <div>
+            <p>
+                EVIX has two types of peers, local and remote. Local peers have a <a
+                    href="https://freerangecloud.com">Free Range Cloud</a> (Fremont, Vancouver) or <a
+                    href="https://ifog.ch/en/ip/ixp-access">iFog</a> (Zurich, Frankfurt) VPS and have requested a
+                complimentary cross connect to the EVIX switch.
+            </p>
+            <p>
+                Remote peers use a Layer 2 Tunneling Protocol to connect to the EVIX switch without a physical presence.
+                Supported tunneling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. All peers, local and remote, use
+                BGP to exchange routing information with each other and the EVIX route servers.
+            </p>
+        </div>
 
-        <h1>Are there any rules?</h1>
-        <p>The internet exchange switch is a fabric shared by all peers. Peers must avoid doing anything which might
-            overload the fabric, mis-direct traffic, or otherwise cause harm to any other peers. If a peer shows a
-            willful disregard for others, they will be disconnected by the operators. Additionally, peers are
-            requested to only send traffic to destinations advertised by BGP. Do not point default routes and do
-            not point static routes to other operators. Peers are required to maintain their connection to the
-            IXP and allow ICMP PING, additionally operators are required to maintain a peering session to the primary
-            route server. Operators who do not maintain their tunnel, or who block ICMP PING will be automatically
-            de-peered.</p>
-        <p>
-            While not a rule, we request that peers register themselves
-            with <a href="https://peeringdb.com/">PeeringDB</a>, because
-            visibility there will encourage other networks to join as well,
-            bringing more benefit to all.
-        </p>
+        <input hidden id="disclosure-4" type="checkbox"/>
+        <div>
+            <label for="disclosure-4" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-4">Are there any rules?</label></h1>
+        </div>
+        <div>
+            <p>
+                The internet exchange switch is a fabric shared by all peers. Peers must avoid doing anything which
+                might overload the fabric, mis-direct traffic, or otherwise cause harm to any other peers. If a peer
+                shows a willful disregard for others, they will be disconnected by the operators. Additionally, peers
+                are requested to only send traffic to destinations advertised by BGP. Do not point default routes and do
+                not point static routes to other operators. Peers are required to maintain their connection to the IXP
+                and allow ICMP PING, additionally operators are required to maintain a peering session to the primary
+                route server. Operators who do not maintain their tunnel, or who block ICMP PING will be automatically
+                de-peered.
+            </p>
+            <p>
+                While not a rule, we request that peers register themselves with <a
+                    href="https://peeringdb.com/">PeeringDB</a>, because visibility there will encourage other networks
+                to
+                join as well, bringing more benefit to all.
+            </p>
+        </div>
 
-        <h1>What operating systems are supported?</h1>
-        <p>Technically any OS that supports VPN tunneling (current protocols include OpenVPN, ZeroTier or VXLAN) and BGP
-            or any version of Mikrotik RouterOS can be used. We have officially tested on Debian, VyOS 1.18 and RouterOS
-            6</p>
+        <input hidden id="disclosure-5" type="checkbox"/>
+        <div>
+            <label for="disclosure-5" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-5">What operating systems are supported?</label></h1>
+        </div>
+        <div>
+            <p>
+                Technically any OS that supports VPN tunneling (current protocols include OpenVPN, ZeroTier or VXLAN)
+                and BGP or any version of Mikrotik RouterOS can be used. We have officially tested on Debian, VyOS 1.18
+                and RouterOS 6.
+            </p>
+        </div>
 
-        <h1>Are there any example configurations?</h1>
-        <p>Yes! We have example configuration instructions available at: <a href="/Documents/example-config.pdf">example-config.pdf</a>
-            <br>Send us an email if you would like to add to this document!</p>
+        <input hidden id="disclosure-6" type="checkbox"/>
+        <div>
+            <label for="disclosure-6" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-6">Are there any example configurations?</label></h1>
+        </div>
+        <div>
+            <p>
+                Yes! We have example <a href="static/documents/example-config.pdf">configuration instructions</a>
+                available. Your setup may be slightly different so these instructions may not work for you but these are
+                what we have found the most success with. If you find that a different configuration works better for
+                you or you would like to contribute with instructions for a different operating system, please let us
+                know!
+            </p>
+        </div>
 
-        <h1>What Subnets do you use?</h1>
-        <p>Our IPv6 subnet is <code>2602:fed2:fff:ffff::/64</code> which has been donated by 10VPN Hosting, while our IPv4
-            subnet is <code>206.81.104.0/24</code> and has been acquired directly from ARIN</p>
+        <input hidden id="disclosure-7" type="checkbox"/>
+        <div>
+            <label for="disclosure-7" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-7">What Subnets do you use?</label></h1>
+        </div>
+        <div>
+            <p>
+                Our IPv6 subnet is 2602:fed2:fff:ffff::/64 which has been donated by 10VPN Hosting, while
+                our IPv4 subnet is 206.81.104.0/24 and has been acquired directly from ARIN
+            </p>
+        </div>
 
-        <h1>What is the process for getting connected?</h1>
-        <p>
-            Please fill out the peering request form on our <a href="get_connected.html">contact page</a> and one of our staff
-            will get in touch.
-        </p>
-        <p>
-            Please see our <a href="locations.html">Locations list</a> for
-            the closest virtual switch to you.</p>
+        <input hidden id="disclosure-8" type="checkbox"/>
+        <div>
+            <label for="disclosure-8" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-8">What is the process for getting connected?</label></h1>
+        </div>
+        <div>
+            <p>
+                Please fill out the peering request form on our <a href="get_connected.html">contact page</a> and one of
+                our staff will get in touch.
+            </p>
+            <p>
+                Please see our <a href="locations.html">Locations list</a> for the closest virtual switch to you.</p>
+        </div>
 
-        <h1>Do you have a Looking Glass?</h1>
-        <p>
-            Yes! We have a public looking glass available at <a href="https://lg.evix.org/" target="_blank">lg.evix.org</a> which
-            shows all peering sessions the router is configured for.</p>
+        <input hidden id="disclosure-9" type="checkbox"/>
+        <div>
+            <label for="disclosure-9" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-9">Do you have a Looking Glass?</label></h1>
+        </div>
+        <div>
+            <p>
+                Yes! We have a public looking glass available at <a href="https://lg.evix.org/"
+                                                                    target="_blank">lg.evix.org</a> which shows all
+                peering sessions the router is configured for.
+            </p>
+        </div>
 
-        <h1>Do you support Communities?</h1>
-        <p>Yes! Our route server currently tags routes received from each POP with a unique community depending on where
-            the route originated. The currently supported communities are:
-        </p>
-        <ul>
-            <li>Fremont POP - 65517:01</li>
-            <li>Netherlands POP - 65517:02</li>
-            <li>New Zealand POP - 65517:03</li>
-            <li>Vancouver POP - 65517:04</li>
-        </ul>
-        Additionally, RFC 1997 communities are supported.<p></p>
+        <input hidden id="disclosure-10" type="checkbox"/>
+        <div>
+            <label for="disclosure-10" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-10">Do you support Communities?</label></h1>
+        </div>
+        <div>
+            <p>
+                Yes! Our route server currently tags routes received from each POP with a unique community depending on
+                where the route originated. The currently supported communities are:
+            </p>
+            <ul>
+                <li>Fremont POP - 65517:01</li>
+                <li>Netherlands POP - 65517:02</li>
+                <li>New Zealand POP - 65517:03</li>
+                <li>Vancouver POP - 65517:04</li>
+            </ul>
+            <p>Additionally, RFC 1997 communities are supported.</p>
+        </div>
 
-        <h1>What other services can we expect?</h1>
-        <p>
-            EVIX currently operates a Route Server with ASN 137933. No other services at available at this time,
-            however, in future we may turn up some new services.
-        </p>
-
+        <input hidden id="disclosure-11" type="checkbox"/>
+        <div>
+            <label for="disclosure-11" onkeyup="if(event.code==='Space')event.target.click()" tabindex="0"></label>
+            <h1><label for="disclosure-11">What other services can we expect?</label></h1>
+        </div>
+        <div>
+            <p>
+                EVIX currently operates a Route Server with ASN 137933. No other services at available at this time,
+                however, in future we may turn up some new services.
+            </p>
+        </div>
     </div>
 </div>
 </body>
