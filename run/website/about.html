@@ -91,65 +91,64 @@
             <h1>What is EVIX anyway?</h1>
             <p>
                 As you probably saw on our main page, EVIX stands for the Experimental Virtual Internet Exchange. For
-                those who are not familiar with how the internet works, every computer, whether that be your phone or
-                one of the many servers used by <a href="https://www.google.ca/about/datacenters/">Google</a>, must know
-                how to navigate the large number of connections running all over the Earth. Your phone must know how to
-                get to Google and Google must know how to send the reply back to your phone. Since there are <a
-                    href="https://isp.today/">many internet service providers</a> in the world, it would be impossible
-                for
-                them all to connect directly to each other. So we have a protocol called BGP that your ISP uses to tell
-                the other ISPs that it connects to that it knows how to get to your phone. All of those ISPs then
-                forward that message to all of the ISPs that they are connected to until the whole world knows the
-                route.
+                those who are not familiar with how the internet works, I'll start with the basics. Whether that be your
+                phone or one of the many servers used by <a href="https://www.google.ca/about/datacenters/"
+                target="_blank" rel="external">Google</a>, every computer must know how to navigate the large number of
+                connections running all over the Earth. Your phone must know how to get to Google, and Google must know
+                how to send the reply back to your phone. Since there are <a href="https://isp.today/" target="_blank"
+                rel="external">many internet service providers</a> globally, it would be impossible for them all to
+                connect directly to each other. So we have a protocol called BGP that your ISP uses to tell the other
+                ISPs that it connects to that it knows how to get to your phone. All of those ISPs then forward that
+                message to all of the ISPs that they are connected to until the whole world knows the route.
             </p>
             <p>
-                But if a connection has to go through many ISPs, it is going to take longer. So having direct
-                connections to more ISPs is usually a good thing. Many ISPs of the same size may <a
-                    href="https://www.thousandeyes.com/learning/techtorials/isp-peering">connect to each other for
-                free</a>
-                since they both receive benefit by doing that. But once you have more than a few ISPs, the number of
-                direct connections grows quickly. Each new ISP would have to connect to every existing one. We have
-                almost 200 members so each new member would have to connect to 200 existing members!
+                But if a connection has to go through many ISPs, it is going to take longer. So having direct links to
+                more ISPs is usually a good thing. Many ISPs of the same size may <a
+                href="https://www.thousandeyes.com/learning/techtorials/isp-peering" target="_blank"
+                rel="external">connect for free</a> since they both receive benefits by doing that. But once you have
+                more than a few ISPs, the number of direct connections multiplies. Each new ISP would have to connect to
+                every existing one. We have almost 200 members, so each new member would have to connect to 200 existing
+                members!
             </p>
             <p>
                 As you can probably guess, there is a better way. That's with an internet exchange. An internet exchange
-                allows many ISPs or other networks in a close area to make a single connection to the internet exchange
+                allows many ISPs or other networks in a close area to make a single connection to the internet exchange,
                 which then acts as if they were directly connected to all of the other members.
             </p>
             <p>
                 But traditional IXs can be very expensive and are generally only available to those who store servers in
                 the same facility. This is reasonable for businesses. For hobbyists like the members of EVIX, it is
-                prohibitively expensive. That's why we created EVIX, to support the network engineers of the future.
-                EVIX allows our members to learn how real internet exchanges work with almost no cost. The skills that
-                they learn can be transferred directly to future jobs and experiences. It's been an amazing learning
-                opportunity for those of us running EVIX as well since it has allowed us to learn what it is like to
-                develop in an environment where hundreds of people are counting on our work and have special questions
-                or issues that we never thought of.
+                prohibitively expensive. That's why we created EVIX to support the network engineers of the future. EVIX
+                allows our members to learn how real internet exchanges work at almost no cost. The skills that they
+                learn can be transferred directly to future jobs and experiences. It's been a fantastic learning
+                opportunity for those of us running EVIX since it has allowed us to learn what it is like to develop in
+                an environment where hundreds of people are counting on our work and have particular questions or issues
+                that we never thought about.
             </p>
 
             <h1>Our Goals</h1>
             <ul>
                 <li>
                     We want to provide a low barrier to entry opportunity for hobbyists and the like to get experience
-                    with as close to a real internet exchange as we can provide.
+                    with as close to an actual internet exchange as we can provide.
                 </li>
                 <li>
-                    It is also important that we automate the entire process as much as possible. For the sake of
-                    learning, reducing the workload on our volunteers, and supporting other internet exchanges in their
-                    own automation.
+                    It is also vital that we automate the entire process as much as possible for the sake of learning,
+                    reducing the workload on our volunteers, and supporting other internet exchanges in their
+                    automation.
                 </li>
             </ul>
 
 
             <h1>Supported Connection Types</h1>
             <p>
-                Because internet exchanges allow each member to determine their own policy with all of the other
-                networks connected to the exchange, it is required that we use connection types that support the
-                tunneling of packets on layer 2 of the OSI model. This is the layer that Ethernet and MAC addresses work
-                at. Importantly, this means that the Generic Routing Encapsulation (GRE) tunneling protocol is not
-                supported since it is only able to tunnel layer 3 packets. There is an extension called GRE-TAP which
-                can transport layer 2 packets but it has inconsistent implementations which often lead to unresolvable
-                issues. For that reason, we do not support it. However, we do support the following connection types.
+                Because internet exchanges allow each member to determine their policy with all of the other networks
+                connected to the exchange, it is required that we use connection types that support the tunnelling of
+                packets on layer 2 of the OSI model. This is the layer that Ethernet and MAC addresses work at. Please
+                note that the Generic Routing Encapsulation (GRE) tunnelling protocol is not supported since it can only
+                tunnel layer three packets. GRE-TAP is an extension that can transport layer two packets, but it has
+                inconsistent implementations that often lead to unresolvable issues. For that reason, we do not support
+                it. However, we do support the following connection types.
             </p>
             <ul>
                 <li>Virtual Extensible LAN (VXLAN)</li>
@@ -160,7 +159,7 @@
                 <li>Custom Layer 2 Transit</li>
             </ul>
             <p>
-                We are open to trying other protocols that work on layer 2 as well. Let us know in your ticket.
+                We are open to trying other protocols that work on layer two as well. Let us know in your ticket.
             </p>
 
             <h1>Technologies Used</h1>
@@ -179,8 +178,9 @@
                 <li>
                     Git is used for managing script and static config changes. Our repository is stored on a GitLab
                     server hosted by one of our admins. We have a mirror of our repository <a
-                    href="https://github.com/Bryce-MW/EVIX">on GitHub</a> so that we can share our work with others. We
-                    do accept pull requests and issues on that repository so if you have ideas, let us know!
+                    href="https://github.com/Bryce-MW/EVIX" rel="external" target="_blank">on GitHub</a> so that we can
+                    share our work with others. We accept pull requests and issues on that repository so if you have
+                    ideas, let us know!
                 </li>
                 <li>Deployment of new scripts and configuration is done with Ansible.</li>
             </ul>
@@ -279,40 +279,40 @@
             <h1>Special Thanks</h1>
             <ul>
                 <li>
-                    <a href="https://freerangecloud.com" rel="external" target="_blank">Free Range Cloud</a> /
-                    <a href="https://10vpn.net" rel="external" target="_blank">10VPN Hosting</a> for donation of a VPS
+                    <a href="https://freerangecloud.com" rel="external" target="_blank">Free Range Cloud</a> / <a
+                    href="https://10vpn.net" rel="external" target="_blank">10VPN Hosting</a> for the donation of a VPS
                     in Fremont and Vancouver and IPv6 space for the peering LAN. They also sponsored our ASNs and IPv4
-                    space and offer VPSs directly connected to the exchange.
+                    space. Free Range Cloud offers VPSs directly connected to the exchange.
                 </li>
                 <li>
-                    <a href="https://ifog.ch/en" rel="external" target="_blank">iFog GmbH</a> for donation of VMs in
+                    <a href="https://ifog.ch/en" rel="external" target="_blank">iFog GmbH</a> for the donation of VMs in
                     Frankfurt and Zurich. They offer VPSs directly connected to the exchange in both locations.
                 </li>
             </ul>
 
             <h1>Github</h1>
             <p>
-                Bryce Wilson has hosted all of our code on <a href="https://github.com/Bryce-MW/EVIX">GitHub</a> for
-                anyone to use. The code is not meant to be a cookie-cutter solution at the moment so there is a lot of
-                documentation that is lacking and other config that is not integrated into the repository at the moment.
-                It is more meant to be used as a reference for those who have come across similar issues to us. For
-                example, we have a few <a
-                href="https://github.com/Bryce-MW/EVIX/blob/5ca3b91fb44ed16d8cce2c2d864eb34fcd708a40/scripts/root/expanded_bird_status.sh">JQ
-                scripts</a> for parsing the output of the Bird BGP Daemon.
+                Bryce Wilson has hosted all of our code on <a href="https://github.com/Bryce-MW/EVIX"
+                rel="external">GitHub</a> for anyone to use. The code is not meant to be a cookie-cutter solution at the
+                moment, so there is a lot of documentation that is lacking and other configs that are not integrated
+                into the repository at the moment. It is more meant to be used as a reference for those who have come
+                across similar issues. For example, we have a few <a
+                href="https://github.com/Bryce-MW/EVIX/blob/5ca3b91fb44ed16d8cce2c2d864eb34fcd708a40/scripts/root/expanded_bird_status.sh"
+                target="_blank" rel="external">JQ scripts</a>  for parsing the output of the Bird BGP Daemon.
             </p>
             <p>
-                While we are happy to share snippets of our code, we ask that you do not copy our code in its entirety.
+                While we are happy to share our code snippets, we ask that you do not copy our code in its entirety.
                 Essentially, please do not outright copy our website design or text or utilize all of our scripts
                 together as a whole. But in general, we are happy to see our code used by others. If in doubt, send us
-                an email and we will be happy to chat. We can also give you some tips or help you when something is not
-                properly explained.
+                an email, and we will be glad to chat. We can also give you some tips or help you when something is not
+                adequately explained.
             </p>
 
             <h1>Donate</h1>
             <p>
-                At one point, we were accepting donations by PayPal. We are looking into overhauling the donation system
-                but this has not been done yet. For now, let us know by email if you wish to donate and we can help you
-                out with that. We also greatly accept donations of hardware, software, rack space, transit, and
+                At one point, we were accepting donations by PayPal. We are looking into overhauling the donation
+                system, but this has not been done yet. For now, let us know by email if you wish to donate, and we can
+                help you out with that. We also greatly accept donations of hardware, software, rack space, transit, and
                 sometimes VMs for new POPs if it is in an area where we have little presence. We would currently be open
                 to a POP on the east coast of Canada or the USA, Asia, Africa, or South America. If you have another
                 idea for a POP location or have another donation idea, send us an email and let us know.
