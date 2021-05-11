@@ -15,7 +15,7 @@ token=$(jq -r '.monitoring.librenms_token' /evix/secret-config.json)
 
 api_device_id="$1"
 server_name="$2"
-api_url="http://librenms.evix.org/api/v0/devices"
+api_url="https://librenms.evix.org/api/v0/devices"
 api_image_path="ports/br10/port_bits"
 
 width=541
