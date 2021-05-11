@@ -636,6 +636,7 @@ ul {
       border-left: 0.9em solid var(--dark);
       transition: transform 200ms ease-in-out,
       box-shadow 200ms ease-in-out;
+      border-radius: var(--corner-round);
 
       box-shadow: 0 0 0 0 var(--bg),
       0 0 0 0 var(--accent);
