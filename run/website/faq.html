@@ -106,7 +106,7 @@
         <div>
             <p>
                 Send an email to <a href="mailto:helpdesk@evix.org">helpdesk@evix.org</a> or join us on
-                <a href="https://discord.gg/dXVpp6d">Discord</a>.
+                <a href="https://discord.gg/dXVpp6d" target="_blank" rel="external">Discord</a>.
             </p>
         </div>
 
@@ -119,26 +119,27 @@
             <p>
                 At the moment, we do not charge for connection to EVIX. This is for a few reasons. One of our primary
                 goals is to provide a low barrier to entry opportunity for hobbyists. Many of us can not afford the high
-                fees that other exchanges, even those for hobbyists, charge. We are able to do this because all of our
-                infrastructure and resources are donated so we have few reoccurring fees. We are happy to accept
+                fees that other exchanges, even those for hobbyists, charge. We can do this because all of our
+                infrastructure and resources are donated, so we have few reoccurring fees. We are happy to accept
                 donations to help us with that and with expanding our resources. At one point, we considered adding a
-                nominal fee of about $1/yr but we ended up deciding against it.
+                nominal fee of about $1/yr, but we ended up deciding against it.
             </p>
             <p>
                 We also don't want to feel like our members are customers. Since most of us are students or are busy
-                with our own jobs, we can't provide the same level of service as a company can. If we had a required
-                charge then we would be more obligated to solve issues and work on improvements. This could be
+                with our own jobs, we can't provide the same level of service as a company can. If we had a mandatory
+                charge, then we would be more obligated to solve issues and work on improvements. This could be
                 detrimental to our own lives. There are also some cases where we can't figure out how to solve something
                 from our end. Since all of our members have slightly different setups, it is up to them to solve that
-                kind of issue. We don't want to feel like we must be full support agents who are required to solve
-                issues that are not on our end. Sometimes neither of us can figure it out and it is just best for the
-                member to disconnect than to spend a considerable amount of time remotely debugging their configuration.
+                kind of issue. We don't want to feel like we must be full support agents who must solve problems that
+                are not on our end. Sometimes neither of us can figure it out, and it is just best for the member to
+                disconnect than spend a considerable amount of time remotely debugging their configuration.
             </p>
             <p>
-                In the future, we would like to provide a way that you can make a reoccurring contribution to help us
-                with our costs and development. Since this is a donation, we would not feel as obligated towards the
-                previously mentioned issues. We could also stick to having no refunds even in the case of an outage
-                since you would always be free to stop your contributions and still recive the same service.
+
+                In the future, we would like to provide a way to make a reoccurring contribution to help us with our
+                costs and development. Since this is a donation, we would not feel as obligated towards the previously
+                mentioned issues. We could also stick to having no refunds, even in the case of an outage, since you
+                would always be free to stop your contributions and still receive the same service.
             </p>
         </div>
 
@@ -149,9 +150,9 @@
         </div>
         <div>
             <p>
-                At one point, we were accepting donations by PayPal. We are looking into overhauling the donation system
-                but this has not been done yet. For now, let us know by email if you wish to donate and we can help you
-                out with that. We also greatly accept donations of hardware, software, rack space, transit, and
+                At one point, we were accepting donations by PayPal. We are looking into overhauling the donation
+                system, but this has not been done yet. For now, let us know by email if you wish to donate so we can
+                help you out with that. We also greatly accept donations of hardware, software, rack space, transit, and
                 sometimes VMs for new POPs if it is in an area where we have little presence. We would currently be open
                 to a POP on the east coast of Canada or the USA, Asia, Africa, or South America. If you have another
                 idea for a POP location or have another donation idea, send us an email and let us know.
@@ -166,56 +167,55 @@
         <div>
             <p>
                 The internet exchange switch is a fabric shared by all peers. Peers must avoid doing anything which
-                might overload the fabric, mis-direct traffic, or otherwise cause harm to any other peers. If a peer
+                might overload the fabric, misdirect traffic, or otherwise cause harm to any other peers. If a peer
                 shows a willful disregard for others, they will be disconnected by the operators. Additionally, peers
                 are requested to only send traffic to destinations advertised by BGP. Do not point default routes and do
                 not point static routes to other operators.
             </p>
             <p>
-                Peers are required to maintain their connection to the IXP and allow ICMP Ping, additionally operators
-                are required to maintain a peering session to the primary route server. Operators who do not maintain
-                their route server connection automatically de-peered. If you do not wish to connect to the route
-                servers then you can let us know and we will exempt you from our monitoring system. Note that this means
-                that we can not send out our automated emails to let you know that your connection is down. While
-                allowing ICMP Ping is technically optional, it is a critical debugging tool and disabling it will cause
-                many issues.
+                Peers must maintain their connection to the IXP and allow ICMP Ping. Additionally, operators are
+                required to maintain a peering session to the primary route server. Operators who do not keep their
+                route server connection are automatically de-peered. If you do not wish to connect to the route servers,
+                you can let us know so we can exempt you from our monitoring system. Note that this means that we can
+                not send out our automated emails to let you know that your connection is down. While allowing ICMP Ping
+                is technically optional, it is a critical debugging tool and disabling it will cause many issues.
             </p>
             <p>
                 To be specific, our policy is that if one or more of your route server connections is down, we will
                 email you at most once a week. If all of your route server connections come back up, this will reset.
-                Technically, we go off of the connection that has been down for the longest time so if you flip-flopped
-                between which route server you were connected to then you may not receive the emails properly. After
-                three weeks we will not send any more emails. If all of your connections are down, and the connection
-                that has been down for the longest has been down for four or more weeks, then we will send a final email
-                and remove your connection. These warnings are per-IP. So if you have two IPs, you will receive separate
+                Technically, we go off of the connection that has been down for the longest time, so if you flip-flopped
+                between which route server you were connected to, then you may not receive the emails properly. After
+                three weeks, we will not send any more emails. If all of your connections are down, and the connection
+                that has been down for the longest has been down for four or more weeks, we will send a final email and
+                remove your connection. These warnings are per-IP. So if you have two IPs, you will receive separate
                 emails for each.
             </p>
             <p>
                 This means that in the general case, you will receive three warning emails, once per week. After the
                 fourth week, you will receive one more email removing your connection. If you only have one connection
-                that is down then in general, you will receive three emails, once per week, then no more. While you
-                won't be bothered anymore, this is still a precarious situation because if at any time after four weeks
-                all of your remaining route server connections go down, you will be immediately removed.
+                down, then in general, you will receive three emails, once per week, then no more. While you won't be
+                bothered anymore, this is still a precarious situation because if at any time after four weeks, all of
+                your remaining route server connections go down, you will be immediately removed.
             </p>
             <p>
-                If you have been removed but would like to join again. Send us an email. This way we can give you your
-                old IPs back rather than allocating new ones.
+                Suppose you have been removed but would like to join again. Please send us an email. This way, we can
+                give you your old IPs back rather than allocating new ones.
             </p>
             <p>
                 We also do not tolerate harassment of any kind. This includes support messages, private messages to
                 other members (if they tell us about it), and inappropriate network names. We will let you know if we
-                find you to be in violation of this rule before making an action. This includes derogatory statements
-                towards women and minorities. EVIX is inclusive to everyone.
+                find you to violate this rule before making an action. This includes derogatory statements towards women
+                and minorities. EVIX is inclusive to everyone.
             </p>
             <p>
                 We reserve the right to remove anyone that breaks one of these rules. We will try to give you notice if
-                that happens. I will note that this has never happened before but I think it is important to state our
+                that happens. I will note that this has never happened before, but I think it is important to state our
                 stance just in case.
             </p>
             <p>
-                While not a rule, we request that peers register themselves with <a
-                    href="https://peeringdb.com/ix/2274">PeeringDB</a>, because visibility there will encourage other
-                networks to join as well, bringing more benefit to all.
+                While not a rule, we request that peers register themselves with <a href="https://peeringdb.com/ix/2274"
+                target="_blank" rel="external">PeeringDB</a> because visibility there will encourage other networks to
+                join and bring more benefit to all.
             </p>
         </div>
 
@@ -227,23 +227,22 @@
         <div>
             <p>
                 Start by looking at our example <a href="static/documents/example-config.pdf">configuration
-                                                                                              instructions</a>. Your setup may be slightly different so these instructions may not work for you but
+                instructions</a>. Your setup may be slightly different, so these instructions may not work for you, but
                 these are what we have found the most success with. If you find that a different configuration works
-                better for you or you would like to contribute with instructions for a different operating system,
-                please let us know!
+                better for you or you would like to contribute with instructions for another operating system, please
+                let us know!
             </p>
             <p>
                 For quick questions or general questions that don't require an EVIX admin to investigate, consider
-                joining our <a href="https://discord.gg/dXVpp6d">Discord</a>. There are many people on there who may be
-                able to help you if we are busy.
+                joining our <a href="https://discord.gg/dXVpp6d" target="_blank" rel="external">Discord</a>. There are
+                many people on there who may be able to help you if we are busy.
             </p>
             <p>
                 If all else fails, open a ticket with us by <a href="mailto:helpdesk@evix.org">emailing us</a>. Since we
-                are often very busy, it may be a while before we are able to get back to you. If possible, include as
-                must information as you can so that we can solve the issue in as few emails as we can. It also helps if
-                you try to solve the issue yourself and let us know what you tried. 90% of problems are solved by just
-                restarting your BGP daemon a couple of times so that's likely the first thing that we would ask you to
-                do.
+                are often very busy, it may be a while before we can get back to you. If possible, include as must
+                information as you can so that we can solve the issue in as few emails as we can. It also helps if you
+                try to solve the issue yourself and let us know what you tried. 90% of problems are solved by just
+                restarting your BGP daemon a couple of times, so that's likely the first thing we would ask you to do.
             </p>
         </div>
 
@@ -254,15 +253,16 @@
         </div>
         <div>
             <p>
-                Please fill out the peering request form on our <a href="get_connected.html">contact page</a> and one of
-                our staff will get in touch. There is more information on that page about the exact process.
+                Please fill out the peering request form on our <a href="get_connected.html">contact page</a>, and one
+                of our staff will get in touch. There is more information on that page about the exact process.
             </p>
             <p>
                 See our <a href="locations.html">locations list</a> to find the closest virtual switch to you. If you
-                need any help, please email us. You can also get a connection through a VPS in Vancouver or Fremont from
-                <a href="https://freerangecloud.com">Free Range Cloud</a> or in Zurich or Frankfurt from <a
-                    href="https://ifog.ch/en/ip/ixp-access">iFog</a>. Both of them have donated resources to us so we fully
-                endorse them. Their admins have also played a bit part here at EVIX and have full access to our systems.
+                need any help, please email us. You can also connect through a VPS in Vancouver or Fremont from <a
+                href="https://freerangecloud.com" target="_blank" rel="external">Free Range Cloud</a> or in Zurich or
+                Frankfurt from <a href="https://ifog.ch/en/ip/ixp-access" target="_blank" rel="external">iFog</a>. Both
+                of them have donated resources to us, so we fully endorse them. Their admins have also played a big part
+                here at EVIX and have full access to our systems.
             </p>
         </div>
 
@@ -273,7 +273,7 @@
         </div>
         <div>
             <p>
-                Yes! We have a public looking glass available at <a href="https://lg.evix.org/">lg.evix.org</a> which
+                Yes! We have a public looking glass available at <a href="https://lg.evix.org/">lg.evix.org</a>, which
                 shows all peering sessions on both the Fremont and Amsterdam route servers. Peers with broken sessions
                 are listed at the bottom of the page. Often with an explanation of what the issue is.
             </p>
@@ -286,12 +286,13 @@
         </div>
         <div>
             <p>
-                Because EVIX is a virtual exchange, it has no true location. We have tunnel servers present in Fremont,
-                Vancouver, Amsterdam, Zurich, Frankfurt, and New Zealand. VMs are available at Fremont, Vancouver, and
-                Frankfurt. Physical cross connects are available at <a href="https://he.net/colocation.html">Hurricane
-                                                                                                             Electric's Fremont 2 DC</a> and <a href="https://serverius.net/">Serverius DC1</a>. It is also possible
-                to get a VLAN or layer 2 transit to our Amsterdam (Serverius DC1), Zurich, and Frankfurt locations. If
-                your servers are hosted in Europe then we would be happy to look into a direct connection this way.
+                Because EVIX is a virtual exchange, it has no true location. We have tunnel servers in Fremont,
+                Vancouver, Amsterdam, Zurich, Frankfurt, and New Zealand. VMs are available in Fremont, Vancouver, and
+                Frankfurt. Physical cross-connects are available at <a href="https://he.net/colocation.html"
+                target="_blank" rel="external">Hurricane Electric's Fremont 2 DC</a> and <a
+                href="https://serverius.net/" target="_blank" rel="external">Serverius DC1</a>. It is also possible to
+                get a VLAN or layer two transit to our Amsterdam (Serverius DC1), Zurich, and Frankfurt locations. If
+                your servers are hosted in Europe, we would be happy to look into a direct connection this way.
             </p>
             <p>
                 Our volunteers are from around the world! Bryce and Chris are from the Vancouver area. Many of our
@@ -307,23 +308,23 @@
         </div>
         <div>
             <p>
-                So far we have only received complaints from one very vocal member of the hobbyist BGP community. They
-                claim to have received complaints from others leaving them with the huge hassle of explaining what we
-                are and why they don't think that anyone should be involved. They also refuse to work with anyone
-                involved with us as a volunteer or member unless that member removes all connections to us. We understand
-                that there are disagreements on whether we should exist or not but I think that this persons behaviour
-                has been a bit immature. Still, we do invite conversation about the merits and demerits of EVIX on
-                Discord or via email.
+                So far, we have only received complaints from one very vocal member of the hobbyist BGP community. They
+                claim to have received complaints from others, leaving them with the considerable hassle of explaining
+                what we are and why they don't think anyone should be involved. They also refuse to work with anyone
+                involved with us as a volunteer or member unless that member removes all connections to us. We
+                understand that there are disagreements on whether we should exist, but I think this person's behaviour
+                has been immature. Still, we do invite conversation about the merits and demerits of EVIX on Discord or
+                via email.
             </p>
             <p>
-                There is also a small but vocal group advocating against virtual exchanges in general. Often complaining
-                on mailing lists or on GitHub issues. We are happy to discuss with these people directly. Please reach
+                There is also a small but vocal group advocating against virtual exchanges in general, often complaining
+                on mailing lists or GitHub issues. We are happy to discuss this with these people directly. Please reach
                 out to us. We believe that there are good reasons for us to exist and would love to share.
             </p>
             <p>
                 If you would like to complain, please send us an email or chat on our Discord server. If anyone
-                complains about us to you (not sure why they wouldn't contact us directly) then please send them our
-                way. If we only have complaints from one person, it is very difficult for us to make improvements.
+                complains about us to you (unsure why they wouldn't contact us directly), please send them our way. If
+                we only have complaints from one person, it is challenging for us to make improvements.
             </p>
         </div>
 
@@ -335,20 +336,20 @@
         </div>
         <div>
             <p>
-                EVIX has two types of peers, local and remote. Local peers have a <a
-                    href="https://freerangecloud.com">Free Range Cloud</a> (Fremont, Vancouver) or <a
-                    href="https://ifog.ch/en/ip/ixp-access">iFog</a> (Zurich, Frankfurt) VPS and have requested a
-                complimentary cross connect to the EVIX switch. There are also some peers connected via physical cross
-                connect or other custom methods at our Fremont and Amsterdam locations. We are happy to discuss
-                alternate methods. Currently, all of our physical cross-connects are 1G copper but we can support
-                various types of fiber at 1G and 10G as well (though a 10G connection would be of little benefit over a
-                1G connection).
+                EVIX has two types of peers, local and remote. Local peers have a <a href="https://freerangecloud.com"
+                target="_blank" rel="external">Free Range Cloud</a> (Fremont, Vancouver) or <a
+                href="https://ifog.ch/en/ip/ixp-access" target="_blank" rel="external">iFog</a> (Zurich, Frankfurt) VPS
+                and have requested a complimentary cross-connect to the EVIX switch. Some peers also connect via
+                physical cross-connect or other custom methods at our Fremont and Amsterdam locations. We are happy to
+                discuss alternate methods. Currently, all of our physical cross-connects are 1G copper, but we can
+                support various types of fibre at 1G and 10G as well (though a 10G connection would be of little benefit
+                over a 1G connection).
             </p>
             <p>
                 Remote peers use a Layer 2 Tunneling Protocol to connect to the EVIX switch without a physical presence.
-                Supported tunneling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. Note that GRE and GRE-TAP are not
-                supported and will never be due to continued issues. We are open to supporting other methods however.
-                All peers, local and remote, use BGP to exchange routing information with each other and the EVIX route
+                Supported tunnelling protocols are EoIP, OpenVPN, VXLAN and ZeroTier. Note that GRE and GRE-TAP are not
+                supported and will never be due to ongoing issues. We are open to supporting other methods, however. All
+                peers, local and remote, use BGP to exchange routing information with each other and the EVIX route
                 servers.
             </p>
         </div>
@@ -360,11 +361,11 @@
         </div>
         <div>
             <p>
-                Just about any OS that supports one of our tunneling protocols and BGP would likely work on EVIX. We
+                Just about any OS that supports one of our tunnelling protocols and BGP would likely work on EVIX. We
                 have officially tested and support Bird on Ubuntu Server and Debian, VyOS 1.18, and RouterOS 6. We can't
-                provide the same level of support on other devices but we are happy to try. If you use another OS and
-                get it to work, please consider sending us your instructions so that we can add it to the example
-                configuration
+                provide the same level of support on other devices, but we are happy to try. If you use another OS and
+                get it to work, please consider sending us your instructions so that we can add them to the example
+                configuration.
             </p>
         </div>
 
@@ -375,13 +376,13 @@
         </div>
         <div>
             <p>
-                Our IPv6 subnet is 2602:fed2:fff:ffff::/64 which has been donated by 10VPN Hosting, while
-                our IPv4 subnet is 206.81.104.0/24 and has been acquired directly from ARIN.
+                Our IPv6 subnet is <code>2602:fed2:fff:ffff::/64</code> which has been donated by 10VPN Hosting, while
+                our IPv4 subnet is <code>206.81.104.0/24</code> and has been acquired directly from ARIN.
             </p>
             <p>
-                We have two route servers. Our Fremont route server has AS137933 and is at IPv4 206.81.104.1 and IPv6
-                2602:fed2:fff:ffff::1. Our Amsterdam route server has AS209762 and is at IPv4 206.81.104.253 and IPv6
-                2602:fed2:fff:ffff::253.
+                We have two route servers. Our Fremont route server has AS137933 and is at IPv4
+                <code>206.81.104.1</code> and IPv6 <code>2602:fed2:fff:ffff::1</code>. Our Amsterdam route server has
+                AS209762 and is at IPv4 <code>206.81.104.253</code> and IPv6 <code>2602:fed2:fff:ffff::253</code>.
             </p>
         </div>
 
@@ -393,15 +394,15 @@
         <div>
             <p>
                 Yes! Our route server currently tags routes received from each POP with a unique community depending on
-                where the route originated. The currently supported communities are:
+                where the route originated. The presently supported communities are:
             </p>
             <ul>
-                <li>65517:01, rt:65517:01, rs_as:65517:01 &mdash; Fremont</li>
-                <li>65517:02, rt:65517:02, rs_as:65517:02 &mdash; Netherlands</li>
-                <li>65517:03, rt:65517:03, rs_as:65517:03 &mdash; New Zealand</li>
-                <li>65517:04, rt:65517:04, rs_as:65517:04 &mdash; Vancouver</li>
-                <li>65517:05, rt:65517:05, rs_as:65517:05 &mdash; Zurich</li>
-                <li>65517:06, rt:65517:06, rs_as:65517:06 &mdash; Frankfurt</li>
+                <li><span class="mono">65517:01, rt:65517:01, rs_as:65517:01</span> &mdash; Fremont</li>
+                <li><span class="mono">65517:02, rt:65517:02, rs_as:65517:02</span> &mdash; Netherlands</li>
+                <li><span class="mono">65517:03, rt:65517:03, rs_as:65517:03</span> &mdash; New Zealand</li>
+                <li><span class="mono">65517:04, rt:65517:04, rs_as:65517:04</span> &mdash; Vancouver</li>
+                <li><span class="mono">65517:05, rt:65517:05, rs_as:65517:05</span> &mdash; Zurich</li>
+                <li><span class="mono">65517:06, rt:65517:06, rs_as:65517:06</span> &mdash; Frankfurt</li>
             </ul>
             <p>Additionally, RFC 1997 communities are supported.</p>
         </div>
@@ -414,8 +415,8 @@
         <div>
             <p>
                 EVIX currently operates two Route Servers, one with AS137933 and one with AS209762. No other services at
-                available at this time, however, in future we may turn up some new services. If you host any services on
-                EVIX such as NTP or DNS, let us know and we can add you to this list.
+                available at this time. However, in future, we may turn up some new services. If you host any services
+                on EVIX, such as NTP or DNS, let us know, and we can add you to this list.
             </p>
         </div>
 
@@ -426,9 +427,9 @@
         </div>
         <div>
             <p>
-                While our standard MTU is 1500. There are some cases where this cases issues (and we are not sure why).
-                So one solution to some issues that people have come across is to set your MTU to 1400. So if you are
-                able to ping the route servers but not connect to them, try setting your MTU to 1400.
+                While our standard MTU is 1500, there are some cases where this causes issues (and we are not sure why).
+                So one solution to some problems that people have come across is to set your MTU to 1400. So if you can
+                ping the route servers but not connect to them, try setting your MTU to 1400.
             </p>
         </div>
 
@@ -440,7 +441,7 @@
         </div>
         <div>
             <p>
-                Yes! We do have a <a href="https://peeringdb.com/ix/2274">PeeringDB page</a>.
+                Yes! We do have a <a href="https://peeringdb.com/ix/2274" rel="external">PeeringDB page</a>.
             </p>
         </div>
 
@@ -451,9 +452,9 @@
         </div>
         <div>
             <p>
-                We have a <a href="https://twitter.com/EVI_Exchange">Twitter account</a> but it is rarely used these
-                days. The best way to keep up to date with us is to join our <a
-                    href="https://discord.gg/dXVpp6d">Discord</a>.
+                We have a <a href="https://twitter.com/EVI_Exchange" target="_blank" rel="external">Twitter account</a>
+                but it is rarely used these days. The best way to keep up to date with us is to join our <a
+                href="https://discord.gg/dXVpp6d" rel="external">Discord</a>.
             </p>
         </div>
 
@@ -464,10 +465,10 @@
         </div>
         <div>
             <p>
-                We do not have a mailing list at the moment but it is on our todo list for the future. It would be a
+                We do not have a mailing list at the moment, but it is on our todo list for the future. It would be a
                 great way to disseminate critical information about changes to our system. We are thinking about using
-                <a href="https://list.org/">mailman</a> but if you know of better mailing list software, please let us
-                know.
+                <a href="https://list.org/" target="_blank" rel="external">mailman</a>, but if you know of better
+                mailing list software, please let us know.
             </p>
         </div>
 
@@ -478,11 +479,11 @@
         </div>
         <div>
             <p>
-                That's great! All of our coordination happens on <a href="https://discord.gg/dXVpp6d">Discord</a> so be
-                sure to join that first. Then just send a message to the EVIX channel or message me personally. My
-                Discord user is Bryce#0873. I recommend looking over our <a
-                    href="https://github.com/Bryce-MW/EVIX">GitHub</a> repo first since it contains a lot of our training
-                instructions and general information about our system.
+                That's great! All of our coordination happens on <a href="https://discord.gg/dXVpp6d" rel="external"
+                target="_blank">Discord</a>, so be sure to join that first. Then send a message to the EVIX channel or
+                message me personally. My Discord user is <code>Bryce#0873</code>. I recommend looking over our <a
+                href="https://github.com/Bryce-MW/EVIX" target="_blank" rel="external">GitHub</a> repo first since it
+                contains many of our training instructions and general information about our system.
             </p>
         </div>
 
@@ -493,16 +494,16 @@
         </div>
         <div>
             <p>
-                A lot of people ask us why we made a virtual exchange rather than make a free one in a datacenter
-                similar to what FCIX does. The reason is because datacenters are expensive. When I (Bryce) first started
-                EVIX, there was no way that I would be able to afford a full rack, even in the datacenter that FCIX is
-                in which is very cheap. FCIX requires a full rack to join. In many other datacenters, cross connects
-                cost an additional monthly fee. The only way that we would even be able to afford to start an IX in
-                those situations would be sponsorships or donations. To continue, we would likely need to charge large
-                fees on top of the already large fees just to be in the datacenter. This means that the only way to
-                support the large number of hobbyists who can not afford a full rack, and may not even be able to afford
-                a VPS, is to start a virtual exchange. There are many criticisms of virtual exchanges in general which
-                are covered in the next few points.
+                Many people ask us why we made a virtual exchange rather than make a free one in a datacenter similar to
+                what FCIX does. The reason is that datacenters are expensive. When I (Bryce) first started EVIX, there
+                was no way that I would be able to afford a full rack, even in the datacenter that FCIX is in, which is
+                very cheap. FCIX requires a whole rack to join. In many other datacenters, cross-connects cost an
+                additional monthly fee. The only way we would even be able to afford to start an IX in those situations
+                would be sponsorships or donations. To continue, we would likely need to charge hefty fees on top of the
+                already high costs to be in the datacenter. This means that the only way to support the large number of
+                hobbyists who can not afford a full rack and may not even be able to afford a VPS is to start a virtual
+                exchange. There are many criticisms of virtual exchanges in general, which are covered in the following
+                few points.
             </p>
         </div>
 
@@ -514,23 +515,25 @@
         <div>
             <p>
                 I won't say that all virtual exchanges are justified. While I can't speak for our members, building EVIX
-                has been a very valuable experience for our admins. Many of those who disagree think that we should
-                either join DN42 or build an exchange in our lab (not that many of our admins could afford a lab,
-                remember that many of us are students). DN42 is a great way to get started with BGP and we highly
-                recommend it. There are some things that just can't be learned from a lab or DN42. At EVIX, we have had
-                to work as a team which is significantly more difficult than working alone. We have also had to
-                coordinate between many technologies. If you just built a lab, chances are that you would use the same
-                OS for everything, or you would at least be limited to what you can think of. With EVIX, we have so many
-                members that we have been asked for many different things that we would not have thought of on our own
-                and now have to come up with. The large number of members have also necessitated automation that was not
-                originally planned. As people count on us, there is a large incentive to keep working on the project.
-                Since it has been around for so long, we have built up tech debt which has required us to create new
-                solutions for things that we have forgotten. Overall, the experience has been one much closer to working
-                at a company than building a project as a hobby. This has given us such invaluable experience that it
-                was worth building EVIX for that reason alone.
+                has been a valuable experience for our admins. Many of those who disagree think that we should either
+                join DN42 or build an exchange in our lab (not that many of our admins could afford a lab, remember that
+                many of us are students). DN42 is a great way to get started with BGP, and we highly recommend it. Some
+                things just can't be learned from a lab or DN42.
             </p>
             <p>
-                We are very happy to discuss this topic so please reach out to us! I think that we can come up with
+                At EVIX, we have had to work as a team which is significantly more complex than working alone. We have
+                also had to coordinate between many technologies. If you just built a lab, chances are that you would
+                use the same OS for everything, or you would at least be limited to what you can think of. With EVIX, we
+                have so many members asking for many different things that we would not have thought of on our own and
+                now have to come up with. The large number of members has also necessitated automation that was not
+                planned initially. As people count on us, there is a significant incentive to keep working on the
+                project. Since it has been around for so long, we have built up tech debt which has required us to
+                create new solutions for things that we have forgotten. Overall, the experience has been much closer to
+                working at a company than building a project as a hobby. This has given us such invaluable experience
+                that it was worth making EVIX for that reason alone.
+            </p>
+            <p>
+                We are thrilled to discuss this topic, so please reach out to us! I think that we can come up with
                 compromises that make everyone happy.
             </p>
         </div>
@@ -543,9 +546,8 @@
         <div>
             <p>
                 Because we are composed of volunteers who pay for most resources out-of-pocket, we currently have no
-                budget. If you would like to make a donation, please let us know, but until then, we likely can't afford
-                your product. Also, internet exchanges don't need transit to our ASNs so please don't try to sell us
-                that.
+                budget. If you would like to donate, please let us know, but otherwise, we likely can't afford your
+                product. Also, internet exchanges don't need transit to our ASNs, so please don't try to sell us that.
             </p>
         </div>
 
@@ -556,14 +558,16 @@
         </div>
         <div>
             <p>
-                Not yet! Actually, all of the colors on the website are temporary. If you have good colors for a dark
-                mode, let us know and we will implement it. Currently our dark blue is <code class="color"
+                Not yet! All of the colours on the website are temporary. If you have good colours for a dark mode, let
+                us know, and we will implement it. Our dark blue is <code class="color"
                 style="--swatch:#091540">#091540</code>, light blue is <code class="color"
                 style="--swatch:#7692ff">#7692ff</code>, even lighter blue is <code class="color"
                 style="--swatch:#ABD2FA">#ABD2FA</code>, our accent color is <code class="color"
                 style="--swatch:#E60073">#E60073</code>, and our accent translucent color is <code class="color"
-                style="--swatch:#e6007377">#e6007377</code> which is only used for selected text. We use <a
-                href="https://github.com/mozilla/Fira">Fira Sans</a> as our font by the way.
+                style="--swatch:#e6007377">#e6007377</code>, which is only used for selected text. We use <a
+                href="https://github.com/mozilla/Fira" target="_blank" rel="external">Fira Sans</a> and <a
+                href="https://github.com/tonsky/FiraCode" target="_blank" rel="external">Fira Code</a> as our fonts by
+                the way.
             </p>
         </div>
 
@@ -574,11 +578,11 @@
         </div>
         <div>
             <p>
-                Our logo is also temporary. It was made very quickly by taking our light blue color and our accent color
-                and putting them in a <a href="https://www.blobmaker.app/">blob</a>. Then we added an animation when you
-                hover over it. The logo isn't even an image. It's just an SVG underneath text. The gradient was inspired
-                by the bisexual flag. Not for any reason other than that I really like those colors. We will make a new
-                one eventually but this is like an in-6-to-12-months kind of later.
+                Our logo is also temporary. It was made very quickly by taking our light blue colour and our accent
+                colour and putting them in a <a href="https://www.blobmaker.app/">blob</a>. Then we added an animation
+                when you hover over it. The logo isn't even an image. It's just an SVG underneath text. The gradient was
+                inspired by the bisexual flag. Not for any reason other than that I like those colours. We will make a
+                new one eventually, but this is like an in-6-to-12-months kind of later.
             </p>
         </div>
 
@@ -591,8 +595,8 @@
             <p>
                 Many of our volunteers gain valuable team working, tech support, dev-ops, software development, and
                 leadership skills. Email us to learn more about a specific person or more about what we do. I (Bryce)
-                can also give you my personal contact information if you wish or you can visit <a
-                    href="https://brycemw.ca">my website</a>.
+                can also give you my personal contact information if you wish, or you can visit <a
+                href="https://brycemw.ca">my website</a>.
             </p>
         </div>
 
