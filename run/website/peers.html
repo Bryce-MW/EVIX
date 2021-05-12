@@ -7,12 +7,6 @@
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
     <link as="style" href="fira.css" rel="preload">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Heavy.woff" rel="preload"
-          type="font/woff">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Bold.woff" rel="preload"
-          type="font/woff">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Regular.woff" rel="preload"
-          type="font/woff">
 
     <meta charset="UTF-8">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -51,9 +45,9 @@
                 item.addEventListener('click', event => {
                     let next = event.target.parentElement;
                     // noinspection StatementWithEmptyBodyJS
-                    while ((next = next.nextElementSibling)?.className !== 'hide') ;
+                    while (!(next = next.nextElementSibling)?.classList.contains('hide')) ;
                     // This is empty because we ignore the non-hidden ones
-                    while ((next = next.nextElementSibling)?.className === 'hide') {
+                    while ((next = next.nextElementSibling)?.classList.contains('hide')) {
                         next.hidden = !next.hidden
                     }
                 })
@@ -121,58 +115,58 @@
         <div class="disclosure"><label for="disclosure-0" tabindex="0"></label>
         </div>
         <span><label for="disclosure-0">EVIX Primary Route Server</label></span>
-        <span>137933</span>
-        <span>206.81.104.1</span>
-        <span>2602:fed2:fff:ffff::1</span>
+        <span class="mono">137933</span>
+        <span class="mono">206.81.104.1</span>
+        <span class="mono">2602:fed2:fff:ffff::1</span>
         <span>fmt local/custom</span>
         <div class="hide"></div>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide" hidden>209762</span>
-        <span class="hide" hidden>206.81.104.253</span>
-        <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
+        <span class="hide mono" hidden>209762</span>
+        <span class="hide mono" hidden>206.81.104.253</span>
+        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
         <span class="hide" hidden></span>
 
         <input hidden id="disclosure-1" type="checkbox"/>
         <div class="disclosure"><label for="disclosure-1" tabindex="0"></label></div>
         <span><label for="disclosure-1">EVIX Primary Route Server</label></span>
-        <span>137933</span>
-        <span>206.81.104.1</span>
-        <span>2602:fed2:fff:ffff::1</span>
+        <span class="mono">137933</span>
+        <span class="mono">206.81.104.1</span>
+        <span class="mono">2602:fed2:fff:ffff::1</span>
         <span>fmt local/custom</span>
         <div class="hide"></div>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide" hidden>209762</span>
-        <span class="hide" hidden>206.81.104.253</span>
-        <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
+        <span class="hide mono" hidden>209762</span>
+        <span class="hide mono" hidden>206.81.104.253</span>
+        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
         <span class="hide" hidden></span>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide" hidden>209762</span>
-        <span class="hide" hidden>206.81.104.253</span>
-        <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
+        <span class="hide mono" hidden>209762</span>
+        <span class="hide mono" hidden>206.81.104.253</span>
+        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
         <span class="hide" hidden></span>
 
         <input hidden id="disclosure-2" type="checkbox"/>
         <div class="disclosure"><label for="disclosure-2" tabindex="0"></label></div>
         <span><label for="disclosure-2">EVIX Primary Route Server</label></span>
-        <span>137933</span>
-        <span>206.81.104.1</span>
-        <span>2602:fed2:fff:ffff::1</span>
+        <span class="mono">137933</span>
+        <span class="mono">206.81.104.1</span>
+        <span class="mono">2602:fed2:fff:ffff::1</span>
         <span>fmt local/custom, ams local/custom</span>
         <div class="hide"></div>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide" hidden>209762</span>
-        <span class="hide" hidden>206.81.104.253</span>
-        <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
+        <span class="hide mono" hidden>209762</span>
+        <span class="hide mono" hidden>206.81.104.253</span>
+        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
         <span class="hide" hidden></span>
 
         <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide" hidden>209762</span>
-        <span class="hide" hidden>206.81.104.253</span>
-        <span class="hide" hidden>2602:fed2:fff:ffff::253</span>
+        <span class="hide mono" hidden>209762</span>
+        <span class="hide mono" hidden>206.81.104.253</span>
+        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
         <span class="hide" hidden></span>
     </div>
 </div>

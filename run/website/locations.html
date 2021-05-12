@@ -7,15 +7,6 @@
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
     <link as="style" href="fira.css" rel="preload">
-    <link
-            as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Heavy.woff" rel="preload"
-            type="font/woff">
-    <link
-            as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Bold.woff" rel="preload"
-            type="font/woff">
-    <link
-            as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Regular.woff" rel="preload"
-            type="font/woff">
 
     <meta charset="UTF-8">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -94,7 +85,7 @@
     <div class="locations">
         <div id="fmt">
             <h1>Fremont Tunnel/Route Server</h1>
-            <h2>IPv4: 72.52.82.6, IPv6: 2602:fed2:fc0:c8::1</h2>
+            <h2>IPv4: <span class="mono">72.52.82.6</span>, IPv6: <span class="mono">2602:fed2:fc0:c8::1</span></h2>
             <p>
                 Our primary virtual switch location is in Fremont, California, on the US West Coast. This site has 1gbps
                 of connectivity and direct peering to Hurricane Electric. The physical datacenter it is located in is
@@ -104,7 +95,7 @@
         </div>
         <div id="ams">
             <h1>Amsterdam Tunnel/Route Server</h1>
-            <h2>IPv4: 93.158.213.143, IPv6: 2a00:1ca8:2a::75e</h2>
+            <h2>IPv4: <span class="mono">93.158.213.143</span>, IPv6: <span class="mono">2a00:1ca8:2a::75e</span></h2>
             <p>
                 We have an extension switch in the Serverius DC1 datacenter located in Dronten, about 30KM away from
                 Amsterdam, in The Netherlands. This site is fed with a 250mbps circuit and has excellent peering into
@@ -114,7 +105,7 @@
         </div>
         <div id="nz">
             <h1>New Zealand Tunnel Server</h1>
-            <h2>IPv4: 163.47.131.155</h2>
+            <h2>IPv4: <span class="mono">163.47.131.155</span></h2>
             <p>
                 The Asia-Pacific region is served by an EVIX extension switch in New Zealand, offering much better
                 latency to regional peers than tunnelling through the US. A 1gbps circuit provides connectivity to the
@@ -124,7 +115,7 @@
         </div>
         <div id="zur">
             <h1>Zurich Tunnel Server</h1>
-            <h2>IPv4: 193.148.250.34, IPv6: 2a0c:9a40:1050::34</h2>
+            <h2>IPv4: <span class="mono">193.148.250.34</span>, IPv6: <span class="mono">2a0c:9a40:1050::34</span></h2>
             <p>
                 Thanks to <a href="https://ifog.ch/en" rel="external" target="_blank">iFog</a>, we have a POP in Zurich,
                 Switzerland.

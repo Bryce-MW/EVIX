@@ -32,6 +32,11 @@
 
   --bg: var(--light);
   font-size: min(1rem, 5vw);
+  --main-font: "Fira Sans", sans-serif;
+  --mono-font: "Fira Code", monospace;
+}
+@supports (font-variation-settings: normal) {
+  :root { --mono-font: 'Fira Code VF', monospace; }
 }
 
 html, body {
@@ -42,7 +47,7 @@ body {
   flex-direction: column;
 
   margin: 0;
-  font-family: "Fira Sans", sans-serif;
+  font-family: var(--main-font);
   color: var(--dark);
   background-color: var(--light);
 }
@@ -242,6 +247,30 @@ ul {
     }
   }
 }
+code, .mono {
+  font-family: var(--mono-font);
+  font-feature-settings: "calt";
+  font-variant-ligatures: contextual;
+
+  letter-spacing: -0.05em;
+}
+code {
+  background: #7777;
+  border-radius: var(--corner-round);
+  padding: 0.1em;
+}
+.color::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  transform: translateY(30%);
+  margin: 0.1em;
+
+  background: var(--swatch);
+  border-radius: var(--corner-round);
+  border: 0.1em solid white;
+}
 
 
 .hero {
@@ -405,6 +434,7 @@ ul {
 
         + label {
           margin: auto;
+          cursor: pointer;
 
           span {
             display: grid;
@@ -566,6 +596,7 @@ ul {
 
     label {
       display: block;
+      cursor: pointer;
 
       width: 0;
       height: 0;
@@ -574,6 +605,7 @@ ul {
       border-left: 0.7em solid var(--dark);
       transition: transform 200ms ease-in-out,
       box-shadow 200ms ease-in-out;
+      border-radius: var(--corner-round);
 
       box-shadow: 0 0 0 0 var(--bg),
       0 0 0 0 var(--accent);
@@ -628,6 +660,7 @@ ul {
 
     > label {
       display: block;
+      cursor: pointer;
 
       width: 0;
       height: 0;

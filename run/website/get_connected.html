@@ -7,12 +7,6 @@
     <link as="style" href="main.css" rel="preload">
     <link as="style" href="undo-redo.css" rel="preload">
     <link as="style" href="fira.css" rel="preload">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Heavy.woff" rel="preload"
-          type="font/woff">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Bold.woff" rel="preload"
-          type="font/woff">
-    <link as="font" crossorigin href="https://code.cdn.mozilla.net/fonts/woff/FiraSans-Regular.woff" rel="preload"
-          type="font/woff">
 
     <meta charset="UTF-8">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
@@ -57,9 +51,17 @@
                 type.disabled = false;
             }
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Make sure this is done in the case of auto-fill or future changes
+            loc_toggle()
+
+            // Add the event listener now that the page has loaded
+            document.getElementById('location').addEventListener("change", loc_toggle)
+        })
     </script>
 </head>
-<body onload="loc_toggle()">
+<body>
 <div class="top">
     <div class="head">
         <a href="index.html">
@@ -169,7 +171,7 @@
                        placeholder="https://evix.org" type="url"/>
 
                 <label for="location">Tunnel Location</label>
-                <select id="location" name="location" onchange="loc_toggle()" required>
+                <select id="location" name="location" required>
                     <option value="fmt">Fremont</option>
                     <option value="ams">Netherlands</option>
                     <option value="nz">New Zealand</option>
