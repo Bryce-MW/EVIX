@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    {% if not correct %}
+        <meta http-equiv="refresh" content="2; URL='get_connected.html'" />
+    {% endif %}
+
+    <link crossorigin href="https://code.cdn.mozilla.net/" rel="preconnect">
+    <link href="https://code.cdn.mozilla.net/" rel="dns-prefetch">
+
+    <link as="style" href="main.css" rel="preload">
+    <link as="style" href="undo-redo.css" rel="preload">
+    <link as="style" href="fira.css" rel="preload">
+
+    <meta charset="UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>EVIX - Submitted</title>
+    <meta content="Experimental Virtual Internet Exchange" name="description">
+    <meta content="Bryce Wilson" name="author">
+
+    <link href="../main.css" rel="stylesheet">
+
+    <link href="index.html" rel="prefetch">
+    <link href="about.html" rel="prefetch">
+    <link href="locations.html" rel="prefetch">
+    <link href="get_connected.html" rel="prefetch">
+    <link href="peers.html" rel="prefetch">
+    <link href="faq.html" rel="prefetch">
+
+    <!--These are like favicons and that sort of thing-->
+    <link href="../static/icons/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="../static/icons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+    <link href="../static/icons/android-chrome-192x192.png" rel="icon" sizes="192x192" type="image/png">
+    <link href="../static/icons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="../static/icons/site.webmanifest" rel="manifest">
+    <link color="#091540" href="../static/icons/safari-pinned-tab.svg" rel="mask-icon">
+    <link href="../static/icons/favicon.ico" rel="shortcut icon">
+    <meta content="EVIX" name="apple-mobile-web-app-title">
+    <meta content="EVIX" name="application-name">
+    <meta content="#091540" name="msapplication-TileColor">
+    <meta content="static/icons/mstile-144x144.png" name="msapplication-TileImage">
+    <meta content="static/icons/browserconfig.xml" name="msapplication-config">
+    <meta content="#091540" name="theme-color">
+</head>
+<body>
+<div class="top">
+    <div class="head">
+        <a href="index.html">
+            <svg preserveAspectRatio="none" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="bi-b" x1="0" x2="1" y1="1" y2="0">
+                        <stop class="stop" offset="0%"/>
+                        <stop class="stop" offset="100%"/>
+                    </linearGradient>
+                    <linearGradient id="bi" x1="1" x2="0" y1="0" y2="1">
+                        <stop class="stop" offset="0%"/>
+                        <stop class="stop" offset="100%"/>
+                    </linearGradient>
+                </defs>
+                <path d="M51.6,-70.8C64.6,-61.5,71.5,-43.5,75.1,-25.9C78.8,-8.3,79.3,8.8,75.3,25.6C71.4,42.4,63,58.8,49.7,63.6C36.5,68.4,18.2,61.5,-0.1,61.6C-18.3,61.7,-36.7,68.7,-52.5,64.7C-68.4,60.8,-81.7,45.8,-81.6,30.3C-81.5,14.7,-67.9,-1.5,-60.3,-18C-52.7,-34.5,-51.1,-51.3,-42,-61.9C-33,-72.5,-16.5,-77,1.4,-78.9C19.3,-80.8,38.5,-80.1,51.6,-70.8Z"
+                      fill="url(#bi)"
+                      id="hover"
+                      stroke="url(#bi-b)"
+                      stroke-width="0"
+                      transform="translate(100 100)"/>
+            </svg>
+            <span>EVIX</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="about.html">About</a></li>
+                <li><a href="locations.html">Locations</a></li>
+                <li><a href="get_connected.html">Get Connected</a></li>
+                <li><a href="peers.html">Peers</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+    </div>
+    <svg preserveAspectRatio="none" viewBox="0 90 1440 320" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,96L80,96C160,96,320,96,480,133.3C640,171,800,245,960,245.3C1120,245,1280,171,1360,133.3L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+              fill="#091540"
+              fill-opacity="1"></path>
+    </svg>
+</div>
+<div class="body">
+    <div class="submitted_form">
+        <p>
+            {% if correct %}
+                Thanks for filling out the peering form! We will get back to you with more details. You may or may not
+                receive a confirmation email before then. Please be patient since we are only volunteers. Have a great
+                day!
+            {% else %}
+                Thanks for filling out the peering form. Unfortunately, you made a mistake somewhere. Please read the
+                instructions carefully. {% error %}
+            {% endif %}
+        </p>
+    </div>
+</div>
+</body>
+</html>
