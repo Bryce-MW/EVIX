@@ -11,10 +11,12 @@ import validators
 import mysql.connector
 import smtplib
 import ssl
+import sys
+sys.stderr = sys.stdout
 
 email_template = """
 To: "{name}" <{contact}>
-BCC: "EVIX Peering" <peering@evix.org>
+BCC: "EVIX Peering" <helpdesk@evix.org>
 Subject: EVIX Join Request - {name}
 
 Hi {name}!
@@ -114,16 +116,7 @@ if __name__ == "__main__":
     with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
         server.set_debuglevel(2)
         server.login(config['mail']['username'], config['mail']['password'])
-        print(email_template.format(
-            name=name,
-            asn=asn,
-            contact=contact,
-            website=website,
-            location=location,
-            type=tunnel_type,
-            ipv4=needs_ipv4,
-            comments=comments
-        ))
+        print(config['mail']['username'], config['mail']['password'], "support@evix.org", (contact, "helpdesk@evix.org"))
         server.sendmail("support@evix.org", (contact, "helpdesk@evix.org"), email_template.format(
             name=name,
             asn=asn,
