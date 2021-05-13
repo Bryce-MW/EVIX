@@ -14,7 +14,8 @@ import ssl
 import sys
 sys.stderr = sys.stdout
 
-email_template = """To: "EVIX Helpdesk" <helpdesk@evix.org>
+email_template = """From: "EVIX Support" <support@evix.org>
+To: "EVIX Helpdesk" <helpdesk@evix.org>
 BCC: "{name}" <{contact}>
 Subject: EVIX Join Request - {name}
 
