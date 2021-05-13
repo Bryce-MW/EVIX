@@ -114,7 +114,16 @@ if __name__ == "__main__":
     with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
         server.set_debuglevel(2)
         server.login(config['mail']['username'], config['mail']['password'])
-        print("server works")
+        print(email_template.format(
+            name=name,
+            asn=asn,
+            contact=contact,
+            website=website,
+            location=location,
+            type=tunnel_type,
+            ipv4=needs_ipv4,
+            comments=comments
+        ))
         server.sendmail("support@evix.org", (contact, "helpdesk@evix.org"), email_template.format(
             name=name,
             asn=asn,
