@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-CA">
 <head>
-    {% if not correct %}
-        <meta http-equiv="refresh" content="2; URL='get_connected.html'" />
-    {% endif %}
-
     <link crossorigin href="https://code.cdn.mozilla.net/" rel="preconnect">
     <link href="https://code.cdn.mozilla.net/" rel="dns-prefetch">
 
@@ -42,6 +38,10 @@
     <meta content="static/icons/mstile-144x144.png" name="msapplication-TileImage">
     <meta content="static/icons/browserconfig.xml" name="msapplication-config">
     <meta content="#091540" name="theme-color">
+
+    {% if not correct %}
+        <meta http-equiv="refresh" content="5; URL='get_connected.html'" />
+    {% endif %}
 </head>
 <body>
 <div class="top">
