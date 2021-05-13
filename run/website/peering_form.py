@@ -57,7 +57,7 @@ if __name__ == "__main__":
     cursor = database.cursor()
 
     env = Environment(
-        loader=PackageLoader("peering_form"),
+        loader=PackageLoader("peering_form", ""),
         autoescape=select_autoescape()
     )
 
