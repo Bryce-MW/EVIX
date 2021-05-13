@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
-        # server.set_debuglevel(2)
+        server.set_debuglevel(2)
         server.login(config['mail']['username'], config['mail']['password'])
         server.sendmail("support@evix.org", (contact, "peering@evix.org"), email_template.format(
             name=name,
