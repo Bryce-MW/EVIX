@@ -39,6 +39,7 @@ Have a nice day!
 
 def print_error(error):
     print(template.render(correct=False, error=error))
+    exit(0)
 
 with open("/evix/secret-config.json") as config_f:
     config = json.load(config_f)
