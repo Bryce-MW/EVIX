@@ -15,7 +15,7 @@ import sys
 sys.stderr = sys.stdout
 
 email_template = """From: "{name}" <{contact}>
-To: "EVIX Support" <support@evix.org>
+To: "EVIX Helpdesk" <helpdesk@evix.org>
 BCC: "{name}" <{contact}>
 Subject: EVIX Join Request - {name}
 
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=context) as server:
         # server.set_debuglevel(2)
         server.login(config['mail']['username'], config['mail']['password'])
-        server.sendmail("support@evix.org", ("support@evix.org", contact), email_template.format(
+        server.sendmail("support@evix.org", ("helpdesk@evix.org", contact), email_template.format(
             name=name,
             asn=asn,
             contact=contact,
