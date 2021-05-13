@@ -61,7 +61,7 @@ if __name__ == "__main__":
         autoescape=select_autoescape()
     )
 
-    template = env.get_template("peering_form.html")
+    template = env.get_template("peering_form.jinja.html")
 
     form = cgi.FieldStorage()
     # Expected elements: name, asn, contact, website (optional), location, type, ipv4 (bool), comments (optional)
