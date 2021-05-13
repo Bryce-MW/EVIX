@@ -1,15 +1,15 @@
 #! /usr/bin/env python3
 import cgi
 import cgitb
+cgitb.enable()
+print("Content-Type: text/html\n")  # DO NOT REMOVE
+
 from jinja2 import Environment, PackageLoader, select_autoescape
 import json
 import validators
 import mysql.connector
 import smtplib
 import ssl
-
-cgitb.enable()
-print("Content-Type: text/html\n")  # DO NOT REMOVE
 
 email_template = """
 To: "{name}" <{contact}>
