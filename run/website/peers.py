@@ -6,13 +6,13 @@ import jq
 import mysql.connector
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-if "REQUEST_METHOD" in os.environ and __name__ == "__main__":
-    # This is running in cgi mode
-    import cgitb
-    import sys
-    sys.stderr = sys.stdout
-    cgitb.enable()
-    print("Content-type: text/html\n")
+# if "REQUEST_METHOD" in os.environ and __name__ == "__main__":
+#     # This is running in cgi mode
+#     import cgitb
+#     import sys
+#     sys.stderr = sys.stdout
+#     cgitb.enable()
+#     print("Content-type: text/html\n")
 
 
 if __name__ == "__main__":
