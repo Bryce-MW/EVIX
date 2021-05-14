@@ -5,7 +5,7 @@ as $item
   if
     (. | map(select(.asn == $item.asn)) | length > 0)
   then
-    map(if .asn == $item.asn then .additional_ips += [$item.ip] else . end)
+    map(if .asn == $item.asn then .additional_ips += [$item | {ip, version}] else . end)
   else . + [$item + {additional_ips:[]}]
   end)
 | reduce

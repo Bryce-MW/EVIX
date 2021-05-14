@@ -39,6 +39,7 @@ if __name__ == "__main__":
         SELECT 
             json_object(
                 'ip', ip,
+                'version', version,
                 'asn', asns.asn,
                 'client_id', client_id,
                 'client', json_object(

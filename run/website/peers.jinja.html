@@ -101,7 +101,9 @@
     </svg>
 </div>
 <div class="body">
-    <div class="peers" style="--rows: 8">
+    {% for peer in peers %}
+    {% if loop.first %}
+    <div class="peers" style="--rows: {{ loop.length }}">
         <div class="h1"></div>
         <div class="h2"></div>
 
@@ -110,64 +112,58 @@
         <span class="title">IPv4</span>
         <span class="title">IPv6</span>
         <span class="title">Tunnel Types</span>
+    {% endif %}
 
-        <input hidden id="disclosure-0" type="checkbox"/>
-        <div class="disclosure"><label for="disclosure-0" tabindex="0"></label>
+        {% if peer.additional_asns or peers.additional_ips %}
+        <input hidden id="disclosure-{{ loop.index0 }}" type="checkbox"/>
+        <div class="disclosure"><label for="disclosure-{{ loop.index0 }}" tabindex="0"></label>
         </div>
-        <span><label for="disclosure-0">EVIX Primary Route Server</label></span>
+        <span>
+            {% if peer.client.website %}<a href="{{ peer.client.website }}" rel="nofollow" target="_blank">{% endif %}
+            <label for="disclosure-{{ loop.index0 }}">{{ peer.client.name }}</label>
+            {% if peer.client.website %}</a>{% endif %}
+        </span>
+        {% else %}
+        <span>
+            {% if peer.client.website %}<a href="{{ peer.client.website }}" rel="nofollow" target="_blank">{% endif %}
+            {{ peer.client.name }}
+            {% if peer.client.website %}</a>{% endif %}
+        </span>
+        {% endif %}
         <span class="mono">137933</span>
-        <span class="mono">206.81.104.1</span>
-        <span class="mono">2602:fed2:fff:ffff::1</span>
-        <span>fmt local/custom</span>
+        <span class="mono">{% if peer.version == 4 %}{{ peer.ip }}{% endif %}</span>
+        <span class="mono">{% if peer.version == 6 %}{{ peer.ip }}{% elseif peer.additional_ips and peer.additional_ips[0].version == 6 %}{{ peer.additional_ips[0].ip }}{% endif %}</span>
+        <span>{% for connection in peer.connections %}{% if not loop.first %}, {% endif %}{{ connection.location }} {{ connection.type }}{% endfor %}</span>
         <div class="hide"></div>
 
-        <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide mono" hidden>209762</span>
-        <span class="hide mono" hidden>206.81.104.253</span>
-        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
+        {% for additional_ip in peers.additional_ips %}
+        {% if not (loop.first and additional_ip.version==6 and peer.version==4) %}
+        <span class="hide" hidden></span>
+        <span class="hide mono" hidden></span>
+        <span class="hide mono" hidden>{% if additional_ip.version == 4 %}{{ additional_ip.ip }}{% endif %}</span>
+        <span class="hide mono" hidden>{% if additional_ip.version == 4 %}{{ additional_ip.ip }}{% endif %}</span>
+        <span class="hide" hidden></span>
+        {% endif %}
+        {% endfor %}
+
+        {% for additional_asn in peers.additional_asn %}
+        <span class="hide" hidden></span>
+        <span class="hide mono" hidden>{{ additional_asn.asn }}</span>
+        <span class="hide mono" hidden>{% if additional_asn.version == 4 %}{{ additional_asn.ip }}{% endif %}</span>
+        <span class="hide mono" hidden>{% if additional_asn.version == 6 %}{{ additional_asn.ip }}{% elseif additional_asn.additional_ips and additional_asn.additional_ips[0].version == 6 %}{{ additional_asn.additional_ips[0].ip }}{% endif %}</span>
         <span class="hide" hidden></span>
 
-        <input hidden id="disclosure-1" type="checkbox"/>
-        <div class="disclosure"><label for="disclosure-1" tabindex="0"></label></div>
-        <span><label for="disclosure-1">EVIX Primary Route Server</label></span>
-        <span class="mono">137933</span>
-        <span class="mono">206.81.104.1</span>
-        <span class="mono">2602:fed2:fff:ffff::1</span>
-        <span>fmt local/custom</span>
-        <div class="hide"></div>
-
-        <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide mono" hidden>209762</span>
-        <span class="hide mono" hidden>206.81.104.253</span>
-        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
+        {% for additional_ip in additional_asn.additional_ips %}
+        {% if not (loop.first and additional_ip.version==6 and additional_asn.version==4) %}
         <span class="hide" hidden></span>
-
-        <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide mono" hidden>209762</span>
-        <span class="hide mono" hidden>206.81.104.253</span>
-        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
+        <span class="hide mono" hidden></span>
+        <span class="hide mono" hidden>{% if additional_ip.version == 4 %}{{ additional_ip.ip }}{% endif %}</span>
+        <span class="hide mono" hidden>{% if additional_ip.version == 4 %}{{ additional_ip.ip }}{% endif %}</span>
         <span class="hide" hidden></span>
-
-        <input hidden id="disclosure-2" type="checkbox"/>
-        <div class="disclosure"><label for="disclosure-2" tabindex="0"></label></div>
-        <span><label for="disclosure-2">EVIX Primary Route Server</label></span>
-        <span class="mono">137933</span>
-        <span class="mono">206.81.104.1</span>
-        <span class="mono">2602:fed2:fff:ffff::1</span>
-        <span>fmt local/custom, ams local/custom</span>
-        <div class="hide"></div>
-
-        <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide mono" hidden>209762</span>
-        <span class="hide mono" hidden>206.81.104.253</span>
-        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden></span>
-
-        <span class="hide" hidden>EVIX Backup Route Server</span>
-        <span class="hide mono" hidden>209762</span>
-        <span class="hide mono" hidden>206.81.104.253</span>
-        <span class="hide mono" hidden>2602:fed2:fff:ffff::253</span>
-        <span class="hide" hidden></span>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    {% endfor %}
     </div>
 </div>
 </body>
