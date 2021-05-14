@@ -28,7 +28,7 @@ if __name__ == "__main__":
         exit(1)
     cursor = database.cursor()
     cursor.execute("""
-        SELECT 
+        SELECT
             json_object(
                 'ip', ip,
                 'version', version,
