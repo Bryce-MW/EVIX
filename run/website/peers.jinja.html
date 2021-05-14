@@ -114,7 +114,7 @@
         <span class="title">Tunnel Types</span>
     {% endif %}
 
-        {% if ((peer.additional_asns) or (peer.additional_ips)) %}
+        {% if ((peer.additional_asns) and (peer.additional_ips)) %}
             {#
         <input hidden id="disclosure-{{ loop.index0 }}" type="checkbox"/>
         <div class="disclosure"><label for="disclosure-{{ loop.index0 }}" tabindex="0"></label>
