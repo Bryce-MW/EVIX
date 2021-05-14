@@ -559,7 +559,7 @@ code {
   justify-content: space-between;
   justify-items: start;
   column-gap: 1em;
-  margin-bottom: 5em;
+  padding-bottom: 5em;
 
   font-size: min(1em, 2vw);
 
@@ -568,6 +568,7 @@ code {
   .h1 {
     grid-row: 2 / span 1;
     grid-column: 1 / row-end;
+    justify-self: center;
 
     height: 0.2em;
     width: calc(100% - 1em);
