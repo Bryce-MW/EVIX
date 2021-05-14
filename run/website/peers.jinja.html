@@ -131,7 +131,7 @@
             {% if peer.client.website %}</a>{% endif %}
         </span>
          #}
-        {% elif peer.additional_ips and true %}
+        {% elif peer.additional_ips and not (peer.version==4) %}
         {% endif %}
         {#
         <span class="mono">137933</span>
