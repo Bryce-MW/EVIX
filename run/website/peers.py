@@ -58,5 +58,5 @@ if __name__ == "__main__":
     """)
     print(jq.compile("""
         .
-    """).input("[" + ",".join(i[0] for i in cursor.fetchall())).first())
+    """).input("[" + ",".join(i[0] for i in cursor.fetchall()) + "]").first())
 
