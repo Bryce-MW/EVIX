@@ -56,7 +56,7 @@ if __name__ == "__main__":
     from jinja2 import Environment, PackageLoader, select_autoescape
     env = Environment(
         loader=PackageLoader("peering_form", ""),
-        autoescape=select_autoescape,
+        autoescape=select_autoescape(enabled_extensions=("html",)),
         trim_blocks=True,
         lstrip_blocks=True
     )
