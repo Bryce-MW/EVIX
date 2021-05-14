@@ -115,7 +115,7 @@
     {% endif %}
 
         {# or (length(peers.additional_ips)>0 and not (peer.version == 4 and peers.additional_ips[0].version == 6)) #}
-        {% if ((peer.additional_asns) or (peer.additional_ips)) %}
+        {% if ((peer.additional_asns) or (peer.additional_ips and not (peer.version == 4 and peers.additional_ips[0].version == 6))) %}
         <input hidden id="disclosure-{{ loop.index0 }}" type="checkbox"/>
         <div class="disclosure"><label for="disclosure-{{ loop.index0 }}" tabindex="0"></label>
         </div>
