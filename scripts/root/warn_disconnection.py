@@ -22,10 +22,6 @@ Subject: Your EVIX RS session - {ip}
 
 Hi {name} (AS{asn})!
 
-This is a new email system so let us know if it does
-something weird. Make sure to read the whole email since it
-is different than before.
-
 You currently have a connection with one or more of our route
 servers. We just wanted to remind you that we have two route
 servers. Details below. This is reminder {count}/3.
@@ -62,13 +58,9 @@ Subject: Your EVIX RS session - {ip}
 
 Hi {name} (AS{asn})!
 
-This is a new email system so let us know if it does
-something weird. Make sure to read the whole email since it
-is different than before.
-
 The IP {ip} currently has no sessions with any of our route
 servers. The connection details of our route servers are
-below. {remove}
+below. This is reminder {count}/3. {remove}
 
 Fremont Route Sever:
   IPv4 - 206.81.104.1
@@ -168,6 +160,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                         ip=session['ip'],
                         remove=remove_template if weeks >= 4 else "",
                         asn=asn,
+                        count=warnings_sent + 1,
                         sessions="".join(session_template.format(
                             RS=i['server'],
                             ip=i['status']['neighbor_address'],
