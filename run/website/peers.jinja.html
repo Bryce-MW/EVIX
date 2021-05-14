@@ -113,6 +113,7 @@
         <span class="title">IPv6</span>
         <span class="title">Tunnel Types</span>
     {% endif %}
+    {#
 
         {% if peer.additional_asns or peers.additional_ips %}
         <input hidden id="disclosure-{{ loop.index0 }}" type="checkbox"/>
@@ -163,6 +164,8 @@
         {% endif %}
         {% endfor %}
         {% endfor %}
+
+         #}
     {% endfor %}
     </div>
 </div>
