@@ -59,7 +59,7 @@ if __name__ == "__main__":
             INET6_ATON(ip)
     """)
     with open('/evix/run/website/peers.jq', 'r') as jq_script:
-        peers = jq.compile(jq_script.read()).input(text="[" + ",".join(i[0] for i in cursor.fetchall()) + "]").first()
+        peers = jq.compile(jq_script.read()).input(text="[" + ",".join(i[0] for i in cursor.fetchall()) + "]")
 
     template = env.get_template("peers.jinja.html")
     print(template.render(peers=peers))
