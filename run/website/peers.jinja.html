@@ -135,7 +135,6 @@
         <span class="mono">{% if peer.version == 6 %}{{ peer.ip }}{% elif peer.additional_ips and peer.additional_ips[0].version == 6 %}{{ peer.additional_ips[0].ip }}{% endif %}</span>
         <span>{% for connection in peer.connections %}{% if not loop.first %}, {% endif %}{{ connection.location }} {{ connection.type }}{% endfor %}</span>
         <div class="hide"></div>
-        {#
 
         {% for additional_ip in peers.additional_ips %}
         {% if not (loop.first and additional_ip.version==6 and peer.version==4) %}
@@ -164,8 +163,6 @@
         {% endif %}
         {% endfor %}
         {% endfor %}
-
-         #}
     {% endfor %}
     </div>
 </div>
