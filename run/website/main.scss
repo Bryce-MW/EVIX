@@ -634,22 +634,28 @@ code {
   }
 
   span:nth-of-type(5n + 1) {
+    /* Name */
     grid-column: 2 / span 1;
   }
 
   span:nth-of-type(5n + 2) {
+    /* ASN */
     grid-column: 4 / span 1;
+    justify-self: end;
   }
 
   span:nth-of-type(5n + 3) {
+    /* IPv4 */
     grid-column: 5 / span 1;
   }
 
   span:nth-of-type(5n + 4) {
+    /* IPv6 */
     grid-column: 6 / span 1;
   }
 
   span:nth-of-type(5n + 5) {
+    /* Connection Types */
     grid-column: 7 / span 1;
   }
 }
