@@ -558,7 +558,6 @@ code {
   align-items: center;
   justify-content: space-between;
   justify-items: start;
-  gap: 0.5em;
   column-gap: 1em;
 
   font-size: min(1em, 2vw);
@@ -625,6 +624,10 @@ code {
 
   input[type="checkbox"]:checked + .disclosure label {
     transform: rotate(90deg);
+  }
+
+  span {
+    margin-bottom: 0.5em;
   }
 
   span:nth-of-type(5n + 1) {
