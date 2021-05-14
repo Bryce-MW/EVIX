@@ -9,7 +9,7 @@ user=$(jq -r '.database.user' /evix/secret-config.json)
 password=$(jq -r '.database.password' /evix/secret-config.json)
 database=$(jq -r '.database.database' /evix/secret-config.json)
 
-mysql --user "$user" --password="$password" --reconnect "$database" --batch -N 2>/dev/null <<<"SELECT json_arrayagg(json_object('id', id, 'name', name, 'website', website, 'tunnels', (SELECT json_arrayagg(json_object('id', id, 'type', type, 'server', server, 'tunnel_id', tunnel_id, 'ip', ip, 'additional_args', additional_args)) FROM connections WHERE client_id=clients.id), 'asns', (SELECT json_arrayagg(json_object('asn', asn, 'ips', (SELECT json_arrayagg(json_object('ip', ip, 'version', version, 'monitor', monitor, 'provisioned', provisioned, 'pingable', pingable, 'rs_session', birdable)) FROM ips WHERE ips.asn=asns.asn))) FROM asns WHERE client_id=clients.id))) FROM clients;" |
+mysql --user "$user" --password="$password" --reconnect --execute "SELECT json_arrayagg(json_object('id', id, 'name', name, 'website', website, 'tunnels', (SELECT json_arrayagg(json_object('id', id, 'type', type, 'server', server, 'tunnel_id', tunnel_id, 'ip', ip, 'additional_args', additional_args)) FROM connections WHERE client_id=clients.id), 'asns', (SELECT json_arrayagg(json_object('asn', asn, 'ips', (SELECT json_arrayagg(json_object('ip', ip, 'version', version, 'monitor', monitor, 'provisioned', provisioned, 'pingable', pingable, 'rs_session', birdable)) FROM ips WHERE ips.asn=asns.asn))) FROM asns WHERE client_id=clients.id))) FROM clients;" --batch -N "$database" 2>/dev/null |
   tee /var/www/evix/evix.json |
   jq --compact-output 'ixp_json_format' |
   tee /var/www/evix/participants.json | jq -C '.'

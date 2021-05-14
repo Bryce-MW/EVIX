@@ -29,7 +29,7 @@ edit() {
 export -f edit
 
 {
-  mysql --user "$user" --password="$password" --reconnect -B -N "$database" 2>/dev/null <<<"SELECT ip, additional_args FROM connections WHERE type='zerotier';" |
+  mysql --user "$user" --password="$password" --reconnect --execute "SELECT ip, additional_args FROM connections WHERE type='zerotier';" -B -N "$database" 2>/dev/null |
     jq --slurp --compact-output --raw-input 'split("\n") | map(split("\t") | if length > 0 then [.[0], (.[1] | split(" "))] else empty end)' &
 
   curl -X GET --header "$auth" "$member" 2>/dev/null
