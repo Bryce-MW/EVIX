@@ -4,25 +4,17 @@ import os
 import json
 import jq
 import mysql.connector
-from jinja2 import Environment, PackageLoader, select_autoescape
 
-# if "REQUEST_METHOD" in os.environ and __name__ == "__main__":
-#     # This is running in cgi mode
-#     import cgitb
-#     import sys
-#     sys.stderr = sys.stdout
-#     cgitb.enable()
-#     print("Content-type: text/html\n")
+if "REQUEST_METHOD" in os.environ and __name__ == "__main__":
+    # This is running in cgi mode
+    import cgitb
+    import sys
+    sys.stderr = sys.stdout
+    cgitb.enable()
+    print("Content-type: text/html\n")
 
 
 if __name__ == "__main__":
-    env = Environment(
-        loader=PackageLoader("peering_form", ""),
-        autoescape=select_autoescape,
-        trim_blocks=True,
-        lstrip_blocks=True
-    )
-
     with open("/evix/secret-config.json") as config_f:
         config = json.load(config_f)
     database = None
@@ -61,5 +53,12 @@ if __name__ == "__main__":
     with open('/evix/run/website/peers.jq', 'r') as jq_script:
         peers = jq.compile(jq_script.read()).input(text="[" + ",".join(i[0] for i in cursor.fetchall()) + "]")
 
+    from jinja2 import Environment, PackageLoader, select_autoescape
+    env = Environment(
+        loader=PackageLoader("peering_form", ""),
+        autoescape=select_autoescape,
+        trim_blocks=True,
+        lstrip_blocks=True
+    )
     template = env.get_template("peers.jinja.html")
     print(template.render(peers=peers))
