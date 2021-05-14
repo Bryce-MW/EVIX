@@ -130,7 +130,7 @@
             {% if peer.client.website %}</a>{% endif %}
         </span>
         {% endif %}
-        <span class="mono">137933</span>
+        <span class="mono">{{ peer.asn }}</span>
         <span class="mono">{% if peer.version == 4 %}{{ peer.ip }}{% endif %}</span>
         <span class="mono">{% if peer.version == 6 %}{{ peer.ip }}{% elif peer.additional_ips and peer.additional_ips[0].version == 6 %}{{ peer.additional_ips[0].ip }}{% endif %}</span>
         <span>{% for connection in peer.connections %}{% if not loop.first %}, {% endif %}{{ connection.location }} {{ connection.type }}{% endfor %}</span>
@@ -146,7 +146,7 @@
         {% endif %}
         {% endfor %}
 
-        {% for additional_asn in peer.additional_asn %}
+        {% for additional_asn in peer.additional_asns %}
         <span class="hide" hidden></span>
         <span class="hide mono" hidden>{{ additional_asn.asn }}</span>
         <span class="hide mono" hidden>{% if additional_asn.version == 4 %}{{ additional_asn.ip }}{% endif %}</span>
