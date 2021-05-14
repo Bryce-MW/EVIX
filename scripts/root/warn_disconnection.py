@@ -137,7 +137,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                                 days=(now - datetime.fromtimestamp(i['status']['since'])).days
                             ) for i in session['down'])
                         ))
-                        print(f"Warned {session['ip']}: {email} {warnings_sent + 1}/3")
+                        print(f"Soft Warned {session['ip']}: {email} {warnings_sent + 1}/3")
                         cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (weeks, session['ip']))
             else:
                 cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (0, session['ip']))
@@ -169,7 +169,7 @@ with smtplib.SMTP_SSL(config['mail']['server'], config['mail']['port'], context=
                             days=(now - datetime.fromtimestamp(i['status']['since'])).days
                         ) for i in session['down'])
                     ))
-                    print(f"Removed {session['ip']}: {email} {warnings_sent + 1}/4")
+                    print(f"{'Hard Warned' if warnings_sent==3 else 'Removed    '} {session['ip']}: {email} {warnings_sent + 1}/4")
                     cursor.execute("UPDATE ips SET birdable=%s WHERE ip=%s", (weeks, session['ip']))
                     if weeks >= 4:
                         cursor.execute("UPDATE ips SET provisioned=%s WHERE ip=%s", (False, session['ip']))
