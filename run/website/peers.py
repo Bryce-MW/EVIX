@@ -18,9 +18,10 @@ if "REQUEST_METHOD" in os.environ and __name__ == "__main__":
 if __name__ == "__main__":
     env = Environment(
         loader=PackageLoader("peering_form", ""),
-        autoescape=select_autoescape()
+        autoescape=select_autoescape,
+        trim_blocks=True,
+        lstrip_blocks=True
     )
-    template = env.get_template("peers.jinja.html")
 
     with open("/evix/secret-config.json") as config_f:
         config = json.load(config_f)
@@ -56,6 +57,8 @@ if __name__ == "__main__":
             IS_IPV6(ip),
             INET6_ATON(ip)
     """)
-    with open('peers.jq', 'r') as jq_script:
-        print(jq.compile(jq_script.read()).input(text="[" + ",".join(i[0] for i in cursor.fetchall()) + "]").first())
+    with open('/evix/run/website/peers.jq', 'r') as jq_script:
+        peers = jq.compile(jq_script.read()).input(text="[" + ",".join(i[0] for i in cursor.fetchall()) + "]").first()
 
+    template = env.get_template("peers.jinja.html")
+    print(template.render(peers=peers))
