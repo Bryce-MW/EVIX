@@ -2,4 +2,5 @@
 
 /usr/bin/sass /evix/run/website
 /evix/run/website/peers.py > /evix/run/website/peers.html
-/usr/bin/rsync -r -v --delete --del /evix/run/website/ /var/www/evix/new/ --exclude=static/graphs
+/usr/bin/rsync -r -v --delete --del /evix/run/website/ /var/www/evix/new/ \
+  --exclude='static/graphs' --exclude='.well-known' --exclude='participants.json' --exclude='evix.json'
