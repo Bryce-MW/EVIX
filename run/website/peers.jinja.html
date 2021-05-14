@@ -133,7 +133,7 @@
         <span class="mono">{{ peer.asn }}</span>
         <span class="mono">{% if peer.version == 4 %}{{ peer.ip }}{% endif %}</span>
         <span class="mono">{% if peer.version == 6 %}{{ peer.ip }}{% elif peer.additional_ips and peer.additional_ips[0].version == 6 %}{{ peer.additional_ips[0].ip }}{% endif %}</span>
-        <span>{% for connection in peer.client.connections %}{% if not loop.first %}, {% endif %}{{ connection.location }} {{ connection.type }}{% endfor %}</span>
+        <span>{% if peer.client.connections %}{% for connection in peer.client.connections %}{% if not loop.first %}, {% endif %}{{ connection.location }} {{ connection.type }}{% endfor %}{% endif %}</span>
         {% if peer.additional_asns or (peer.additional_ips and not (peer.version==4 and peer.additional_ips[0].version==6)) %}
         <div class="hide" hidden></div>
         {% endif %}
