@@ -114,7 +114,7 @@
         <span class="title">Tunnel Types</span>
     {% endif %}
 
-        {% if peer.additional_asns %}
+        {% if peer.additional_asns or (peer.additional_ips and not (peer.version==4 and peer.additional_ips[0].version==6)) %}
             {#
         <input hidden id="disclosure-{{ loop.index0 }}" type="checkbox"/>
         <div class="disclosure"><label for="disclosure-{{ loop.index0 }}" tabindex="0"></label>
@@ -131,7 +131,6 @@
             {% if peer.client.website %}</a>{% endif %}
         </span>
          #}
-        {% elif peer.additional_ips and (peer.version==4) %}
         {% endif %}
         {#
         <span class="mono">137933</span>
