@@ -134,23 +134,21 @@
         <span class="mono">{% if peer.version == 4 %}{{ peer.ip }}{% endif %}</span>
         <span class="mono">{% if peer.version == 6 %}{{ peer.ip }}{% elif peer.additional_ips and peer.additional_ips[0].version == 6 %}{{ peer.additional_ips[0].ip }}{% endif %}</span>
         <span>{% for connection in peer.connections %}{% if not loop.first %}, {% endif %}{{ connection.location }} {{ connection.type }}{% endfor %}</span>
+        {% if peer.additional_asns or (peer.additional_ips and not (peer.version==4 and peer.additional_ips[0].version==6)) %}
+        <div class="hide"></div>
+        {% endif %}
 
         {% for additional_ip in peer.additional_ips %}
         {% if not (loop.first and additional_ip.version==6 and peer.version==4) %}
-        {% if loop.first %}
-        <span class="hide" hidden></span>
-        {% endif %}
         <span class="hide" hidden></span>
         <span class="hide mono" hidden></span>
         <span class="hide mono" hidden>{% if additional_ip.version == 4 %}{{ additional_ip.ip }}{% endif %}</span>
         <span class="hide mono" hidden>{% if additional_ip.version == 6 %}{{ additional_ip.ip }}{% endif %}</span>
+        <span class="hide" hidden></span>
         {% endif %}
         {% endfor %}
 
         {% for additional_asn in peer.additional_asns %}
-        {% if loop.first %}
-        <span class="hide" hidden></span>
-        {% endif %}
         <span class="hide" hidden></span>
         <span class="hide mono" hidden>{{ additional_asn.asn }}</span>
         <span class="hide mono" hidden>{% if additional_asn.version == 4 %}{{ additional_asn.ip }}{% endif %}</span>
