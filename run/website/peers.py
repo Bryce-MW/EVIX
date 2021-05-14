@@ -56,5 +56,7 @@ if __name__ == "__main__":
             IS_IPV6(ip),
             INET6_ATON(ip)
     """)
-    print(cursor.fetchone())
+    print(jq.compile("""
+        .
+    """).input("[" + ",".join(i[0] for i in cursor.fetchall())).first())
 
