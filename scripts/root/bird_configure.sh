@@ -26,10 +26,12 @@ mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
 new=$(md5sum /etc/arouteserver/clients.yml | cut -f1 -d' ') # I don't understand why cut needs to be required. Someone should put in a pull request to allow --quiet to remove names
 old=$(md5sum /etc/arouteserver/clients.yml.bak | cut -f1 -d' ')
 if [ "$new" != "$old" ]; then
-  ROUTER_IP="206.81.104.1" ROUTER_AS="137933" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_fmt.conf
-  ROUTER_IP="206.81.104.1" ROUTER_AS="137933" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_fmt.conf
-  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_ams.conf
-  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_ams.conf
+  ROUTER_IP="206.81.104.1" ROUTER_AS="137933" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_fmt.conf
+  ROUTER_IP="206.81.104.1" ROUTER_AS="137933" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_fmt.conf
+  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_ams.conf
+  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_ams.conf
+  ROUTER_IP="206.81.104.253" ROUTER_AS="209762" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver irr-as-set --template-file-name plain_rpsl.j2 --templates-dir /evix/config/arouteserver-custom > /tmp/tmpemail
+  sudo mail -r "root@evix-svr1.evix.org" -s "[ALTDB] as-set: AS-EVIX [update]" "auto-dbm@altdb.net" < /tmp/tmpemail
 else
   exit 0
 fi
