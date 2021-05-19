@@ -258,13 +258,13 @@ retention:
   # keep_hourly: 24
 
   # Number of daily archives to keep.
-  keep_daily: 7
+  keep_daily: 3
 
   # Number of weekly archives to keep.
   keep_weekly: 4
 
   # Number of monthly archives to keep.
-  keep_monthly: 6
+  keep_monthly: 3
 
     # Number of yearly archives to keep.
     # keep_yearly: 1
