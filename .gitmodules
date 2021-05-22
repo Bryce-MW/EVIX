@@ -10,3 +10,9 @@
 [submodule "run/racl"]
 	path = run/racl
 	url = https://github.com/init-js/racl.git
+[submodule "run/birdwatcher"]
+	path = run/birdwatcher
+	url = https://github.com/alice-lg/birdwatcher.git
+[submodule "run/alice-lg"]
+	path = run/alice-lg
+	url = https://github.com/alice-lg/alice-lg.git
