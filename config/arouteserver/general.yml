@@ -135,9 +135,9 @@ cfg:
       ext: rt:65282:peer_as
       lrg: rs_as:65282:peer_as
     reject_cause:
-      std: 65666:dyn_val
-      ext: rt:65666:dyn_val
-      lrg: rs_as:65666:dyn_val
+      std: 65535:dyn_val
+      ext: rt:65535:dyn_val
+      lrg: rs_as:65535:dyn_val
   custom_communities:
     this_date:
       lrg: 0:0:${THIS_DATE}
