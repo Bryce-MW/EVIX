@@ -24,6 +24,7 @@ ln /evix/scripts/jqconf.jq /root/.jq
 ln /evix/config/ansible /etc/ansible
 ln /evix/config/ssh/ssh_config /etc/ssh_config
 ln /evix/config/ssh/sshd_config /etc/sshd_config
-ln /evix/config/arouteserver /etc/arouteserver
+ln /evix/config/alice-lg /etc/alice-lg
+ln /evix/config/birdwatcher /etc/birdwatcher
 
 ln /evix/config/sysctl.conf /etc/sysctl.conf
