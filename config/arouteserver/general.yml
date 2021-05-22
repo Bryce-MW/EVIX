@@ -59,6 +59,8 @@ cfg:
         enabled: true
       general_limit_ipv4: 75
       general_limit_ipv6: 75
+    reject_policy:
+      policy: "tag_and_reject"
   graceful_shutdown:
     enabled: true
   rfc1997_wellknown_communities:
