@@ -24,7 +24,7 @@ location:
   # is used, then add local repository paths in the systemd
   # service file to the ReadWritePaths list.
   repositories:
-    - borgbackup@107.172.217.43:{fqdn}
+    - backup29698@bkup:{fqdn}
 
     # Stay in same file system (do not cross mount points).
     # Defaults to false. But when a database hook is used, the
@@ -67,18 +67,20 @@ location:
     # local_path: borg1
 
     # Alternate Borg remote executable. Defaults to "borg".
-    # remote_path: borg1
+  remote_path: '/home/backup29698/.bin/borg-dir/borg.exe'
 
     # Any paths matching these patterns are included/excluded from
     # backups. Globs are expanded. (Tildes are not.) Note that
     # Borg considers this option experimental. See the output of
     # "borg help patterns" for more details. Quote any value if it
     # contains leading punctuation, so it parses correctly.
-    # patterns:
+  patterns:
     # - R /
     # - '- /home/*/.cache'
     # - + /home/susan
     # - '- /home/*'
+    - '- /home/*/.ansible'
+    - '- /home/*/.borgmatic'
 
     # Read include/exclude patterns from one or more separate
     # named files, one pattern per line. Note that Borg considers
@@ -258,13 +260,13 @@ retention:
   # keep_hourly: 24
 
   # Number of daily archives to keep.
-  keep_daily: 3
+  keep_daily: 7
 
   # Number of weekly archives to keep.
   keep_weekly: 4
 
   # Number of monthly archives to keep.
-  keep_monthly: 3
+  keep_monthly: 4
 
     # Number of yearly archives to keep.
     # keep_yearly: 1
@@ -485,7 +487,7 @@ hooks:
       # Omitting a password will only work if MySQL is
       # configured to trust the configured username
       # without a password.
-      password: bpust3Rf6vxB4TiOuYS2OL7nfW0zbDt8g0J0
+      # password:
 
       # Additional mysqldump options to pass directly to
       # the dump command, without performing any
