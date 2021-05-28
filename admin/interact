@@ -456,7 +456,7 @@ def create(obj_type):
             client["id"] = cursor.lastrowid
         request["client_id"] = client["id"]
         asn = build("ASNs", check=True, defaults=request)
-        if "id" not in asn:
+        if "client_id" not in asn:
             insert(asn, "asns")
             asn["id"] = cursor.lastrowid
         version = 4 if request["ipv4"] else 6
