@@ -20,8 +20,9 @@ fi
 PYTHONPATH="$(pwd)"
 export PYTHONPATH
 
-mv /etc/arouteserver/clients.yml /etc/arouteserver/clients.yml.bak
-/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/config/arouteserver/clients.yml
+mv /evix/config/arouteserver/clients.yml /evix/config/arouteserver/clients.yml.bak
+/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/config/arouteserver/clients.yml.tmp
+tail -n+2 /evix/config/arouteserver/clients.yml.tmp > /evix/config/arouteserver/clients.yml
 
 new=$(md5sum /etc/arouteserver/clients.yml | cut -f1 -d' ') # I don't understand why cut needs to be required. Someone should put in a pull request to allow --quiet to remove names
 old=$(md5sum /etc/arouteserver/clients.yml.bak | cut -f1 -d' ')
@@ -33,6 +34,7 @@ if [ "$new" != "$old" ]; then
   ROUTER_IP="206.81.104.253" ROUTER_AS="209762" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver irr-as-set --template-file-name plain_rpsl.j2 --templates-dir /evix/config/arouteserver-custom > /tmp/tmpemail
   sudo mail -r "root@evix-svr1.evix.org" -s "[ALTDB] as-set: AS-EVIX [update]" "auto-dbm@altdb.net" < /tmp/tmpemail
 else
+  echo "No changes in the clients config were found"
   exit 0
 fi
 
