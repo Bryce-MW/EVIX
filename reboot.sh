@@ -27,7 +27,7 @@ if [ "$is_ts" == "true" ]; then
   /evix/scripts/ts/tunnels/vxlan.sh
   /evix/scripts/ts/tunnels/eoip.sh
 
-  jq -r --arg host "nz" '.hosts[$host] | (.ports // empty)[].name, .eoip_interface // empty, .ovpn_interface // empty' /evix/secret-config.json |
+  jq -r --arg host "$host" '.hosts[$host] | (.ports // empty)[].name, .eoip_interface // empty, .ovpn_interface // empty' /evix/secret-config.json |
     xargs -n 1 brctl addif br10
 
   if [ "$host" != "fmt" ]; then
