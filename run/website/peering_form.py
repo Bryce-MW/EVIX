@@ -96,7 +96,7 @@ if __name__ == "__main__":
     if location not in {"fmt", "ams", "nz", "zur", "van", "fra"}:
         print_error(f"The location {location} is not one of fmt, ams, nz, zur, van, or fra.")
 
-    tunnel_type = form.getfirst("type")
+    tunnel_type = form.getfirst("type") or "custom"
     if tunnel_type not in {"openvpn", "zerotier", "eoip", "vxlan", "custom"}:
         print_error(f"The connection type {tunnel_type} is not one of openvpn, zerotier, eoip, vxlan, or custom.")
     if location in {"van", "fra"} and tunnel_type != "custom":
