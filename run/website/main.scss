@@ -229,11 +229,13 @@ ul {
   > :nth-child(even) {
     justify-self: var(--even-direction);
     text-align: var(--even-direction);
+    grid-column: 3;
   }
 
   > :nth-child(odd) {
     justify-self: var(--odd-direction);
     text-align: var(--odd-direction);
+    grid-column: 1;
   }
 
   ul {
