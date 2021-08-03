@@ -204,6 +204,7 @@ ul {
   grid-template-rows: repeat(var(--rows, 1), auto) [rows-end];
   gap: 1em;
   align-items: start;
+  line-height: 1.2;
 
   > div:nth-of-type(1) {
     grid-column: 2 / 3;
@@ -222,10 +223,14 @@ ul {
   --odd-direction: right;
   --odd-column: 1;
 
+  /*
+  This is a bit of a hack. It only works with a single hidden element I would like to figure out how to remove it at
+  some point as well as the annoying tabindex onkeyup thing
+   */
   > [hidden] ~ * {
-    --odd-direction: right;
+    --even-direction: right;
     --even-column: 1;
-    --even-direction: left;
+    --odd-direction: left;
     --odd-column: 3;
   }
 
@@ -243,12 +248,18 @@ ul {
 
   ul {
     list-style: none;
-    margin: -0.5em 0;
+    margin: 0;
     padding: 0;
 
-    li {
-      line-height: 1.2;
+    > li {
       margin: 0.5em 0;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+      &:last-of-type {
+        margin-bottom: 0;
+      }
     }
   }
 }
