@@ -218,24 +218,27 @@ ul {
   }
 
   --even-direction: left;
+  --even-column: 3;
   --odd-direction: right;
+  --odd-column: 1;
 
   > [hidden] ~ * {
-    --tmp-direction: var(--odd-direction);
-    --odd-direction: var(--even-direction);
-    --even-direction: var(--tmp-direction);
+    --odd-direction: right;
+    --even-column: 1;
+    --even-direction: left;
+    --odd-column: 3;
   }
 
   > :nth-child(even) {
     justify-self: var(--even-direction);
     text-align: var(--even-direction);
-    grid-column: 3;
+    grid-column: var(--even-column);
   }
 
   > :nth-child(odd) {
     justify-self: var(--odd-direction);
     text-align: var(--odd-direction);
-    grid-column: 1;
+    grid-column: var(--odd-column);
   }
 
   ul {
