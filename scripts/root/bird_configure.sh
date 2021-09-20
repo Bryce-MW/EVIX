@@ -21,11 +21,10 @@ PYTHONPATH="$(pwd)"
 export PYTHONPATH
 
 mv /evix/config/arouteserver/clients.yml /evix/config/arouteserver/clients.yml.bak
-/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/config/arouteserver/clients.yml.tmp
-tail -n+2 /evix/config/arouteserver/clients.yml.tmp > /evix/config/arouteserver/clients.yml
+/evix/run/arouteserver/scripts/arouteserver clients-from-euroix 756 -i /var/www/evix/participants.json --guess-custom-bgp-communities switch_name --merge-from-peeringdb as-set max-prefix -o /evix/config/arouteserver/clients.yml
 
-new=$(md5sum /etc/arouteserver/clients.yml | cut -f1 -d' ') # I don't understand why cut needs to be required. Someone should put in a pull request to allow --quiet to remove names
-old=$(md5sum /etc/arouteserver/clients.yml.bak | cut -f1 -d' ')
+new=$(grep -v '^#' /etc/arouteserver/clients.yml| md5sum | cut -f1 -d' ') # I don't understand why cut needs to be required. Someone should put in a pull request to allow --quiet to remove names
+old=$(grep -v '^#' /etc/arouteserver/clients.yml.bak | md5sum | cut -f1 -d' ')
 if [ "$new" != "$old" ]; then
   ROUTER_IP="206.81.104.1" ROUTER_AS="137933" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 4 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird_fmt.conf
   ROUTER_IP="206.81.104.1" ROUTER_AS="137933" THIS_DATE=$(date '+%Y%m%d') /evix/run/arouteserver/scripts/arouteserver bird --target-version 1.6.8 --ip-ver 6 --local-files-dir /etc/bird --use-local-files header -o /tmp/bird6_fmt.conf
