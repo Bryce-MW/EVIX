@@ -16,7 +16,7 @@ if [ -f "/evix/config/reboot/$host.sh" ]; then
   /evix/config/reboot/"$host".sh
 fi
 
-jq -r --arg host "$host" '(.hosts[$host].ports // empty)[].commands[]' /evix/secret-config.json |
+jq -r --arg host "$host" 'try (.hosts[$host].ports // empty)[].commands[]' /evix/secret-config.json |
   ip -b -
 
 if [ "$is_ts" == "true" ]; then
