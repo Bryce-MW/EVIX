@@ -112,7 +112,7 @@ def ixp_json_format:
                 .tunnels // [] # Get the list of tunnels if any
                 | .[] # Address them individually
                 | {
-                  switch_id: {fmt: 1, ams: 2, zur: 3, nz: 4, van: 5, fra: 6}[.server], # Use a key lookup to find the
+                  switch_id: {fmt: 1, ams: 2, zur: 3, nz: 4, van: 5, fra: 6, tor: 7}[.server], # Use a key lookup to find the
                     # switch ID. This should be automated in the future
                   if_speed: 1000, # Assume 1GBps for all
                   if_type: .type
@@ -263,7 +263,7 @@ def ixp_json_format:
                 id: 3,
                 name: "Zurich, Switzerland",
                 city: "Zurich",
-                country: "CZ",
+                country: "CH",
                 software: "Ubuntu"
               },
               {
@@ -285,6 +285,13 @@ def ixp_json_format:
                 name: "Frankfurt, Germany",
                 city: "Frankfurt",
                 country: "DE",
+                software: "Ubuntu"
+              },
+              {
+                id: 7,
+                name: "Toronto, Canada",
+                city: "Toronto",
+                country: "CA",
                 software: "Ubuntu"
               }
             ]
