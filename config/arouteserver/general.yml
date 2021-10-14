@@ -165,3 +165,8 @@ cfg:
       std: '65517:01'
       ext: rt:65517:01
       lrg: rs_as:65517:01
+    switch_name_toronto_canada:
+      std: '65517:07'
+      ext: rt:65517:07
+      lrg: rs_as:65517:07
+      

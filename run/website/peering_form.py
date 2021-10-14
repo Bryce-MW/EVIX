@@ -93,8 +93,8 @@ if __name__ == "__main__":
         print_error(f"The url {website} is invalid or suspicious. Stick to public https urls.")
 
     location = form.getfirst("location")
-    if location not in {"fmt", "ams", "nz", "zur", "van", "fra"}:
-        print_error(f"The location {location} is not one of fmt, ams, nz, zur, van, or fra.")
+    if location not in {"fmt", "ams", "nz", "zur", "van", "fra", "tor"}:
+        print_error(f"The location {location} is not one of fmt, ams, nz, zur, van, fra, or tor.")
 
     tunnel_type = form.getfirst("type") or "custom"
     if tunnel_type not in {"openvpn", "zerotier", "eoip", "vxlan", "custom"}:

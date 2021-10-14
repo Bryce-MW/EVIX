@@ -67,7 +67,8 @@ locations = (
     "New Zealand",
     "Zurich",
     "Vancouver",
-    "Frankfurt"
+    "Frankfurt",
+    "Toronto"
 )
 
 location_names = {
@@ -76,7 +77,8 @@ location_names = {
     "New Zealand": "nz",
     "Zurich":      "zur",
     "Vancouver":   "van",
-    "Frankfurt":   "fra"
+    "Frankfurt":   "fra",
+    "Toronto":     "tor"
 }
 
 fields = {
