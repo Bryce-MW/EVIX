@@ -36,16 +36,20 @@ someone else.
     * IP: 193.148.249.93
     * Connections available: LOCAL
     * Notes: iFog does those
+- TOR
+    * IP: 170.39.230.66
+    * Connections available: VXLAN, EoIP, OpenVPN, Zerotier, LOCAL
+    * Notes: Sponsored by Xenyth Cloud. They provide direct connectivity to the EVIX VLAN to their customers.
 - VAN
     * IP: -
     * Connections available: LOCAL
     * Notes: Chris does those
-
 - Aliases:
     * ams-ts01.evix.org
     * nz-ts01.evix.org
     * zur-ts01.evix.org
     * fmt-ts01.evix.org
+    * tor-ts01.evix.org
 
 ### Database
 
@@ -56,7 +60,7 @@ when I see them but there is not much harm in keeping them.
 
 ![Database schema](https://fk.ci/3HJbHWm.png?_raw=true)
 
-The /evix/admin/interact script should have most of what you need. You can either enter an ASN on the main menu or go
+The `/evix/admin/interact` script should have most of what you need. You can either enter an ASN on the main menu or go
 into view and search by something specific. That will tell you all of the details from the database on that peer.
 Including if they can be pinged, if they have a BGP session, if they are monitored, and if they are provisioned. Peers
 that are provisioned show up on the website and have BGP sessions.
@@ -73,21 +77,25 @@ from fmt server).
 
 RS Session is true if the BGP session with the FMT RS is up (only tested daily).
 
-clients # Individual person or company connecting  
-id, name, website, contact  
-asns # A single ASN  
-asn, client_id  
-ips # A IP address configured for a specific ASN. Monitor false means that we don't send deprovision messages (people
-who don't peer with the RS)  
-ip, version, asn, monitor, provisioned  
-connections # A tunnel. This is connected to a client, not ASN. Someone can have multiple IPs and use whatever tunnel
-they want. Note that the IP column is the remote real IP, not an EVIX IP. Additional_args is a custom port for VXLAN and
-the any IPs for Zerotier to automatically assign. Zerotier does not yet have a good way to auto-provision. I will add a
-script for that in the future but I have to do it manually for now.  
-id, client_id, type, server, tunnel_id, ip, additional_args  
-requests # A request from our website. Many people have submitted multiple so you may find a few from the same person
-when approving their request. I try to remove them when I see them but it does not really matter.  
-id, asn, name, contact, website, tunnel_location, tunnel_type, ipv4
+<dl>
+    <dt>clients</dt>
+    <dd>Individual person or company connecting<br />
+        <code>id, name, website, contact</code></dd>
+	<dt>asns</dt>
+    <dd>A single ASN<br />
+        <code>asn, client_id</code></dd>
+    <dt>ips</dt>
+    <dd>A IP address configured for a specific ASN. Monitor false means that we don't send deprovision messages (people who don't peer with the RS)<br />
+        <code>ip, version, asn, monitor, provisioned</code></dd>
+    <dt>connections</dt>
+    <dd>A tunnel. This is connected to a client, not ASN. Someone can have multiple IPs and use whatever tunnel they want. Note that the IP column is the remote real IP, not an EVIX IP. Additional_args is a custom port for VXLAN and the any IPs for Zerotier to automatically assign. Zerotier does not yet have a good way to auto-provision. I will add a script for that in the future but I have to do it manually for now.<br />
+        <code>id, client_id, type, server, tunnel_id, ip, additional_args</code></dd>
+    <dt>requests</dt>
+    <dd>A request from our website. Many people have submitted multiple so you may find a few from the same 		person when approving their request. I try to remove them when I see them but it does not really 			matter.<br />
+        <code>id, asn, name, contact, website, tunnel_location, tunnel_type, ipv4</code></dd>
+</dl>
+
+
 
 ### EVIX Directory
 
@@ -156,16 +164,18 @@ are not full evix nodes. They don’t have /evix synced to them and are not in /
 
 It should be pretty easy to add a new location.
 
-- Install required software: JQ, OpenVPN, optional bat/batcat (called different things depending on Ubuntu version)
+- Install required software:
+  - `apt install -y jq openvpn rsync snmpd bridge-utils`
+  - optional `bat/batcat` (called different things depending on Ubuntu version)
 - Add the main server’s ssh key to root (ensure root logon is enabled)
-- add a new entry to `/evix/secret-config.json`, add a new entry to `/evix/config/ansible/ansible.cfg` or whatever
-  that’s called
+- configure and start `snmpd` on the new server
+- add the new server to LibreNMS
+- add a new entry to `/evix/secret-config.json`, add a new entry to `/evix/config/ansible/hosts` 
 - run `/evix/reboot.sh` on all the existing route servers, and the new one once it syncs
-- update the database schema to allow that location in the enum
+- update the database schema to allow that location in the enums (`requests.tunnel_location` and `connections.server`)
 - update the website form to allow that location to be selected
 - update the interact script to allow selecting that location for provisioning a new tunnel
-- update the ixp json script to add the new location to our export (both in the header and in the nested ifs for adding
-  its id to a connection)
+- update the jq config file (`/evix/scripts/jqconf.jq`) to add the new location to our export (both in the header and in the nested ifs for adding its id to a connection)
 - update `/evix/config/arouteserver/general.yml` to add a new custom community for the new location
 - add symlinks for relevant parts of `/evix/config/symlinks.sh`
 
@@ -175,11 +185,11 @@ Perhaps put the locations in the database and generate config or use it from the
 ### PeeringDB
 
 For PeeringDB, they pull https://evix.org/participants.json which is generated by
-/evix/scripts/root/ixp_json_generate.sh. HE also uses it for https://bgp.he.net/exchange/EVIX
+`/evix/scripts/root/ixp_json_generate.sh`. HE also uses it for https://bgp.he.net/exchange/EVIX
 
 ### Scripts
 
-I recommend checking out crontab -e. Then you can see all the scripts that are run automatically. I’ve commented them
+I recommend checking out `crontab -l`. Then you can see all the scripts that are run automatically. I’ve commented them
 decently, but I do agree that better docs would be good.
 
 ### ZeroTier
