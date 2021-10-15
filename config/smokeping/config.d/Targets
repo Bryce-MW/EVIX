@@ -44,6 +44,10 @@ host = nz-ts01.evix.org
 menu = Zurich
 title = EVIX POP Zurich
 host = zur-ts01.evix.org
+++ Toronto
+menu = Toronto
+title = EVIX POP Toronto
+host = tor-ts01.evix.org
 # Local connections only:
 ++ Vancouver
 menu = Vancouver

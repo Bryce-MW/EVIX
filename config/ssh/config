@@ -44,3 +44,10 @@ Host sjc.evix.org
 Host sjc-bck01.evix.org
     User root
     Hostname 107.172.217.43
+
+Host tor.evix.org
+    User root
+    Hostname tor-ts01.evix.org
+Host tor-ts01.evix.org
+    User root
+    Hostname tor-ts01.evix.org
