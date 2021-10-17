@@ -3,8 +3,8 @@
 #  * 2021-04-16|>Bryce|>Added JSON config
 
 host=$(/evix/scripts/hostname.sh)
-ip=$(/evix/scripts/ip.sh "$host")
-interface=$(/evix/scripts/get-val.sh "$host" eoip-interface)
+ip=$(jq --arg host "$host" -r '.hosts[$host].primary_ipv4' /evix/secret-config.json)
+interface=$(jq --arg host "$host" -r '.hosts[$host].eoip_interface' /evix/secret-config.json)
 
 eoip_ps=$(pgrep -x eoip)
 
