@@ -70,9 +70,12 @@ fi
 if [ "$is_ts" = "true" ]; then
   vxlan_interfaces=$(basename -a /sys/class/net/vtep*)
   backbone_interfaces=$(basename -a /sys/class/net/EVIX*)
-  eoip_interface=$(/evix/scripts/get-val.sh "$host" eoip-interface)
-  ovpn_interface=$(/evix/scripts/get-val.sh "$host" ovpn-interface)
-  zt_interface=$(/evix/scripts/get-val.sh "$host" zt-interface)
+  eoip_interface=$(jq --arg host "$host" -r '.hosts[$host].eoip_interface' /evix/secret-config.json)
+  ovpn_interface=$(jq --arg host "$host" -r '.hosts[$host].ovpn_interface' /evix/secret-config.json)
+  is_zt=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="zt-endpoint")' /evix/secret-config.json)
+  if [ "$is_ts" = "true" ]; then
+    zt_interface=$(jq -r '.zt.network_interface' /evix/secret-config.json)
+  fi
   for i in $vxlan_interfaces $backbone_interfaces $eoip_interface $ovpn_interface $zt_interface; do
     state_file="$STATE_FILE_DIR/$i.not.on.bridge"
     if [[ "$(readlink /sys/class/net/$i/brport/bridge)" != *br10 ]]; then
