@@ -73,7 +73,7 @@ if [ "$is_ts" = "true" ]; then
   eoip_interface=$(jq --arg host "$host" -r '.hosts[$host].eoip_interface' /evix/secret-config.json)
   ovpn_interface=$(jq --arg host "$host" -r '.hosts[$host].ovpn_interface' /evix/secret-config.json)
   is_zt=$(jq -r --arg host "$host" '.hosts[$host].roles | any(.=="zt-endpoint")' /evix/secret-config.json)
-  if [ "$is_ts" = "true" ]; then
+  if [ "$is_zt" = "true" ]; then
     zt_interface=$(jq -r '.zt.network_interface' /evix/secret-config.json)
   fi
   for i in $vxlan_interfaces $backbone_interfaces $eoip_interface $ovpn_interface $zt_interface; do
