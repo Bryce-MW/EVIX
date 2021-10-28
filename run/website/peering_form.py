@@ -125,7 +125,7 @@ if __name__ == "__main__":
             type=tunnel_type,
             ipv4=needs_ipv4,
             comments=comments
-        ))
+        ).encode('ascii', 'replace'))
 
 
     print(template.render(correct=True, error=None))
